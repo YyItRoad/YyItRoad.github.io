@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    如何克服开单焦虑 |  易
+    Hello World |  易
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -47,7 +47,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-如何克服开单焦虑" class="article article-type-post" itemscope
+  <article id="post-hello-world" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -55,7 +55,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  如何克服开单焦虑
+  Hello World
 </h1>
  
 
@@ -64,8 +64,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/13/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E5%BC%80%E5%8D%95%E7%84%A6%E8%99%91/" class="article-date">
-  <time datetime="2020-04-13T08:50:18.651Z" itemprop="datePublished">2020-04-13</time>
+      <a href="/posts/4a17b156" class="article-date">
+  <time datetime="2020-04-09T10:08:51.614Z" itemprop="datePublished">2020-04-09</time>
 </a>
       
       
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">736</span>
+            <span class="post-count">73</span>
         </span>
     </span>
 
@@ -84,7 +84,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
@@ -109,18 +109,19 @@
       
 
       
-      <p>交易焦虑，这是全球交易者们都会面临的问题，无论是资深或者小白，一次好的合约交易，必定是建立在实际行动者冷静的心态上。如何克服这种焦虑呢？我把克服焦虑系统化分为三步，心态稳重的交易者可以略过此章节。</p>
-<a id="more"></a>
-<p><strong>建立属于自己的交易系统：</strong></p>
-<p>一说起交易系统，小白可能会懵逼不已，有这种想法的，必然是指标都看不懂的。可以去找几本指标详解的书籍来看，根据需求搭配不同指标组成一个的买进卖出策略。其次是风控管理（仓位管理，和杠杆倍数调控），这样便是一个简单的系统。</p>
-<p>按照系统的买卖指标进行操作，自己做实盘测试，成功率高于七便可以使用，大多数焦虑都是来源于对交易策略的不够自信。既然如此，多复盘，多观察往期走势就很有必要了，但值得注意的是，构建好的交易系统可不是说能够一直沿用下去。</p>
-<p>当交易系统屡屡失手时，这就代表着市场风格发生转换，主力庄或许已经换人了，所以交易策略每隔一段时间也得变通。</p>
-<h3 id="保护本金："><a href="#保护本金：" class="headerlink" title="保护本金："></a>保护本金：</h3><p>币圈市场随时都有赚钱机会，只要你耐心足够，本金翻百倍也并非不可能。币圈不缺赚钱机会，缺的是一颗稳健的心，亏50%等于下次要得到100%的收益率才能回本，这能不焦虑吗。多数人都死在抄底或者是追高的路上。</p>
-<p>之所以鄙人能从股市、币圈长活到现在，技术分析其实只占了很小的方面，更多时候我都在保护本金，每次开仓之前我想的永远不是我这一票能赚多少，而是到哪个位置我要止损止盈。</p>
-<h3 id="不为失手遗憾："><a href="#不为失手遗憾：" class="headerlink" title="不为失手遗憾："></a>不为失手遗憾：</h3><p>有些行情，错过就错过了，没什么大不了，或许你在三月十二号开个空单能谋取暴利，但这可能不符合你的建仓策略，D十次输一次便得完蛋，所以没什么值得懊悔的。同样一轮大波浪行情不要求全利润吃。但也是衡量交易者水平的标准，七成算是优秀，两成就说明你的交易系统有问题，不符合市场节奏，一定得及时调整。</p>
-<p>一个狙击手，如果做不到平静狙击，他是打不中目标的。</p>
-<p>一个交易员，做不到平静交易，他也很难有所作为。</p>
-<p>做交易大多数时候都是流水线工作，你要做的仅仅是验证策略，每天做一遍重复操作，狗庄对每个散户都是公平的。</p>
+      <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
       
       <!-- reward -->
@@ -175,15 +176,13 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/2020/04/13/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E5%BC%80%E5%8D%95%E7%84%A6%E8%99%91/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/4a17b156" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%98%93/" rel="tag">交易</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
-
 
     </footer>
 
@@ -193,20 +192,15 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/04/16/Flutter%E6%B5%85%E5%B0%9D/" class="article-nav-link">
+      <a href="/posts/ff5cb36f" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Flutter浅尝
+            千帆历尽，归来我已不是少年
           
         </div>
       </a>
     
-    
-      <a href="/2020/04/13/%E5%90%88%E7%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%AF%8C%E4%BA%BA%E6%B8%B8%E6%88%8F/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">合约为什么是富人游戏？</div>
-      </a>
     
   </nav>
 
@@ -311,7 +305,7 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/2020/04/10/%E7%AE%80%E5%8E%86/">关于我</a>
+      <a class="nav-item-link" href="/posts/963f9cce">关于我</a>
     </li>
     
   </ul>

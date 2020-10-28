@@ -64,7 +64,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/13/%E5%90%88%E7%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%AF%8C%E4%BA%BA%E6%B8%B8%E6%88%8F/" class="article-date">
+      <a href="/posts/5d17b830" class="article-date">
   <time datetime="2020-04-13T08:46:29.248Z" itemprop="datePublished">2020-04-13</time>
 </a>
       
@@ -170,7 +170,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/2020/04/13/%E5%90%88%E7%BA%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%AF%8C%E4%BA%BA%E6%B8%B8%E6%88%8F/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/5d17b830" alt="微信分享二维码">
     </div>
 </div>
 
@@ -188,7 +188,7 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/04/13/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E5%BC%80%E5%8D%95%E7%84%A6%E8%99%91/" class="article-nav-link">
+      <a href="/posts/aa881a94" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
@@ -198,7 +198,7 @@
       </a>
     
     
-      <a href="/2020/04/13/%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E4%BA%A4%E6%98%93%E8%87%AA%E4%BF%A1/" class="article-nav-link">
+      <a href="/posts/11b659d1" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
         <div class="article-nav-title">如何建立交易自信</div>
       </a>
@@ -306,7 +306,7 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/2020/04/10/%E7%AE%80%E5%8E%86/">关于我</a>
+      <a class="nav-item-link" href="/posts/963f9cce">关于我</a>
     </li>
     
   </ul>
