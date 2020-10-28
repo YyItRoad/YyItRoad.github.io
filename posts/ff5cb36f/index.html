@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Fluter调试插件 |  易
+    千帆历尽，归来我已不是少年 |  易
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -47,7 +47,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-Fluter调试插件" class="article article-type-post" itemscope
+  <article id="post-随想" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -55,7 +55,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Fluter调试插件
+  千帆历尽，归来我已不是少年
 </h1>
  
 
@@ -64,8 +64,8 @@
 
     
     <div class="article-meta">
-      <a href="/posts/f2b71c26" class="article-date">
-  <time datetime="2020-10-27T01:50:19.012Z" itemprop="datePublished">2020-10-27</time>
+      <a href="/posts/ff5cb36f/" class="article-date">
+  <time datetime="2020-04-10T14:31:40.419Z" itemprop="datePublished">2020-04-10</time>
 </a>
       
       
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">930</span>
+            <span class="post-count">522</span>
         </span>
     </span>
 
@@ -84,7 +84,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
@@ -95,8 +95,6 @@
 
     
     
-    <div class="tocbot"></div>
-
 
 
 
@@ -109,66 +107,13 @@
       
 
       
-      <p>目前Flutter社区正处在一个蓬勃发展的阶段，<a href="https://pub.dev/" target="_blank" rel="noopener">pub.dev</a>上也提供了数不清的插件供大家使用。但是很多时候由于各种原因别人的插件可能会<code>没有我们想要的功能</code>，更严重的有的还会出现一些<code>致命性Bug</code>。</p>
-<p>这个时候就需要我们自己动手添加自己想要的功能或来修复别人的Bug，随之而来的就是如何<code>调试插件</code>。</p>
+      <p>再次翻新简历已经是2020年了。</p>
+<p>来无锡已经七年了，从当初的一无所有到今天的一无所有，留下的只是遍布这里的足迹和或多或少的回忆。</p>
+<p>这七年里我奋斗过，得到过，选择过，遗憾过，思考过，麻醉过。这些种种不由得让我思索起我全部生活的意义，有时感觉像一个钱的奴隶一次次的为了钱忙碌的像个旋转的陀螺。有时感觉自己是一个有头有脸的人物为了一点面子忘记了兜里那几个可怜的板子。更多的时候认为不可一世的自己可以摆脱掉平庸，到头来最傻的那个人却是自己。</p>
 <a id="more"></a>
-<p>关于插件的开发网上已经有很多不错的教程。不管是集成到自己项目还是打包发布到<strong>Pub</strong>上都有很详细的介绍。</p>
-<ul>
-<li><p>如<a href="https://flutterchina.club" target="_blank" rel="noopener">flutterchina.club</a>的<a href="https://flutterchina.club/developing-packages/" target="_blank" rel="noopener">开发Packages和插件</a>。</p>
-</li>
-<li><p>和<a href="https://juejin.im/user/2013961034677725" target="_blank" rel="noopener">老孟Flutter</a>的<a href="https://juejin.im/post/6885487318208086029" target="_blank" rel="noopener">【Flutter 混合开发】系列</a>。</p>
-</li>
-</ul>
-<p>这些教程都从原理和实现等方方面面介绍了如何开发插件。</p>
-<h2 id="总结下来开发插件无外乎实现两种功能："><a href="#总结下来开发插件无外乎实现两种功能：" class="headerlink" title="总结下来开发插件无外乎实现两种功能："></a>总结下来开发插件无外乎实现两种功能：</h2><p>一是方法调用的数据传递。大多数插件都是这种类型的，用来完成手机硬件控制或原生方法回调。</p>
-<ol>
-<li><p>在Flutter端:</p>
-<ul>
-<li><p>在方法调用用常用<code>MethodChannel</code>使用同一个名称和IOS/Android端建立通道连接，然后调用<code>invokeMethod</code>方法调用其他平台方法。</p>
-</li>
-<li><p>监听回调可以使用<code>setMethodCallHandler</code>实现回调逻辑，也可以使用<code>EventChannel</code>来实现;</p>
-</li>
-</ul>
-</li>
-<li><p>在其他端:</p>
-<ul>
-<li><p>使用注册插件时传递的<code>Message</code>对象和相同的名称生成<code>MethodChannel</code>通道。</p>
-</li>
-<li><p>实现<code>setMethodCallHandler</code>回调方法就可以接受Flutter传递过来的数据。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>二是视图调用的数据传递。 使用原生视图相对于方法调用复杂一点,但也是建立相同名称的<code>MethodChannel</code>来实现数据交互。</p>
-<ol>
-<li><p>在Flutter端:</p>
-<ul>
-<li><p>创建<code>Widget</code>,在Build中根据平台返回不同的系统<em>Widget</em>,Android端返回<code>AndroidView</code>,IOS端返回<code>UiKitView</code>,并在<code>viewType</code>参数中给该Widget赋上必须的唯一标识符，并保证在两段注册视图时一致。</p>
-</li>
-<li><p>如果需要调用改视图原生方法则最好创建<code>Controller</code>类来管理视图方法，通过<code>onPlatformViewCreated</code>方法中传递的ID参数来生成该视图控制器的数据传输通道。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///<span class="markdown">NativeView</span></span></span><br><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (Platform.isAndroid) &#123;</span><br><span class="line">    <span class="keyword">return</span> AndroidView(</span><br><span class="line">      viewType: <span class="string">'native_view_type'</span>,</span><br><span class="line">      onPlatformViewCreated: (id) =&gt; NativeViewController(id),</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Platform.isIOS) &#123;</span><br><span class="line">    <span class="keyword">return</span> UiKitView(</span><br><span class="line">      viewType: <span class="string">'native_view_type'</span>,</span><br><span class="line">      onPlatformViewCreated: (id) =&gt; NativeViewController(id),</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Text(<span class="string">"不支持的平台"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">///<span class="markdown">NativeViewController</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NativeViewController</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> MethodChannel _channel;</span><br><span class="line">  NativeViewController(<span class="built_in">int</span> id)</span><br><span class="line">    : _channel = MethodChannel(<span class="string">'native_view_type_<span class="subst">$id</span>'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>在其他端:</p>
-<ul>
-<li><p>创建视图工厂类来生成视图。通过实现<code>FlutterPlatformViewFactory</code>协议中方法，返回自定义的原生视图。并使用注册时的<code>Message</code>对象和相同的名称<code>native_view_type_$id</code>给改视图创建<code>MethodChannel</code>。</p>
-</li>
-<li><p>调用<code>registerViewFactory</code>方法来注册该视图工厂并保证与<code>viewType</code>相同的名称。</p>
-</li>
-<li><p>实现自定义原生视图，并实现<code>FlutterPlatformView</code>协议。如果该视图为View的子类那么直接返回自身就可以了。</p>
-</li>
-<li><p>原生视图实现通道的<code>setMethodCallHandler</code>方法来实现方法调用。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  &#x2F;&#x2F;&#x2F;生成并注册视图工厂类</span><br><span class="line">  NativeViewFactory *nativeViewFactory &#x3D; [[NativeViewFactory alloc]initWithMessage:[registrar messenger]];</span><br><span class="line"></span><br><span class="line">  [registrar registerViewFactory:nativeViewFactory withId:@&quot;native_view_type&quot;];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;工厂类实现该协议</span><br><span class="line">- (NSObject&lt;FlutterPlatformView&gt;*)createWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args &#123;</span><br><span class="line">  NativeView *nativeView &#x3D; [[NativeView alloc]initWithFrame:frame];</span><br><span class="line">  nativeView.channel &#x3D; [FlutterMethodChannel methodChannelWithName:[NSString stringWithFormat:@&quot;%@_%lld&quot;,@&quot;native_view_type&quot;,viewId] binaryMessenger:self.message];</span><br><span class="line">  return nativeView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;原生视图实现该协议</span><br><span class="line">- (UIView *)view &#123;</span><br><span class="line">  return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="调试插件Debug"><a href="#调试插件Debug" class="headerlink" title="调试插件Debug"></a>调试插件Debug</h2><p>当我们使用编译器运行起程序时，可以使用<code>Attach</code>连接正在运行程序的设备就可以实现不同编译器同时打断点调试。</p>
-<p>例如： </p>
-<p>在Xcode上运行ios模块，在Android Studio中点击attach图标。</p>
-<p><img src="/../imgs/attach.png" alt="Android Studio Attach"></p>
-<p>也可以参考<a href="https://flutter.cn/docs/development/add-to-app/debugging" target="_blank" rel="noopener">在混合应用模式下进行调试</a>。</p>
+<p>今天我不禁想问我到底要的是什么？是钱吗，那是多少钱呢，不知道。生活已经给我开了个玩笑，让我知道我的贪婪和无知是多么的可笑。如果不是，那我却被他一步步逼到了墙角让我感到没了钱这根稻草我就要被生活这个怪兽活生生吞掉。为什么我的生活到现在还是一团糟？可能因为我懦弱胆小不敢扛起未来这根重担，原本可以稳定平静的生活我却让他像浮萍一样继续飘摇。</p>
+<p>今天更新简历时打开了之前呆过的公司链接，看到公司活动照片忽然发现了几张熟悉的面孔，努力回忆起他们的名字和职位后才发现已经是六年前的事了，他们还在做着同样的事吗？他们过得好吗？不，他们一定过得比我好。我只是一个匆匆的过客，而我还在寻找着下一站。其实我原本也可以过着像他们一样的生活，究竟是什么让我做出了这样的选择？</p>
+<p>千帆历尽，归来我已不是少年。下一站哪里都好，只要不再飘摇。</p>
 
       
       <!-- reward -->
@@ -223,14 +168,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/f2b71c26" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/ff5cb36f/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E6%83%B3/" rel="tag">随想</a></li></ul>
 
 
     </footer>
@@ -241,10 +186,19 @@
   
   <nav class="article-nav">
     
+      <a href="/posts/11b659d1/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            如何建立交易自信
+          
+        </div>
+      </a>
     
-      <a href="/posts/963f9cce" class="article-nav-link">
+    
+      <a href="/posts/4a17b156/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">简历</div>
+        <div class="article-nav-title">Hello World</div>
       </a>
     
   </nav>
