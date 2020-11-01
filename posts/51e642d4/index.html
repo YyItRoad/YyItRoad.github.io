@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Fluter调试插件 |  易
+    给父亲的一封信 |  易
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -47,7 +47,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-Fluter调试插件" class="article article-type-post" itemscope
+  <article id="post-给父亲的一封信" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -55,7 +55,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Fluter调试插件
+  给父亲的一封信
 </h1>
  
 
@@ -64,8 +64,8 @@
 
     
     <div class="article-meta">
-      <a href="/posts/f2b71c26/" class="article-date">
-  <time datetime="2020-10-27T01:50:19.012Z" itemprop="datePublished">2020-10-27</time>
+      <a href="/posts/51e642d4/" class="article-date">
+  <time datetime="2020-11-01T09:07:59.924Z" itemprop="datePublished">2020-11-01</time>
 </a>
       
       
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">930</span>
+            <span class="post-count">9</span>
         </span>
     </span>
 
@@ -84,7 +84,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">1 分钟</span>
         </span>
     </span>
 </div>
@@ -95,8 +95,6 @@
 
     
     
-    <div class="tocbot"></div>
-
 
 
 
@@ -109,67 +107,15 @@
       
 
       
-      <p>目前Flutter社区正处在一个蓬勃发展的阶段，<a href="https://pub.dev/" target="_blank" rel="noopener">pub.dev</a>上也提供了数不清的插件供大家使用。但是很多时候由于各种原因别人的插件可能会<code>没有我们想要的功能</code>，更严重的有的还会出现一些<code>致命性Bug</code>。</p>
-<p>这个时候就需要我们自己动手添加自己想要的功能或来修复别人的Bug，随之而来的就是如何<code>调试插件</code>。</p>
-<a id="more"></a>
-<p>关于插件的开发网上已经有很多不错的教程。不管是集成到自己项目还是打包发布到<strong>Pub</strong>上都有很详细的介绍。</p>
-<ul>
-<li><p>如<a href="https://flutterchina.club" target="_blank" rel="noopener">flutterchina.club</a>的<a href="https://flutterchina.club/developing-packages/" target="_blank" rel="noopener">开发Packages和插件</a>。</p>
-</li>
-<li><p>和<a href="https://juejin.im/user/2013961034677725" target="_blank" rel="noopener">老孟Flutter</a>的<a href="https://juejin.im/post/6885487318208086029" target="_blank" rel="noopener">【Flutter 混合开发】系列</a>。</p>
-</li>
-</ul>
-<p>这些教程都从原理和实现等方方面面介绍了如何开发插件。</p>
-<h2 id="总结下来开发插件无外乎实现两种功能："><a href="#总结下来开发插件无外乎实现两种功能：" class="headerlink" title="总结下来开发插件无外乎实现两种功能："></a>总结下来开发插件无外乎实现两种功能：</h2><p>一是方法调用的数据传递。大多数插件都是这种类型的，用来完成手机硬件控制或原生方法回调。</p>
-<ol>
-<li><p>在Flutter端:</p>
-<ul>
-<li><p>在方法调用用常用<code>MethodChannel</code>使用同一个名称和IOS/Android端建立通道连接，然后调用<code>invokeMethod</code>方法调用其他平台方法。</p>
-</li>
-<li><p>监听回调可以使用<code>setMethodCallHandler</code>实现回调逻辑，也可以使用<code>EventChannel</code>来实现;</p>
-</li>
-</ul>
-</li>
-<li><p>在其他端:</p>
-<ul>
-<li><p>使用注册插件时传递的<code>Message</code>对象和相同的名称生成<code>MethodChannel</code>通道。</p>
-</li>
-<li><p>实现<code>setMethodCallHandler</code>回调方法就可以接受Flutter传递过来的数据。</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>二是视图调用的数据传递。 使用原生视图相对于方法调用复杂一点,但也是建立相同名称的<code>MethodChannel</code>来实现数据交互。</p>
-<ol>
-<li><p>在Flutter端:</p>
-<ul>
-<li><p>创建<code>Widget</code>,在Build中根据平台返回不同的系统<em>Widget</em>,Android端返回<code>AndroidView</code>,IOS端返回<code>UiKitView</code>,并在<code>viewType</code>参数中给该Widget赋上必须的唯一标识符，并保证在两段注册视图时一致。</p>
-</li>
-<li><p>如果需要调用改视图原生方法则最好创建<code>Controller</code>类来管理视图方法，通过<code>onPlatformViewCreated</code>方法中传递的ID参数来生成该视图控制器的数据传输通道。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///<span class="markdown">NativeView</span></span></span><br><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (Platform.isAndroid) &#123;</span><br><span class="line">    <span class="keyword">return</span> AndroidView(</span><br><span class="line">      viewType: <span class="string">'native_view_type'</span>,</span><br><span class="line">      onPlatformViewCreated: (id) =&gt; NativeViewController(id),</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Platform.isIOS) &#123;</span><br><span class="line">    <span class="keyword">return</span> UiKitView(</span><br><span class="line">      viewType: <span class="string">'native_view_type'</span>,</span><br><span class="line">      onPlatformViewCreated: (id) =&gt; NativeViewController(id),</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Text(<span class="string">"不支持的平台"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">///<span class="markdown">NativeViewController</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NativeViewController</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> MethodChannel _channel;</span><br><span class="line">  NativeViewController(<span class="built_in">int</span> id)</span><br><span class="line">    : _channel = MethodChannel(<span class="string">'native_view_type_<span class="subst">$id</span>'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>在其他端:</p>
-<ul>
-<li><p>创建视图工厂类来生成视图。通过实现<code>FlutterPlatformViewFactory</code>协议中方法，返回自定义的原生视图。并使用注册时的<code>Message</code>对象和相同的名称<code>native_view_type_$id</code>给改视图创建<code>MethodChannel</code>。</p>
-</li>
-<li><p>调用<code>registerViewFactory</code>方法来注册该视图工厂并保证与<code>viewType</code>相同的名称。</p>
-</li>
-<li><p>实现自定义原生视图，并实现<code>FlutterPlatformView</code>协议。如果该视图为View的子类那么直接返回自身就可以了。</p>
-</li>
-<li><p>原生视图实现通道的<code>setMethodCallHandler</code>方法来实现方法调用。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">  &#x2F;&#x2F;&#x2F;生成并注册视图工厂类</span><br><span class="line">  NativeViewFactory *nativeViewFactory &#x3D; [[NativeViewFactory alloc]initWithMessage:[registrar messenger]];</span><br><span class="line"></span><br><span class="line">  [registrar registerViewFactory:nativeViewFactory withId:@&quot;native_view_type&quot;];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;工厂类实现该协议</span><br><span class="line">- (NSObject&lt;FlutterPlatformView&gt;*)createWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args &#123;</span><br><span class="line">  NativeView *nativeView &#x3D; [[NativeView alloc]initWithFrame:frame];</span><br><span class="line">  nativeView.channel &#x3D; [FlutterMethodChannel methodChannelWithName:[NSString stringWithFormat:@&quot;%@_%lld&quot;,@&quot;native_view_type&quot;,viewId] binaryMessenger:self.message];</span><br><span class="line">  return nativeView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&#x2F;原生视图实现该协议</span><br><span class="line">- (UIView *)view &#123;</span><br><span class="line">  return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="调试插件Debug"><a href="#调试插件Debug" class="headerlink" title="调试插件Debug"></a>调试插件Debug</h2><p>当我们使用编译器运行起程序时，可以使用<code>Attach</code>连接正在运行程序的设备就可以实现不同编译器同时打断点调试。</p>
-<p>例如： </p>
-<p>在Xcode上运行ios模块，在Android Studio中点击attach图标。</p>
-<p><img src="/../imgs/attach.png" alt="Android Studio Attach"></p>
-<p>也可以参考<a href="https://flutter.cn/docs/development/add-to-app/debugging" target="_blank" rel="noopener">在混合应用模式下进行调试</a>。</p>
-
+      <div id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <div class="hbe-input-container">
+  <input type="password" id="hbePass" placeholder="" />
+    <label for="hbePass">您好, 这里需要密码.</label>
+    <div class="bottom-line"></div>
+  </div>
+  <script id="hbeData" type="hbeData" data-hmacdigest="1484829f7601df1ea28c3ef9046043f04862a78f3a3785acf92c196723429438">7c27d8b66b3220df852436c0ea32dc98857f2a857ac5ea7324a09cd80da0bb542983d95fa40c160af5a464e94e98c49cf0b2fa251cc52674399cd026a44e404c305adf1821e26cd03324840542913ba2b9073ea3c95ec01fcca010e6d115d16c611000c8b601d83a3c56e0a0ab76095447003723efffbd47a06fd4244375043d18c8abc161eb59cf498e2941c2ffbe73786ca1903d8a2deed0e301eef6b927dd8084a29329c3aa55852b08b60bf4daef503f953e5cf09b510713dd9f6589ab3901775580c7ae68b5099ed69c04637b074e8364eae18ae98feec46d816dfe1aabc85a7d2f1e51e4db0157c62944097574d99fa0b832bd39bdc38a65ddfdcb6b23a60b40d3ee762fb4dced300d2404e60248500a911dfd2ac9023840abeb336e0ff1435cf0cb2263a2bfdab3cc4467a4d6786db4b85bc21a46be2f4552b974ad9f044d94f492f658b12e6f2470d01829247b7a715af3c762223380ed1b989d3d886f5780d8213bb5e829b118032e7144af22e39ac6cd6ae251036a74fd89b65facbbaa7ac34d8e8776150157317b17a3d1a18f23e43566df55014424efc4e73eaac8d00876a7077b64423c19e7713763a8440ecb62eabad827d566889efd9ef615027e8edd6946ce9937e1bafe6860de2e9f46f1ac76ff9cad1129c20a65282a794200e53f9bce76d062d015229ae9263b8b6cb1668656ec73ddab8fd40abc94b7c7cb2cbadc2c6168432237fc0b01fa984a53b6d955531f5f6ccaef6b4cdcf36af405d4d06a01b5e0b8d5eff92a1582f69d6f0c7463c32edb74813a08a0ec385c3eddf544425ff736e7f11a01960e896e33144440c03eb6e79e45893280612c62e0a84d014c22005006103aadf92dda56cc3f726fb126d3b91196ea403dc7eec22641bad51ce4315f578065838ce4e0cc6e3ee3ef8b6653543023e99ade69b65c62be0d53d915d67e4be565c6d2b9ee7cf0efe6be6d6b7b4df4040b16f547259ddbbea20712a23fcfa61e95a624f6ec9a489399789344bb4393dd06f8704fffc026794754b55fef5310e7dc580f3268eb6c72d9291a26bc97279c12c8f89daa55a13c52904805f9cf1e31658e3021b13261f4d01a32495aeed9db18c0f49046324f6ba644506341786186c898571e74aa710af7ca89999f2cf751499967375af18865969a17591fdc9bb4737ede0b369c65b28aef47c31c50eb134c487dfc39ba0b22ba70a295b14d4310b25459c53f702b3b8f9b579e1505376dca2eae769f10e9df959aba6057bf4878393e686a04e68f8d9915bd1fefacf4d3489ca4c1aea6e36a4c3f58bb5e953dc9f74c247d6092bbf8f5d087144cfc816cffdba3de45d172ab17b2e2bdb3738897ca2f0917ab973beec25d6bc04dec5afa14fc4cafe0a4bc6f8d92dfa37d391209137fcb744ef3aecfb8fb699c3311caa93c3cd9c18cf2445a27d1179c8334925926c5b9616fc1692a6308ab985a2926b927f4613021f5eeb6f07378c6469ce214997a86f1f1aea16ce7740d161f36b5f04405ed51fbca3f59a050e7a5120796eadf760ca64d0de8a04f572c27b269282250bee8c16c5143ec4969ce5d2282190e04165cd03d08bc970260eea5e6da2324755952577c584f1625a6b1cb14ad47c6e5c531a9c3e01fc12947972c7a3b8032175f8226cb7f0e3516b854cdfaf003aedb82c114faa98b5f670b7300d53f53a861a9cbd54db986d333ce2abbec074d2112efcb6d8224ad1f73db16f204a9f2a3d40e5bb159a22c0fe0fd52a42d67579f483ee9cc46b91ae87557a8bb15961a3bea0c3829f85c2bf532399a33196dcf0dc75dbcdd0ece783b4b4464d1c92d10ff6e02a957404c845c028b0ee9c89f92667d5159d3e12f2baf428a3bfc460802433aab198eac2359bb4b38cfb87505310891b3e9e80daa69a7222f06ea81742d9817ae3c27d88547ff07fac15730ca0194ecc89dbf576d25f70d33231aa2b73fc021e6c6173565031276cd03b40d60b9e1e262f5de7a9b42c9b30ce3a526094d2c4eb73ca9abc58a58e17b0d3b6c319ca028ab8bbdd7374bf74a7a6428beb4c9a104d76bcbce80ddaf915b7398d2601be7cde222b9b41c5647efc773d4b0eef625d61dd55f1fa108cdb4c2aad4236d848df449764cfb663b7cec2971208100f154ba444a785e2879ab29ddea3bd1502de9d8e13ed60f7707b12ca4e20125317f01396741149ba29cdc9cf358681aba0e12bb672ad7c4b8a8e6b69fca31de4a301e9ac4a0d36f638873dafd1361a28c73ece756c2110cc180f2a83fcaf32e38f884d6842bb38e42aa6c78d1443722e34d382878615e5848b3f59a4d6ef8da970f438fa039a826be0cd3b33fff9197334e5a7be50a98997d24c394b556fa545237605dcbb552ec5cb34c727dd4a23f6f86c565c60dbe696c6b434daf68a8217d866f7752ad84440d6c50b09d24b25fa3ee0763133663eb036569a98cd75980554dd9a97e6cda1c8b3313a9ab0d9339b2fcfcdf8dcc2cef278c74654be9d95348271e7585c3d861e772cac31b750816cf3ab044955e4839d497f7273faae24adb125bb905189acbdecb6ed39162382500e1bf17eceebead68f03b8e6ab916b034f6f110f89f76928c1cd0d7a507aa9dfadf9d1b483356bc41faba36a166be3f9f0ef8a9fb0fa4d0989a5ff94706eb43e7116e35816705c26c96de0d80cbb10550ae5e74d3057b793bccacb4aef0fde55e2e2f1939456a4e96e664442d621c4e439bed97eaebcc74ab3ab90c4734cc5f6e9736b114582c7517297947fc95fac3bcd44ce6949fcc5f51cf07ecd60b18c35db1894d2574588ce19a42778986d2cd88fe5c801b1ef0711f3c5133abc7193b79612656d6277e07b6e8f5ac208aa632bd65fa188dd64c8c617fb0d97df181a29c66faa85fe5a3ed90404596690b98f3a3b061c605e7710ed969aade5d9265084eab4c11e9abe075462b7c085cce344ba0717070d160decaec9fe0402ff68ad40da434b9e454c7570c368586182d0c78c5209ae0ffe62674e20a9148120a60c90bb7186a4ebf6690ebd09952e95601f14f14d27deb35141b242fd7f7f87baae54b25d7715fbf016e34cfeb1221b04eebb8a4b55dab20ed9874364929a49a8390798d640a2010d9b4289fd59f9a418f54633080dc54f6d8b75e881ddd4646fba519fdbabc98376258dc6839773f2e4e332ae6ae7e740fd5a8085c7f4cb7fc061ed528985644ba222fffef0325d2d2a6bc61af5cd867850101dc48434b77060c66821a31e2b4d02d4fd313f9936883bf627e091c2404185a8ba211cb388276f2db18b4fd247e3c63aa5f66cde50b3c626126bb663c329612cbc864d2af22e34c49e7b1957fca0524387660d9c07e19d41d5c4dc3c5ca78db854927b14a05e15bd186e98dcdae087cee8ee28cd4f0bed1091ab95bce1e5011e50db3e5040a0d2fe1df68059a0cde2e9e31b632267566a37d4f74734f54af0933e56b2395528db7bc472ea3fa97f700717286e32aa983bbd43998cb87fa1ed82727b95be9c567d81df47d0be8876d840db099d51732e49dc49f8dd782b923225c5ab929b5c6bc198e8c833a2f3fb30513273b8c4b9227a38fa49706e45d8b564c842437c9378cc174fe5a7a8f7173f66bdb9020560e60ee4589fb93d92c44f15822db077524d06d46a226f93604b8ce57f49643f2a2572604356cb722e6bff035e98a484bfb4bfe0faad4a17e425e2aa930de2c77da3f5667186f3ba868140a784bc3b4866ea4dc3d1024c6a009f51c1e8a12eaf121e8052b4f576720c6ee4dc0aa17e6c3e4d240c09e2edff950c6cba4220939a5ff159994d98453e785ab59116f99e6845f59b614bf5661178c3388ba28ea3345cdc1d0fc47c4093de8ca47e59bbafe3f1a44689e58cdcd3c9602e5ca7527cdeada4c62b3ea17ca43ab5b88871b04afcbd147b140c51132963442e43d2f35e8a301002eee99548a6bd3a565c989</script>
+</div>
+<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
       
       <!-- reward -->
       
@@ -223,14 +169,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/f2b71c26/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yangyang.fun/posts/51e642d4/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E8%AE%B0/" rel="tag">日记</a></li></ul>
 
 
     </footer>
@@ -241,19 +187,10 @@
   
   <nav class="article-nav">
     
-      <a href="/posts/51e642d4/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            给父亲的一封信
-          
-        </div>
-      </a>
     
-    
-      <a href="/posts/963f9cce/" class="article-nav-link">
+      <a href="/posts/f2b71c26/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">简历</div>
+        <div class="article-nav-title">Fluter调试插件</div>
       </a>
     
   </nav>
