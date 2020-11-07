@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 
-<html lang="zh-CN" >
+<html lang="zh-CN">
 
 
 <head>
@@ -13,7 +13,7 @@
   <title>
      易
   </title>
-  <meta name="generator" content="hexo-theme-yilia-plus">
+  <meta name="generator" content="hexo-theme-ayer">
   
   <link rel="shortcut icon" href="/favicon.ico" />
   
@@ -21,23 +21,29 @@
 <link rel="stylesheet" href="/dist/main.css">
 
   
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
 <link rel="stylesheet" href="/css/custom.css">
 
   
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
   
   
 
   
 <script>
-	var _hmt = _hmt || [];
-	(function () {
-		var hm = document.createElement("script");
-		hm.src = "https://hm.baidu.com/hm.js?3889aa470001d8d536413f630f1f80b1";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(hm, s);
-	})();
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "https://hm.baidu.com/hm.js?3889aa470001d8d536413f630f1f80b1";
+	var s = document.getElementsByTagName("script")[0]; 
+	s.parentNode.insertBefore(hm, s);
+})();
 </script>
+
 
 </head>
 
@@ -45,10 +51,12 @@
 
 <body>
   <div id="app">
+    
+      
     <main class="content on">
       
 <section class="cover">
-  
+    
   <div class="cover-frame">
     <div class="bg-box">
       <img src="/images/cover2.jpg" alt="image frame" />
@@ -74,16 +82,93 @@
 
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
 
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['人生苦短 缘来不易', '说其易 做其难', '心常易 易常心 心易常了常易心'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
 <div id="main">
   <section class="outer">
+  
   <article class="articles">
     
     
     
     
-    <article id="post-Flutter外接纹理小结" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
+    <article
+  id="post-西安一月记"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/posts/7dd4a1b1/"
+    >西安一月记</a> 
+</h2>
+ 
 
+    </header>
+     
+    <div class="article-meta">
+      <a href="/posts/7dd4a1b1/" class="article-date">
+  <time datetime="2020-11-07T12:00:00.000Z" itemprop="datePublished">2020-11-07</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>不知不觉来西安已经一个月了，一个人来到一个陌生又熟悉的地方开始生活。</p>
+<p>熟悉是因为他的名字西安，作为一个中国人不可能不知道的地名，它承载了无数的历史和传奇。</p>
+<p>熟悉是因为他的的位置，作为家乡省会无数次路过这里去往远方，它是我外出打工的必经之地。</p>
+<p>熟悉是因为生活在这里的人，不管是亲人还是朋友，不管是小学、初中、高中还是大学的同学都有在这里落地生根。</p> 
+      <a class="article-more-link" href="/posts/7dd4a1b1/"
+        >阅读更多</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E6%83%B3/" rel="tag">随想</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+   
+</article>
+
+    
+    <article
+  id="post-Flutter外接纹理小结"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -95,62 +180,47 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/c19e8797/" class="article-date">
   <time datetime="2020-11-06T16:00:00.000Z" itemprop="datePublished">2020-11-07</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>最近使用 Flutter 对接腾讯云的实时音视频功能（TRTC）时使用到了外接纹理来渲染远端视频到 Flutter 视图上。</p>
-<p>从首次听说到完成功能翻阅了很多资料。看了咸鱼技术的<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903662548942855">万万没想到——flutter 这样外接纹理</a>更是云里雾里，后来在评论区才找到了正确姿势。</p>
-      
-      <a class="article-more-link" href="/posts/c19e8797/">阅读更多...</a>
-      
-      
+       
+  <p>最近使用 Flutter 对接腾讯云的实时音视频功能（TRTC）时使用到了外接纹理来渲染远端视频到 Flutter 视图上。</p>
+<p>从首次听说到完成功能翻阅了很多资料。看了咸鱼技术的<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903662548942855">万万没想到——flutter 这样外接纹理</a>更是云里雾里，后来在评论区才找到了正确姿势。</p> 
+      <a class="article-more-link" href="/posts/c19e8797/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-给父亲的一封信" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-给父亲的一封信"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -162,61 +232,46 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/51e642d4/" class="article-date">
   <time datetime="2020-11-01T09:07:59.924Z" itemprop="datePublished">2020-11-01</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      请输入密码查看.
-      
-      <a class="article-more-link" href="/posts/51e642d4/">阅读更多...</a>
-      
-      
+       
+  请输入密码查看. 
+      <a class="article-more-link" href="/posts/51e642d4/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E8%AE%B0/" rel="tag">日记</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-Fluter调试插件" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-Fluter调试插件"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -228,128 +283,98 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/f2b71c26/" class="article-date">
   <time datetime="2020-10-27T01:50:19.012Z" itemprop="datePublished">2020-10-27</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>目前Flutter社区正处在一个蓬勃发展的阶段，<a target="_blank" rel="noopener" href="https://pub.dev/">pub.dev</a>上也提供了数不清的插件供大家使用。但是很多时候由于各种原因别人的插件可能会<code>没有我们想要的功能</code>，更严重的有的还会出现一些<code>致命性Bug</code>。</p>
-<p>这个时候就需要我们自己动手添加自己想要的功能或来修复别人的Bug，随之而来的就是如何<code>调试插件</code>。</p>
-      
-      <a class="article-more-link" href="/posts/f2b71c26/">阅读更多...</a>
-      
-      
+       
+  <p>目前Flutter社区正处在一个蓬勃发展的阶段，<a target="_blank" rel="noopener" href="https://pub.dev/">pub.dev</a>上也提供了数不清的插件供大家使用。但是很多时候由于各种原因别人的插件可能会<code>没有我们想要的功能</code>，更严重的有的还会出现一些<code>致命性Bug</code>。</p>
+<p>这个时候就需要我们自己动手添加自己想要的功能或来修复别人的Bug，随之而来的就是如何<code>调试插件</code>。</p> 
+      <a class="article-more-link" href="/posts/f2b71c26/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag">插件</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-简历" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-简历"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/posts/963f9cce/"
+  <a class="article-title" href="/posts/about/"
     >简历</a> 
 </h2>
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
-      <a href="/posts/963f9cce/" class="article-date">
+      <a href="/posts/about/" class="article-date">
   <time datetime="2020-09-16T16:00:00.000Z" itemprop="datePublished">2020-09-17</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      请输入密码查看.
-      
-      <a class="article-more-link" href="/posts/963f9cce/">阅读更多...</a>
-      
-      
+       
+  请输入密码查看. 
+      <a class="article-more-link" href="/posts/about/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%97%A5%E8%AE%B0/" rel="tag">日记</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-Flutter浅尝" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-Flutter浅尝"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -361,63 +386,48 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/6cf65d2/" class="article-date">
   <time datetime="2020-04-16T03:46:32.902Z" itemprop="datePublished">2020-04-16</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>再次准备从事前端开发的工作使我想起一直看好的<a target="_blank" rel="noopener" href="https://flutter.dev/">Flutter</a>项目。</p>
+       
+  <p>再次准备从事前端开发的工作使我想起一直看好的<a target="_blank" rel="noopener" href="https://flutter.dev/">Flutter</a>项目。</p>
 <p>几个月前由于工作需要开发一个Android的Demo，由于之前一直从事IOS原生和混合开发，对Android原生不感冒，于是想学当时最新的开源跨平台项目Flutter。</p>
-<p>经过几周的折腾终于完成了<a target="_blank" rel="noopener" href="https://github.com/YyItRoad/pm">Picture Master</a>,一个简单的浏览图片的应用。当然你也可以从<a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=ink.boc.pm">Play</a>下载它。</p>
-      
-      <a class="article-more-link" href="/posts/6cf65d2/">阅读更多...</a>
-      
-      
+<p>经过几周的折腾终于完成了<a target="_blank" rel="noopener" href="https://github.com/YyItRoad/pm">Picture Master</a>,一个简单的浏览图片的应用。当然你也可以从<a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=ink.boc.pm">Play</a>下载它。</p> 
+      <a class="article-more-link" href="/posts/6cf65d2/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-如何克服开单焦虑" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-如何克服开单焦虑"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -429,61 +439,46 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/aa881a94/" class="article-date">
   <time datetime="2020-04-13T08:50:18.651Z" itemprop="datePublished">2020-04-13</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>交易焦虑，这是全球交易者们都会面临的问题，无论是资深或者小白，一次好的合约交易，必定是建立在实际行动者冷静的心态上。如何克服这种焦虑呢？我把克服焦虑系统化分为三步，心态稳重的交易者可以略过此章节。</p>
-      
-      <a class="article-more-link" href="/posts/aa881a94/">阅读更多...</a>
-      
-      
+       
+  <p>交易焦虑，这是全球交易者们都会面临的问题，无论是资深或者小白，一次好的合约交易，必定是建立在实际行动者冷静的心态上。如何克服这种焦虑呢？我把克服焦虑系统化分为三步，心态稳重的交易者可以略过此章节。</p> 
+      <a class="article-more-link" href="/posts/aa881a94/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%98%93/" rel="tag">交易</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-合约为什么是富人游戏" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-合约为什么是富人游戏"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -495,61 +490,46 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/5d17b830/" class="article-date">
   <time datetime="2020-04-13T08:46:29.248Z" itemprop="datePublished">2020-04-13</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>行军打仗，排兵布阵，从不是一蹴而就。即便是劫匪们打家劫舍，也不会和电视剧上那样倾巢而出，遇到平常商旅、平民百姓或许能争取利益最大化，但若遇到官军不敌，那便有全军覆没的危险。</p>
-      
-      <a class="article-more-link" href="/posts/5d17b830/">阅读更多...</a>
-      
-      
+       
+  <p>行军打仗，排兵布阵，从不是一蹴而就。即便是劫匪们打家劫舍，也不会和电视剧上那样倾巢而出，遇到平常商旅、平民百姓或许能争取利益最大化，但若遇到官军不敌，那便有全军覆没的危险。</p> 
+      <a class="article-more-link" href="/posts/5d17b830/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%98%93/" rel="tag">交易</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-如何建立交易自信" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-如何建立交易自信"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -561,62 +541,47 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/11b659d1/" class="article-date">
   <time datetime="2020-04-13T08:40:05.212Z" itemprop="datePublished">2020-04-13</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>一个没有自信的男人，是没有女人会喜欢的，一个没自信的交易者，即使机会放在你面前，也会轻易溜走，从而多数时候都与行情失之交臂。</p>
-<p>这里纠正一下什么叫交易自信，交易自信并非自傲，一个来自官方的超级利好摆在你面前，你依然坚持做空，那还不如直接给庄家送钱，交易自信是指不受任何非官方信息的影响，因为官方信息是有价值的，而其他外界信息都是混淆视听。</p>
-      
-      <a class="article-more-link" href="/posts/11b659d1/">阅读更多...</a>
-      
-      
+       
+  <p>一个没有自信的男人，是没有女人会喜欢的，一个没自信的交易者，即使机会放在你面前，也会轻易溜走，从而多数时候都与行情失之交臂。</p>
+<p>这里纠正一下什么叫交易自信，交易自信并非自傲，一个来自官方的超级利好摆在你面前，你依然坚持做空，那还不如直接给庄家送钱，交易自信是指不受任何非官方信息的影响，因为官方信息是有价值的，而其他外界信息都是混淆视听。</p> 
+      <a class="article-more-link" href="/posts/11b659d1/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A4%E6%98%93/" rel="tag">交易</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-随想" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
+    
+    <article
+  id="post-随想"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -628,163 +593,85 @@
  
 
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/posts/ff5cb36f/" class="article-date">
   <time datetime="2020-04-10T14:31:40.419Z" itemprop="datePublished">2020-04-10</time>
-</a>
-      
-      
-      
-      
+</a>    
     </div>
-    
-
-    
-
-    
+      
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>再次翻新简历已经是2020年了。</p>
+       
+  <p>再次翻新简历已经是2020年了。</p>
 <p>来无锡已经七年了，从当初的一无所有到今天的一无所有，留下的只是遍布这里的足迹和或多或少的回忆。</p>
-<p>这七年里我奋斗过，得到过，选择过，遗憾过，思考过，麻醉过。这些种种不由得让我思索起我全部生活的意义，有时感觉像一个钱的奴隶一次次的为了钱忙碌的像个旋转的陀螺。有时感觉自己是一个有头有脸的人物为了一点面子忘记了兜里那几个可怜的板子。更多的时候认为不可一世的自己可以摆脱掉平庸，到头来最傻的那个人却是自己。</p>
-      
-      <a class="article-more-link" href="/posts/ff5cb36f/">阅读更多...</a>
-      
-      
+<p>这七年里我奋斗过，得到过，选择过，遗憾过，思考过，麻醉过。这些种种不由得让我思索起我全部生活的意义，有时感觉像一个钱的奴隶一次次的为了钱忙碌的像个旋转的陀螺。有时感觉自己是一个有头有脸的人物为了一点面子忘记了兜里那几个可怜的板子。更多的时候认为不可一世的自己可以摆脱掉平庸，到头来最傻的那个人却是自己。</p> 
+      <a class="article-more-link" href="/posts/ff5cb36f/"
+        >阅读更多</a
+      >
+       
       <!-- reward -->
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
     <footer class="article-footer">
-      
-      
+       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AA%E4%BA%BA/" rel="tag">个人</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9A%8F%E6%83%B3/" rel="tag">随想</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-
-  
-
-  
-
+   
+   
 </article>
-    
-    <article id="post-hello-world" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
 
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/posts/4a17b156/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/posts/4a17b156/" class="article-date">
-  <time datetime="2020-04-09T10:08:51.614Z" itemprop="datePublished">2020-04-09</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-      <!-- reward -->
-      
-    </div>
-    
-    
-      <!-- copyright -->
-      
-    <footer class="article-footer">
-      
-      
-
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
     
   </article>
   
 
+  
+  <nav class="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+  </nav>
   
 </section>
 </div>
 
       <footer class="footer">
   <div class="outer">
-    <ul class="list-inline">
+    <ul>
       <li>
-        &copy;
+        Copyrights &copy;
         2020
-        Yy
+        <i class="ri-heart-fill heart_icon"></i> Yy
       </li>
+    </ul>
+    <ul>
       <li>
         
-        Powered by
         
         
-        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>
-    <ul class="list-inline">
+    <ul>
       <li>
         
       </li>
+    </ul>
+    <ul>
       
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
       <li>
         <!-- cnzz统计 -->
         
@@ -826,7 +713,7 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/posts/963f9cce">关于我</a>
+      <a class="nav-item-link" href="/posts/about">关于我</a>
     </li>
     
   </ul>
@@ -884,25 +771,7 @@
 
 <script src="/js/lazyload.min.js"></script>
 
-
-<script>
-  try {
-    var typed = new Typed("#subtitle", {
-      strings: ['人生苦短 缘来不易', '说其易 做其难', '心常易 易常心 心易常了常易心'],
-      startDelay: 0,
-      typeSpeed: 200,
-      loop: true,
-      backSpeed: 100,
-      showCursor: true
-    });
-  } catch (err) {
-  }
-
-</script>
-
-
-
-
+<!-- Tocbot -->
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
@@ -910,7 +779,7 @@
 
 <script src="/dist/main.js"></script>
 
-
+<!-- ImageViewer -->
 
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1019,15 +888,84 @@
     viewer_init()
 </script>
 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
 
 
-
-
-<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
-
-  
 <script src="/js/clickLove.js"></script>
 
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
 
 
     
