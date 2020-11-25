@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://yangyang.fun/posts/7f0192d8/</loc>
+    <lastmod>2020-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://yangyang.fun/posts/about/</loc>
+    <lastmod>2020-11-25</lastmod>
+  </url>
+  <url>
     <loc>https://yangyang.fun/posts/d2f1bdf9/</loc>
     <lastmod>2020-11-22</lastmod>
   </url>
@@ -14,10 +22,6 @@
   </url>
   <url>
     <loc>https://yangyang.fun/posts/7dd4a1b1/</loc>
-    <lastmod>2020-11-07</lastmod>
-  </url>
-  <url>
-    <loc>https://yangyang.fun/posts/about/</loc>
     <lastmod>2020-11-07</lastmod>
   </url>
   <url>
