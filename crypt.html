@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>加解密工具</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+</head>
+<script type="text/javascript">
+  function changeType (t) {
+    document.getElementById("type").textContent = t;
+  }
+  function encrypt () {
+    var type = document.getElementById("type").textContent;
+    var raw = document.getElementById("content").value;
+    var key = document.getElementById("pwd").value;
+    var value = CryptoJS.AES.encrypt(raw, key);
+    if (type == "Base64") {
+      value = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(raw));
+    }
+    document.getElementById("result").value = value;
+  }
+  function decrypt () {
+    var type = document.getElementById("type").textContent;
+    var raw = document.getElementById("content").value;
+    var key = document.getElementById("pwd").value;
+    var value = CryptoJS.AES.decrypt(raw, key).toString(CryptoJS.enc.Utf8)
+    if (type == "Base64") {
+      value = CryptoJS.enc.Utf8.stringify(CryptoJS.enc.Base64.parse(raw));
+    }
+    document.getElementById("result").value = value;
+  }
+  function empty () {
+    document.getElementById("content").value = "";
+    document.getElementById("result").value = "";
+    document.getElementById("content").select();
+  }
+</script>
+
+<body>
+  <table width="100%" border="0" align="center">
+    <tbody>
+      <tr align="center">
+        <td height="25">
+          <textarea id="content" rows="3" style="width: 100%" placeholder="请输入需要对称加密的字符串"></textarea>
+        </td>
+      </tr>
+      <tr align="center">
+        <td height="25">&nbsp;当前加密算法<i id="type">AES</i>
+          <button type="button" onclick="changeType('AES')" class="btn btn-default">AES</button>
+          <button type="button" onclick="changeType('Base64')" class="btn">Base64</button>
+        </td>
+      </tr>
+      <tr align="center">
+        <td height="25" align="center">
+          <input type="password" class="input_duan" id="pwd" placeholder="请输入秘钥" />
+          <button onclick="encrypt()" class="btn btn-primary">加密</button>
+          <button onclick="decrypt()" class="btn btn-primary">解密</button>
+          <input class="btn btn-danger" onclick="empty(); " type="reset" value="清空" />
+        </td>
+      </tr>
+      <tr align="center">
+        <td height="25" align="center">
+          <textarea id="result" rows="3" style="width: 100%" placeholder="加密或解密后的密文"></textarea>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
