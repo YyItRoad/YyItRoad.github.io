@@ -1,4 +1,21 @@
-<!DOCTYPE html>
+const fs = require('fs');
+
+let data = [];
+try {
+  data = JSON.parse(fs.readFileSync('./src/data/navigation.json', 'utf8'));
+} catch (e) {
+  console.log('No existing data, using empty array');
+}
+
+const links = data.map(item => `
+  <div class="link-card">
+    <a href="${item.link}" target="_blank" class="link-title">${item.title}</a>
+    <p class="link-desc">${item.description || ''}</p>
+    <span class="link-type">${item.type || '链接'}</span>
+  </div>
+`).join('');
+
+const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -25,8 +42,12 @@
 <body>
   <div class="container">
     <h1>🧭 导航</h1>
-    <div class="empty">暂无导航链接</div>
+    ${links || '<div class="empty">暂无导航链接</div>'}
     <div class="back"><a href="/">← 返回主页</a></div>
   </div>
 </body>
-</html>
+</html>`;
+
+fs.writeFileSync('./nav.html', html);
+console.log('✅ Build complete! Generated nav.html');
+console.log(`📊 Total links: ${data.length}`);
