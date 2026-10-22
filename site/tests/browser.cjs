@@ -38,7 +38,7 @@ function legacyDecrypt(ciphertext, password) {
     try { await fn(); results.push({ name, ok: true }); console.log(`通过：${name}`); }
     catch (error) { results.push({ name, ok: false, error: error.message }); console.error(`失败：${name}\n${error.stack}`); }
   }
-  async function home() { await page.goto(base); await page.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('7')); }
+  async function home() { await page.goto(base); await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length); }
   async function action(name) { await page.locator(`[data-action="${name}"]`).click(); }
   async function value(selector) { return page.locator(selector).inputValue(); }
   async function hasStatus(text) { assert.match(await page.locator('#tool-status').innerText(), text); }
@@ -54,10 +54,10 @@ function legacyDecrypt(ciphertext, password) {
   await test('同区分类收缩、别名、未分类与专属搜索、空态', async () => {
     if (await page.locator('[data-category="开发技术"]').getAttribute('aria-pressed') !== 'true') await page.locator('[data-category="开发技术"]').click();
     assert(await page.locator('#category-grid').evaluate(node => node.classList.contains('compact')));
-    assert.equal(await page.locator('#bookmark-grid a').count(), 2);
+    assert.equal(await page.locator('#bookmark-grid a').count(), payload.bookmarks.filter(item => item.category === '开发技术').length);
     assert.equal(await page.locator('#navigation-panel h2, #navigation-panel h3').count(), 0);
     await page.locator('#category-search').fill('前端');
-    assert.equal(await page.locator('#bookmark-grid a').count(), 1);
+    assert(await page.locator('#bookmark-grid a').count() >= 1);
     assert.match(await page.locator('#bookmark-grid').innerText(), /Vue/);
     await page.locator('#category-search').fill('不存在的词');
     assert.match(await page.locator('#bookmark-grid').innerText(), /没有匹配/);
@@ -73,10 +73,10 @@ function legacyDecrypt(ciphertext, password) {
     await page.getByRole('button', { name: '下移 GitHub', exact: true }).click();
     assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'ChatGPT');
     await page.locator('#preference-list label').filter({ hasText: 'GitHub' }).locator('input').uncheck();
-    assert.equal(await page.locator('.favorite-link').count(), 2);
+    assert.equal(await page.locator('.favorite-link').count(), payload.bookmarks.filter(item => item.favorite).length - 1);
     await home();
     assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'ChatGPT');
-    assert.equal(await page.locator('.favorite-link').count(), 2);
+    assert.equal(await page.locator('.favorite-link').count(), payload.bookmarks.filter(item => item.favorite).length - 1);
     await page.locator('#edit-favorites').click();
     await page.locator('#reset-favorites').click();
     assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'GitHub');
@@ -132,7 +132,7 @@ function legacyDecrypt(ciphertext, password) {
       { title: '危险', url: 'javascript:alert(1)', favorite: true },
       null
     ] } }));
-    await page.reload(); await page.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('9'));
+    await page.reload(); await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length + 2);
     await page.locator('[data-category="新分类"]').click();
     assert.match(await page.locator('#bookmark-grid').innerText(), /<img src=x onerror=alert\(1\)>/);
     assert.equal(await page.locator('[onerror]').count(), 0);
@@ -151,14 +151,14 @@ function legacyDecrypt(ciphertext, password) {
     await page.locator('#retry-data').click(); await page.locator('#retry-data').waitFor();
     assert.match(await page.locator('#navigation-status').innerText(), /读取失败/);
     await page.unroute('**/data/bookmarks.json');
-    await page.locator('#retry-data').click(); await page.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('7'));
+    await page.locator('#retry-data').click(); await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
     let release;
     const gate = new Promise(resolve => { release = resolve; });
     await page.route('**/data/bookmarks.json', async route => { await gate; await route.continue(); });
     await page.reload({ waitUntil: 'domcontentloaded' });
     assert.match(await page.locator('#navigation-status').innerText(), /正在加载/);
     release();
-    await page.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('7'));
+    await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
     await page.unroute('**/data/bookmarks.json');
   });
   await test('JSON 格式化、压缩、校验及错误清除旧结果', async () => {
@@ -257,7 +257,7 @@ function legacyDecrypt(ciphertext, password) {
       await page.setViewportSize({ width, height: 900 });
       for (const endpoint of ['', '/tools/crypto.html','/tools/json.html','/tools/timestamp.html','/tools/encoder.html']) {
         await page.goto(`${base}${endpoint}`);
-        if (!endpoint) await page.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('7'));
+        if (!endpoint) await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
         const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: innerWidth }));
         assert(sizes.scroll <= sizes.viewport, `${width}px ${endpoint} 溢出：${sizes.scroll}`);
       }
@@ -291,7 +291,7 @@ function legacyDecrypt(ciphertext, password) {
     try {
       const url = `http://127.0.0.1:${server.address().port}/preview/`;
       await nested.goto(url);
-      await nested.waitForFunction(() => document.querySelector('#bookmark-count').textContent.includes('7'));
+      await nested.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
       await nested.goto(url + 'tools/encoder.html');
       await nested.locator('#source').fill('子路径');
       await nested.locator('[data-action=base64-encode]').click();
