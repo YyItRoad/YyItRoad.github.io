@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T11:46:21.933Z",
+  "generatedAt": "2026-10-22T11:53:36.609Z",
   "projects": [
     {
       "id": "1",
       "title": "QuantDinger",
       "description": "围绕行情分析、策略与交易研究，探索更有条理的市场工作台。",
-      "icon": "quantdinger",
+      "icon": "quant",
       "tags": [
         "量化",
         "交易",
@@ -22,7 +22,7 @@
       "id": "2",
       "title": "孩子的日记",
       "description": "把真实日常整理成故事，探索用动画留下成长中的小小瞬间。",
-      "icon": "daily",
+      "icon": "diary",
       "tags": [
         "生活",
         "动画",
@@ -38,7 +38,7 @@
       "id": "3",
       "title": "让流程自己运转",
       "description": "用 n8n 连接信息与工具，探索把重复步骤串成顺手的工作流。",
-      "icon": "n8n",
+      "icon": "automation",
       "tags": [
         "n8n",
         "自动化",
