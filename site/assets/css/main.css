@@ -1218,3 +1218,15 @@ mark {
 
 .navigation-status:empty { display:none; }
 :root[data-theme=dark] .favicon[data-brand="github.com"] { filter:invert(1); }
+
+/* 透明素材直接呈现，不再叠加原 SVG 图标底板。 */
+.asset-icon { display:block; width:100%; height:100%; object-fit:contain; }
+.tool-card .icon.has-image-icon { width:48px; height:48px; background:none; box-shadow:none; border-radius:0; }
+.tool-card { grid-template-columns:48px minmax(0,1fr); }
+.project-visual.has-image-icon { width:56px; height:56px; background:none; box-shadow:none; border-radius:0; }
+.search-result-icon.has-image-icon { background:none; box-shadow:none; }
+@media(max-width:640px) {
+  .tool-card { grid-template-columns:44px minmax(0,1fr); column-gap:9px; }
+  .tool-card .icon.has-image-icon { width:44px; height:44px; }
+  .project-visual.has-image-icon { width:52px; height:52px; }
+}

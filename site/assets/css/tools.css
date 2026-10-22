@@ -154,7 +154,7 @@
 }
 .time-fields {
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:20px
 }
 .time-fields select {
@@ -195,7 +195,7 @@
     border-radius:18px
   }
   .time-fields {
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
     gap:0
   }
   .actions {
@@ -212,3 +212,8 @@
     font-size:16px
   }
 }
+
+.tool-heading > div { min-width:0; }
+.tool-heading .icon.has-image-icon { width:64px; height:64px; background:none; box-shadow:none; border-radius:0; }
+.asset-icon { display:block; width:100%; height:100%; object-fit:contain; }
+@media(max-width:640px) { .tool-heading .icon.has-image-icon { width:52px; height:52px; } }

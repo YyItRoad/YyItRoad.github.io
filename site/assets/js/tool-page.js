@@ -1,5 +1,7 @@
+import { setAssetIcon } from './asset-icons.js';
 import { encodeBase64, decodeBase64, timestampToDate, parseDateInput, describeDate, toDateInput } from './tool-core.js';
 const $ = selector => document.querySelector(selector);
+for (const node of document.querySelectorAll('[data-asset-icon]')) setAssetIcon(node, node.dataset.assetIcon);
 const kind = document.body.dataset.tool, result = $('#result'), status = $('#tool-status');
 function message(text, error = false) { status.textContent = text; status.dataset.error = String(error); }
 const nonempty = text => { if (!text.trim()) throw new Error('请先输入需要处理的内容。'); return text; };

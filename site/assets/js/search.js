@@ -1,6 +1,6 @@
 import { matches, tools, projects } from './data.js';
 import { $, el, externalLink, favicon } from './dom.js';
-import { iconSVG } from './icons.js';
+import { setAssetIcon } from './asset-icons.js';
 function highlighted(text, query) {
   const fragment = document.createDocumentFragment();
   let start = 0, index;
@@ -58,7 +58,8 @@ export function createSearch(favorites) {
         const details = el('small'); details.append(highlighted([item.description, ...(item.tags || [])].join(' · '), query));
         const graphic = el('span', 'search-result-icon');
         graphic.setAttribute('aria-hidden', 'true');
-        graphic.append(item.external ? favicon(item) : iconSVG(label === '工具' ? item.id : 'projects'));
+        if (label === '工具' || label === '项目') setAssetIcon(graphic, item.id);
+        else graphic.append(favicon(item));
         const text = el('span', 'search-result-text');
         text.append(name, details);
         option.append(graphic, text);

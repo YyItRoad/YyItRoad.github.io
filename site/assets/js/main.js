@@ -1,12 +1,13 @@
 import { loadBookmarks, tools, projects } from './data.js';
 import { $, el, externalLink } from './dom.js';
 import { createNavigation, createFavorites } from './navigation.js';
-import { createSearch } from './search.js';
+import { createSearch } from './search.js?v=icons-v2';
 import { iconSVG } from './icons.js';
+import { setAssetIcon } from './asset-icons.js';
 for (const node of document.querySelectorAll('[data-icon]')) node.replaceChildren(iconSVG(node.dataset.icon));
 for (const tool of tools) {
   const card = el('a', 'tool-card'); card.href = tool.url;
-  const icon = el('span', 'icon'); icon.append(iconSVG(tool.id)); icon.style.background = tool.color; icon.setAttribute('aria-hidden', 'true');
+  const icon = el('span', 'icon'); setAssetIcon(icon, tool.id); icon.setAttribute('aria-hidden', 'true');
   card.append(icon, el('span', 'card-arrow', '↗'), el('h3', '', tool.title), el('p', '', tool.description));
   $('#tool-grid').append(card);
 }
@@ -14,7 +15,7 @@ const track = $('#project-track');
 for (const project of projects) {
   const card = el('article', 'project-card'); card.id = `project-${project.id}`; card.tabIndex = -1;
   const visual = el('div', `project-visual ${project.style}`); visual.setAttribute('aria-hidden', 'true');
-  visual.append(iconSVG(project.id));
+  setAssetIcon(visual, project.id);
   const body = el('div', 'project-body');
   const description = el('p', '', project.description); description.title = project.description;
   body.append(el('h3', '', project.title), description);
