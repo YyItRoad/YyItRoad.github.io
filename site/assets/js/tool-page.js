@@ -1,6 +1,8 @@
+import { iconSVG } from './icons.js';
 import { setAssetIcon } from './asset-icons.js?v=section-icons-v2';
 import { encodeBase64, decodeBase64, timestampToDate, parseDateInput, describeDate, toDateInput } from './tool-core.js';
 const $ = selector => document.querySelector(selector);
+for (const node of document.querySelectorAll('[data-icon]')) node.replaceChildren(iconSVG(node.dataset.icon));
 for (const node of document.querySelectorAll('[data-asset-icon]')) setAssetIcon(node, node.dataset.assetIcon);
 const kind = document.body.dataset.tool, result = $('#result'), status = $('#tool-status');
 function message(text, error = false) { status.textContent = text; status.dataset.error = String(error); }
