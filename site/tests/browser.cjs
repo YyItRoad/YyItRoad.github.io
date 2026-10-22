@@ -6,6 +6,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const base = process.env.BASE_URL || 'http://127.0.0.1:4173';
 const payload = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/bookmarks.json'), 'utf8'));
+const projectPayload = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/projects.json'), 'utf8'));
+const visibleProjects = projectPayload.projects.filter(item => item.visible !== false).sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0));
+const categoryName = value => (value || '未分类').replace(/\s+/g, '');
+const favoriteItems = payload.bookmarks.filter(item => item.favorite === true).sort((a, b) => (Number(a.sort_order) || 0) - (Number(b.sort_order) || 0));
 const shots = path.join(__dirname, '../docs/screenshots');
 fs.mkdirSync(shots, { recursive: true });
 const results = [], errors = [];
@@ -38,7 +42,7 @@ function legacyDecrypt(ciphertext, password) {
     try { await fn(); results.push({ name, ok: true }); console.log(`通过：${name}`); }
     catch (error) { results.push({ name, ok: false, error: error.message }); console.error(`失败：${name}\n${error.stack}`); }
   }
-  async function home() { await page.goto(base); await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length); }
+  async function home() { await page.goto(base); await page.waitForFunction(() => !document.querySelector('#projects-status').textContent.includes('正在加载')); await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length); }
   async function action(name) { await page.locator(`[data-action="${name}"]`).click(); }
   async function value(selector) { return page.locator(selector).inputValue(); }
   async function hasStatus(text) { assert.match(await page.locator('#tool-status').innerText(), text); }
@@ -47,7 +51,7 @@ function legacyDecrypt(ciphertext, password) {
     assert.deepEqual(await page.locator('main > section').evaluateAll(nodes => nodes.map(node => node.id)), ['home','favorites','tools','navigation','projects','about']);
     assert.equal(await page.locator('.favorite-link').count(), payload.bookmarks.filter(item => item.favorite).length);
     assert.equal(await page.locator('.tool-card').count(), 4);
-    assert.equal(await page.locator('.category').count(), 7);
+    assert.equal(await page.locator('.category').count(), new Set(['开发技术','AI资源','交易研究','内容创作','生活兴趣','效率办公', ...payload.bookmarks.map(item => categoryName(item.category))]).size);
     assert.equal(await page.locator('.site-header img').count(), 0);
     assert.deepEqual(await page.locator('.site-header nav a').allTextContents(), ['首页','工具','导航','项目','关于']);
     assert(await page.locator('a[target="_blank"]').evaluateAll(nodes => nodes.every(node => node.rel.includes('noopener') && node.rel.includes('noreferrer'))));
@@ -55,7 +59,7 @@ function legacyDecrypt(ciphertext, password) {
   await test('同区分类收缩、别名、未分类与专属搜索、空态', async () => {
     if (await page.locator('[data-category="开发技术"]').getAttribute('aria-pressed') !== 'true') await page.locator('[data-category="开发技术"]').click();
     assert(await page.locator('#category-grid').evaluate(node => node.classList.contains('compact')));
-    assert.equal(await page.locator('#bookmark-grid a').count(), payload.bookmarks.filter(item => item.category === '开发技术').length);
+    assert.equal(await page.locator('#bookmark-grid a').count(), payload.bookmarks.filter(item => categoryName(item.category) === '开发技术').length);
     assert.equal(await page.locator('#navigation-panel h2, #navigation-panel h3').count(), 0);
     await page.locator('#category-search').fill('前端');
     assert(await page.locator('#bookmark-grid a').count() >= 1);
@@ -65,28 +69,29 @@ function legacyDecrypt(ciphertext, password) {
     await page.locator('[data-category="AI资源"]').click();
     assert.match(await page.locator('#bookmark-grid').innerText(), /ChatGPT/);
     await page.locator('[data-category="未分类"]').click();
-    assert.equal(await page.locator('#bookmark-grid a').count(), 3);
+    assert.equal(await page.locator('#bookmark-grid a').count(), payload.bookmarks.filter(item => categoryName(item.category) === '未分类').length);
     await page.locator('#collapse-navigation').click();
     assert(await page.locator('#navigation-panel').isHidden());
   });
   await test('收藏隐藏、顺序调整、刷新持久化与恢复默认', async () => {
     await page.locator('#edit-favorites').click();
-    await page.getByRole('button', { name: '下移 GitHub', exact: true }).click();
-    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'ChatGPT');
-    await page.locator('#preference-list label').filter({ hasText: 'GitHub' }).locator('input').uncheck();
+    await page.getByRole('button', { name: `下移 ${favoriteItems[0].title}`, exact: true }).click();
+    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), favoriteItems[1].title);
+    await page.locator('#preference-list label').filter({ hasText: favoriteItems[0].title }).locator('input').uncheck();
     assert.equal(await page.locator('.favorite-link').count(), payload.bookmarks.filter(item => item.favorite).length - 1);
     await home();
-    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'ChatGPT');
+    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), favoriteItems[1].title);
     assert.equal(await page.locator('.favorite-link').count(), payload.bookmarks.filter(item => item.favorite).length - 1);
     await page.locator('#edit-favorites').click();
     await page.locator('#reset-favorites').click();
-    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), 'GitHub');
+    assert.equal(await page.locator('.favorite-link > span:last-child').first().innerText(), favoriteItems[0].title);
     await page.locator('#edit-favorites').click();
   });
   await test('全局分组、中文和标签、高亮、上下回车 Escape 及快捷键', async () => {
     const search = page.locator('#global-search');
     await search.fill('GitHub');
-    assert.equal(await page.locator('#global-results [role=group]').count(), 2);
+    assert(await page.locator('#global-results [role=group][aria-label="常用入口"]').count() === 1);
+    assert(await page.locator('#global-results [role=group][aria-label="网站导航"]').count() === 1);
     assert(await page.locator('#global-results mark').count() >= 2);
     const unobstructed = await page.locator('#global-results [role=option]').first().evaluate(node => { const rect = node.getBoundingClientRect(); return node.contains(document.elementFromPoint(rect.x + 10, rect.y + rect.height / 2)); });
     assert(unobstructed, '搜索浮层被其他板块遮挡');
@@ -161,6 +166,113 @@ function legacyDecrypt(ciphertext, password) {
     release();
     await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
     await page.unroute('**/data/bookmarks.json');
+  });
+  await test('项目慢速加载不阻塞书签，完成后立即更新已打开搜索', async () => {
+    let release;
+    const gate = new Promise(resolve => { release = resolve; });
+    await page.route('**/data/projects.json', async route => { await gate; await route.fulfill({json:{projects:[{title:'延迟项目', tags:['异步检索']}]}}); });
+    try {
+      await page.goto(base, {waitUntil:'domcontentloaded'});
+      await page.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
+      assert.match(await page.locator('#projects-status').innerText(), /正在加载/);
+      await page.locator('#global-search').fill('异步检索');
+      assert.match(await page.locator('#global-results').innerText(), /没有找到/);
+      release();
+      await page.waitForFunction(() => document.querySelector('#global-results').textContent.includes('延迟项目'));
+      assert.equal(await page.locator('.project-card').count(), 1);
+    } finally { release(); await page.unroute('**/data/projects.json'); }
+  });
+  await test('项目真实 JSON、排序、缺失文件默认图标、GitHub 回退与搜索', async () => {
+    await home();
+    assert.deepEqual(await page.locator('.project-body h3').allTextContents(), visibleProjects.map(item => item.title));
+    await page.waitForFunction(() => [...document.querySelectorAll('.project-visual')].every(node => node.querySelector('svg') || node.querySelector('img')?.naturalWidth));
+    const quant = page.locator('.project-card').filter({ hasText: 'QuantDinger' });
+    assert.equal(await quant.locator('.project-link').getAttribute('href'), visibleProjects.find(item => item.title === 'QuantDinger').github_url);
+  });
+  await test('项目文件名安全校验及所有约定后缀', async () => {
+    const result = await page.evaluate(async () => {
+      const { projectIconURL } = await import(new URL('assets/js/data.js', location.href));
+      const valid = ['quant','diary.svg','test_1-2.webp','a.png','b.jpg','c.jpeg'];
+      const invalid = ['',null,{},'../a.svg','a/b.svg','a\\b.svg','https://evil.test/a.svg','//evil.test/a.svg','data:image/svg+xml,x','%2e%2e%2fa.svg','a.svg?x=1','a.svg#x','<img src=x onerror=alert(1)>','a.SVG','a.gif','a.svg\n',' a'];
+      return { valid: valid.map(value => projectIconURL(value)), invalid: invalid.map(value => projectIconURL(value)) };
+    });
+    assert(result.valid.every(url => url.startsWith(`${base}/assets/images/projects/`)));
+    assert(result.valid[0].endsWith('/quant.svg'));
+    assert(result.invalid.every(url => url === null));
+  });
+  await test('新增项目、SVG/WebP 成功、恶意值与缺失图标、链接和状态安全渲染', async () => {
+    const malicious = '<img src=x onerror=window.projectXSS=1>';
+    const items = [
+      { id:'new', title:'后台新增项目', description:'新增说明', tags:['独立标签'], status:'开发中', icon:'test.svg', url:'https://example.org', github_url:'https://github.com/example/demo', sort_order:-10 },
+      { id:'webp', title:'WebP 项目', icon:'test.webp', sort_order:-5 },
+      { id:'missing', title:'缺失图标', icon:'missing.svg', sort_order:1 },
+      { id:'hidden', title:'不应被搜索的项目', visible:false },
+      ...['../escape.svg','https://evil.test/icon.svg','a.svg" onerror="alert(1)','',null].map((icon,index) => ({ id:'bad'+index, title:malicious, description:malicious, tags:[malicious], status:malicious, icon, url:'javascript:alert(1)', github_url:'data:text/html,x', sort_order:2+index })),
+      { id:'new', title:'重复 ID 无链接项目', sort_order:20 },
+      { id:'bad id#', title:'缺省字段项目' }, null
+    ];
+    await page.route('**/data/projects.json', route => route.fulfill({ json:{ projects:items } }));
+    const iconRequests = [];
+    await page.route('**/assets/images/projects/**', route => {
+      const url = route.request().url(); iconRequests.push(url);
+      if (url.endsWith('/test.svg')) return route.fulfill({ contentType:'image/svg+xml', body:'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect width="24" height="24" fill="blue"/></svg>' });
+      if (url.endsWith('/test.webp')) return route.fulfill({ contentType:'image/webp', body:fs.readFileSync(path.join(__dirname, '../assets/images/about-explorer-v1.webp')) });
+      return route.fulfill({ status:404, body:'missing' });
+    });
+    try {
+      await home();
+      assert.equal(await page.locator('.project-card').count(), items.filter(item => item && item.visible !== false).length);
+      assert.equal(await page.locator('.project-body h3').first().innerText(), '后台新增项目');
+      await page.waitForFunction(() => document.querySelectorAll('.project-icon').length === 2);
+      assert(await page.locator('.project-icon').evaluateAll(nodes => nodes.every(node => node.naturalWidth > 0)));
+      assert.equal(await page.locator('.project-visual svg').count(), items.filter(item => item && item.visible !== false).length - 2);
+      assert(iconRequests.every(url => /\/(?:test\.svg|test\.webp|missing\.svg)$/.test(url)), iconRequests.join(', '));
+      const card = page.locator('.project-card').first();
+      assert.match(await card.innerText(), /新增说明|独立标签/);
+      assert.equal(await card.locator('.project-status').innerText(), '开发中');
+      assert.equal(await card.locator('.project-link').getAttribute('href'), 'https://example.org/');
+      assert.equal(await card.locator('.project-github').getAttribute('href'), 'https://github.com/example/demo');
+      assert.equal(await page.locator('[onerror], a[href^="javascript:"], a[href^="data:"]').count(), 0);
+      assert.equal(await page.evaluate(() => window.projectXSS), undefined);
+      const ids = await page.locator('.project-card').evaluateAll(nodes => nodes.map(node => node.id));
+      assert.equal(new Set(ids).size, ids.length);
+      const search = page.locator('#global-search');
+      await search.fill('独立标签');
+      assert.match(await page.locator('#global-results').innerText(), /后台新增项目/);
+      await search.fill('不应被搜索');
+      assert.match(await page.locator('#global-results').innerText(), /没有找到/);
+      await search.fill('重复 ID 无链接'); await search.press('Enter');
+      assert.match(await page.evaluate(() => document.activeElement.textContent), /重复 ID 无链接/);
+      await page.setViewportSize({ width:375, height:900 });
+      await page.locator('#projects').scrollIntoViewIfNeeded();
+      await page.screenshot({ path:path.join(shots, 'projects-mobile.png') });
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    } finally {
+      await page.unroute('**/data/projects.json'); await page.unroute('**/assets/images/projects/**');
+      await page.setViewportSize({ width:1440, height:1000 });
+    }
+  });
+  await test('项目 HTTP/JSON/格式失败备用提示、重试更新已打开搜索与空列表', async () => {
+    for (const response of [{status:503,body:'unavailable'}, {body:'{broken',contentType:'application/json'}, {json:{wrong:[]}}]) {
+      await page.route('**/data/projects.json', route => route.fulfill(response));
+      await home();
+      assert.match(await page.locator('#projects-status').innerText(), /内置备用列表/);
+      assert(await page.locator('.project-card').count() > 0);
+      await page.unroute('**/data/projects.json');
+    }
+    await page.locator('#global-search').fill('重试新增');
+    assert.match(await page.locator('#global-results').innerText(), /没有找到/);
+    await page.route('**/data/projects.json', route => route.fulfill({json:{projects:[{title:'重试新增'}]}}));
+    await page.evaluate(() => document.querySelector('#retry-projects').click());
+    await page.waitForFunction(() => document.querySelector('#global-results').textContent.includes('重试新增'));
+    assert.equal(await page.locator('.project-card').count(), 1);
+    await page.unroute('**/data/projects.json');
+    await page.route('**/data/projects.json', route => route.fulfill({json:{projects:[]}}));
+    await home();
+    assert.equal(await page.locator('.project-card').count(), 0);
+    assert.match(await page.locator('#projects-status').innerText(), /还没有公开项目/);
+    assert(await page.locator('#projects-next').isDisabled());
+    await page.unroute('**/data/projects.json');
   });
   await test('JSON 格式化、压缩、校验及错误清除旧结果', async () => {
     await page.goto(`${base}/tools/json.html`);
@@ -291,7 +403,10 @@ function legacyDecrypt(ciphertext, password) {
     const nested = await context.newPage();
     try {
       const url = `http://127.0.0.1:${server.address().port}/preview/`;
-      await nested.goto(url);
+      const projectRequest = nested.waitForRequest(url + 'data/projects.json');
+      await nested.goto(url); await projectRequest;
+      await nested.waitForFunction(() => !document.querySelector('#projects-status').textContent.includes('正在加载'));
+      assert.deepEqual(await nested.locator('.project-body h3').allTextContents(), visibleProjects.map(item => item.title));
       await nested.waitForFunction(expected => document.querySelector('#bookmark-count').textContent.includes(String(expected)), payload.bookmarks.length);
       await nested.goto(url + 'tools/encoder.html');
       await nested.locator('#source').fill('子路径');
@@ -316,6 +431,6 @@ function legacyDecrypt(ciphertext, password) {
   await browser.close();
   const success = results.filter(item => item.ok).length;
   console.log(`\n${success}/${results.length} 组测试通过`);
-  fs.writeFileSync(path.join(__dirname, '../docs/自动化测试结果.md'), `# 自动化测试结果\n\n运行日期：2026-10-22\n\n环境：Chromium，Asia/Shanghai 时区，静态 HTTP 服务。\n\n结果：${success}/${results.length} 组通过。\n\n` + results.map(item => `- [${item.ok ? 'x' : ' '}] ${item.name}${item.error ? `：${item.error}` : ''}`).join('\n') + '\n');
+  fs.writeFileSync(path.join(__dirname, '../docs/自动化测试结果.md'), `# 自动化测试结果\n\n运行日期：${new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' })}\n\n环境：Playwright + ${browser.browserType().name()} ${browser.version()}，Asia/Shanghai 时区，静态 HTTP 服务。\n\n基线：${payload.bookmarks.length} 条书签、${projectPayload.projects.length} 个项目；视口 320 / 375 / 768 / 1440。\n\n启动：\`python3 -m http.server 4175 --bind 127.0.0.1 --directory site\`；测试：\`BASE_URL=http://127.0.0.1:4175 node site/tests/browser.cjs\`。外部 Playwright 和已有 Chrome 路径可分别通过 NODE_PATH、BROWSER_EXECUTABLE 设置，见 README。\n\n测试图像只通过请求拦截提供，项目图标目录没有新增图片；真实 iOS / Android 尚未实机验证。\n\n结果：${success}/${results.length} 组通过。\n\n` + results.map(item => `- [${item.ok ? 'x' : ' '}] ${item.name}${item.error ? `：${item.error}` : ''}`).join('\n') + '\n');
   if (success !== results.length) process.exitCode = 1;
 })().catch(error => { console.error(error); process.exitCode = 1; });

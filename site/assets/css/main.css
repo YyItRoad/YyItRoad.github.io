@@ -1218,3 +1218,8 @@ mark {
 
 .navigation-status:empty { display:none; }
 :root[data-theme=dark] .favicon[data-brand="github.com"] { filter:invert(1); }
+
+.project-icon { width:29px; height:29px; object-fit:contain; }
+.project-github { position:relative; z-index:1; }
+.project-status { display:block; overflow-wrap:anywhere; }
+.project-body h3, .project-tags { overflow-wrap:anywhere; }

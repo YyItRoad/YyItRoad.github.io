@@ -1,6 +1,6 @@
-import { categories, matches } from './data.js';
-import { $, el, externalLink, favicon } from './dom.js';
-import { iconSVG } from './icons.js';
+import { categories, matches } from './data.js?v=11b9de359bc1';
+import { $, el, externalLink, favicon } from './dom.js?v=f21f1696d2cb';
+import { iconSVG } from './icons.js?v=2b16b074aa2b';
 export function createNavigation() {
   let items = [], selected = null, initialized = false;
   const grid = $('#category-grid'), panel = $('#navigation-panel'), filter = $('#category-search');

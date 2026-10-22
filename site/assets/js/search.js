@@ -1,6 +1,6 @@
-import { matches, tools, projects } from './data.js';
-import { $, el, externalLink, favicon } from './dom.js';
-import { iconSVG } from './icons.js';
+import { matches, tools } from './data.js?v=11b9de359bc1';
+import { $, el, externalLink, favicon } from './dom.js?v=f21f1696d2cb';
+import { iconSVG } from './icons.js?v=2b16b074aa2b';
 function highlighted(text, query) {
   const fragment = document.createDocumentFragment();
   let start = 0, index;
@@ -13,7 +13,7 @@ function highlighted(text, query) {
   return fragment;
 }
 export function createSearch(favorites) {
-  let bookmarks = [], options = [], active = -1, state = 'loading';
+  let projects = [], bookmarks = [], options = [], active = -1, state = 'loading';
   const input = $('#global-search'), panel = $('#global-results');
   function close() {
     panel.hidden = true;
@@ -36,7 +36,7 @@ export function createSearch(favorites) {
       ['常用入口', favorites.visibleItems().map(item => ({ ...item, external: true }))],
       ['网站导航', bookmarks.map(item => ({ ...item, external: true }))],
       ['工具', tools],
-      ['项目', projects.map(item => ({ ...item, url: item.url || `#project-${item.id}`, external: Boolean(item.url) }))]
+      ['项目', projects.map(item => ({ ...item, url: item.url || item.github_url || `#project-${item.id}`, external: Boolean(item.url || item.github_url) }))]
     ];
     for (const [label, items] of groups) {
       const results = items.filter(item => matches(item, query)).slice(0, 12);
@@ -58,7 +58,7 @@ export function createSearch(favorites) {
         const details = el('small'); details.append(highlighted([item.description, ...(item.tags || [])].join(' · '), query));
         const graphic = el('span', 'search-result-icon');
         graphic.setAttribute('aria-hidden', 'true');
-        graphic.append(item.external ? favicon(item) : iconSVG(label === '工具' ? item.id : 'projects'));
+        graphic.append(label === '项目' ? iconSVG('projects') : item.external ? favicon(item) : iconSVG(item.id));
         const text = el('span', 'search-result-text');
         text.append(name, details);
         option.append(graphic, text);
@@ -120,5 +120,5 @@ export function createSearch(favorites) {
   document.addEventListener('keydown', event => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); open(); }
   });
-  return { setItems(items) { bookmarks = items; state = 'ready'; if (document.activeElement === input) render(); }, setError() { state = 'error'; if (document.activeElement === input) render(); } };
+  return { setProjects(items) { projects = items; if (document.activeElement === input) render(); }, setItems(items) { bookmarks = items; state = 'ready'; if (document.activeElement === input) render(); }, setError() { state = 'error'; if (document.activeElement === input) render(); } };
 }
