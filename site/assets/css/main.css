@@ -138,7 +138,9 @@ body {
 }
 .hero-search {
   position:relative;
-  width:100%;
+  width:50%;
+  max-width:660px;
+  margin-inline:auto;
   z-index:55
 }
 .search-field {
@@ -173,8 +175,8 @@ body {
 .search-results {
   position:absolute;
   top:calc(100% + 10px);
-  left:22%;
-  width:min(680px,100%);
+  left:0;
+  width:100%;
   max-height:min(650px,65vh);
   overflow:auto;
   background:color-mix(in srgb,var(--surface) 98%,transparent);
@@ -830,9 +832,8 @@ mark {
   .bookmark-grid {
     grid-template-columns:repeat(2,minmax(0,1fr))
   }
-  .search-results {
-    left:10%;
-    width:90%
+  .hero-search {
+    width:80%
   }
 }
 @media(max-width:640px) {
