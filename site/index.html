@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YangYang.fun · 部署联调页面</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Microsoft Yahei",sans-serif;color:#243247;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:940px;margin:0 auto;padding:64px 24px}h1{font-size:clamp(32px,5vw,48px);margin-bottom:10px}p{color:#61718a}main{background:#fff;border:1px solid #e5eaf1;border-radius:18px;padding:28px;margin-top:32px;box-shadow:0 15px 40px #2432470a}#status{font-weight:600}ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));padding:0;gap:12px;list-style:none}li{border:1px solid #e8edf4;padding:16px;border-radius:12px}a{color:#345f9e;text-decoration:none;font-weight:600}small{color:#8d98aa}footer{padding-top:28px;color:#96a1b1;font-size:13px}
+</style>
+</head>
+<body><div class="wrap"><header><h1>知行合一</h1><p>YangYang.fun · 网站部署链路联调</p></header><main><h2>导航数据读取测试</h2><p id="status">正在加载 /data/bookmarks.json …</p><ul id="bookmarks"></ul></main><footer>此页面仅用于 GitHub Actions → SSH → Nginx 联调，正式页面将交由 Codex 开发。</footer></div>
+<script>
+(async()=>{const status=document.querySelector('#status');const list=document.querySelector('#bookmarks');try{const response=await fetch('/data/bookmarks.json',{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);const payload=await response.json();if(!Array.isArray(payload.bookmarks))throw Error('缺少 bookmarks 数组');status.textContent='已成功读取 '+payload.bookmarks.length+' 条书签';for(const item of payload.bookmarks){const li=document.createElement('li');const a=document.createElement('a');a.href=item.url;a.textContent=item.title;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li)}}catch(err){status.textContent='导航数据读取失败：'+err.message;status.style.color='#a33'}})();
+</script></body></html>
