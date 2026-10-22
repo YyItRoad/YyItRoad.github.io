@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-22T12:00:38.067Z",
+  "projects": [
+    {
+      "id": "1",
+      "title": "QuantDinger",
+      "description": "围绕行情分析、策略与交易研究，探索更有条理的市场工作台。",
+      "icon": "quant",
+      "tags": [
+        "量化",
+        "交易",
+        "研究"
+      ],
+      "status": "",
+      "url": "",
+      "github_url": "https://github.com/YyItRoad/QuantDinger",
+      "sort_order": 10,
+      "visible": true
+    },
+    {
+      "id": "2",
+      "title": "孩子的日记",
+      "description": "把真实日常整理成故事，探索用动画留下成长中的小小瞬间。",
+      "icon": "diary",
+      "tags": [
+        "生活",
+        "动画",
+        "日记"
+      ],
+      "status": "",
+      "url": "",
+      "github_url": "",
+      "sort_order": 20,
+      "visible": true
+    },
+    {
+      "id": "3",
+      "title": "让流程自己运转",
+      "description": "用 n8n 连接信息与工具，探索把重复步骤串成顺手的工作流。",
+      "icon": "automation",
+      "tags": [
+        "n8n",
+        "自动化",
+        "效率"
+      ],
+      "status": "",
+      "url": "",
+      "github_url": "",
+      "sort_order": 30,
+      "visible": true
+    },
+    {
+      "id": "4",
+      "title": "从灵感到画面",
+      "description": "尝试把选题、素材与视频制作串起来，为内容创作留出更多空间。",
+      "icon": "video",
+      "tags": [
+        "视频",
+        "内容创作",
+        "AI"
+      ],
+      "status": "",
+      "url": "",
+      "github_url": "",
+      "sort_order": 40,
+      "visible": true
+    }
+  ]
+}

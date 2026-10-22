@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="理清数据结构，也照顾每一个小小的语法错误。">
+<title>JSON 格式化与校验 · YangYang.fun
+</title>
+<link rel="icon" href="../assets/images/favicon.svg?v=mountain-v1" type="image/svg+xml" sizes="any">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=557f606094be">
+<link rel="stylesheet" href="../assets/css/tools.css?v=5bdbd5b6fb20">
+<script src="../assets/js/theme.js?v=de001c41dd2d">
+</script>
+<script type="module" src="../assets/js/tool-page.js?v=ea3b6380fef4">
+</script>
+</head>
+<body data-tool="json"><a class="skip-link" href="#workspace">跳到工具</a>
+<header class="tool-header">
+<div class="wrap"><a class="tool-brand" href="../index.html" aria-label="YangYang.fun 首页"><span class="tool-brand-mark" data-icon="mountain" aria-hidden="true"></span><span>YangYang.fun</span></a>
+<div class="tool-header-actions"><a href="../index.html#tools">← 返回工具箱</a><button data-theme-toggle aria-label="切换深色模式">◐</button>
+</div>
+</div>
+</header>
+<main class="tool-layout">
+<div class="breadcrumb"><a href="../index.html">首页</a> / 工具 / JSON 格式化与校验
+</div>
+<div class="tool-heading"><span class="icon" data-asset-icon="json" aria-hidden="true">{ }</span>
+<div>
+<h1>JSON 格式化与校验
+</h1>
+<p>理清数据结构，也照顾每一个小小的语法错误。
+</p>
+</div>
+</div>
+<span class="local-badge">◌ 浏览器本地运行 · 无输入上传</span>
+<section id="workspace" class="tool-workspace" aria-label="JSON 格式化与校验工作区">
+<div class="field"><label for="source">JSON 文本</label><textarea id="source" spellcheck="false" placeholder='例如：{"你好": "世界", "items": [1, 2, 3]}'></textarea>
+</div>
+<div class="actions"><button data-action="format" class="primary">格式化</button><button data-action="minify" class="">压缩</button><button data-action="validate" class="">语法校验</button><button id="clear">清空</button>
+</div>
+<p id="tool-status" role="status" aria-live="polite">准备好了，开始试试吧。
+</p>
+<div class="field">
+<div class="result-head"><label class="output-label" for="result">处理结果</label><button id="copy">复制结果</button>
+</div>
+<textarea id="result" readonly placeholder="结果会出现在这里" spellcheck="false"></textarea>
+</div>
+</section>
+<aside class="tool-note"><strong>处理说明</strong>
+<p>格式化与压缩会先用标准 JSON.parse 解析，再用 JSON.stringify 输出。重复键遵循 JavaScript 的最后值规则；超出安全整数范围的数字可能失去精度，请用字符串保存长整数。校验操作不会修改输入。
+</p>
+</aside>
+<nav class="tool-nav" aria-label="其他工具"></nav>
+<footer class="tool-footer">小工具，让日常轻一点。 · YangYang.fun
+</footer>
+</main>
+</body>
+</html>

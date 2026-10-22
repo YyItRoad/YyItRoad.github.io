@@ -1,61 +1,298 @@
 name: Homepage Staging Deployment Test
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/homepage-staging-test.yml
   workflow_dispatch:
+    inputs:
+      operation:
+        description: 执行隔离测试、正式根目录检查或发布已验收版本
+        type: choice
+        options: [staging, inspect, promote]
+        default: staging
+      expected_source_sha:
+        description: 已验收的隔离站点源码提交
+        type: string
+        default: ''
 
 permissions:
   contents: read
 
+concurrency:
+  group: homepage-isolated-deployment-test
+  cancel-in-progress: false
+
 jobs:
   deploy-staging:
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && (inputs.operation == 'staging' || inputs.operation == '')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout prepared staging website
+      - name: 检出本次触发的明确版本
         uses: actions/checkout@v4
         with:
-          ref: feature/homepage-pipeline-test
-      - name: Check staging files
+          ref: ${{ inputs.expected_source_sha || github.sha }}
+
+      - name: 组装仅含运行资源的部署包
+        env:
+          COMMIT_SHA: ${{ inputs.expected_source_sha || github.sha }}
         run: |
           set -euo pipefail
           test -s site/index.html
           test -s site/data/bookmarks.json
           python3 -m json.tool site/data/bookmarks.json >/dev/null
-      - name: Configure SSH
+          mkdir -p /tmp/homepage-staging
+          rsync -a \
+            --include='/assets/vendor/许可证.md' \
+            --exclude='*.md' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='/tests/' \
+            --exclude='/docs/' \
+            --exclude='/assets/images/source/' \
+            site/ /tmp/homepage-staging/
+          printf '%s\n' "$COMMIT_SHA" > /tmp/homepage-staging/deployment-version.txt
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('/tmp/homepage-staging')
+          files = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in sorted(root.rglob('*')) if p.is_file()}
+          manifest = {'commit': os.environ['COMMIT_SHA'], 'files': files}
+          (root / 'deployment-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+          print('部署包文件数：', len(files))
+          PY
+          curl --fail --silent --show-error --location --max-time 30 \
+            https://yangyang.fun/ -o /tmp/production-home-before.html
+          sha256sum /tmp/production-home-before.html | cut -d ' ' -f 1 > /tmp/production-before.sha
+
+      - name: 配置现有部署连接
         env:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
         run: |
           set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$HOST_KEY"
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
           printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
           ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
-      - name: Create isolated staging folder and sync
+
+      - name: 只同步到既有隔离测试目录
         env:
-          HOST: ${{ secrets.DEPLOY_HOST }}
-          USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
           set -euo pipefail
+          test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_USER"
           SSH_OPTS="-i $HOME/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10"
-          ssh $SSH_OPTS "$USER@$HOST" 'mkdir -p /www/wwwroot/yangyang.fun/__deploy-test/data'
-          rsync -az --checksum -e "ssh $SSH_OPTS" site/ "$USER@$HOST:/www/wwwroot/yangyang.fun/__deploy-test/"
-          ssh $SSH_OPTS "$USER@$HOST" 'test -s /www/wwwroot/yangyang.fun/__deploy-test/index.html && test -s /www/wwwroot/yangyang.fun/__deploy-test/data/bookmarks.json'
-      - name: Verify public HTTP and JSON
+          ssh $SSH_OPTS "$DEPLOY_USER@$DEPLOY_HOST" '
+            set -eu
+            test -d /www/wwwroot/yangyang.fun
+            test ! -L /www/wwwroot/yangyang.fun/__deploy-test
+            mkdir -p /www/wwwroot/yangyang.fun/__deploy-test
+            test "$(readlink -f /www/wwwroot/yangyang.fun/__deploy-test)" = /www/wwwroot/yangyang.fun/__deploy-test
+            test -w /www/wwwroot/yangyang.fun/__deploy-test
+          '
+          rsync -az --checksum --delete --delay-updates \
+            -e "ssh $SSH_OPTS" /tmp/homepage-staging/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:/www/wwwroot/yangyang.fun/__deploy-test/"
+
+      - name: 逐文件公网哈希验收并确认生产首页未变
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_source_sha || github.sha }}
         run: |
           set -euo pipefail
-          curl --fail --show-error --silent --location --retry 3 --retry-delay 2 https://yangyang.fun/__deploy-test/ -o /tmp/homepage-staging.html
-          grep -q '部署链路联调' /tmp/homepage-staging.html
-          curl --fail --show-error --silent --location --retry 3 --retry-delay 2 https://yangyang.fun/__deploy-test/data/bookmarks.json -o /tmp/homepage-bookmarks.json
           python3 - <<'PY'
-          import json
-          with open("/tmp/homepage-bookmarks.json", encoding="utf-8") as f:
-              data=json.load(f)
-          assert isinstance(data.get("bookmarks"), list)
-          print("Staging HTTP verification succeeded; bookmarks:", len(data["bookmarks"]))
+          import hashlib, json, os, time
+          from urllib.request import urlopen
+          from urllib.parse import quote
+          base = 'https://yangyang.fun/__deploy-test/'
+          commit = os.environ['EXPECTED_SHA']
+          def get(path):
+              url = base + quote(path) + '?version=' + commit
+              for attempt in range(3):
+                  try:
+                      with urlopen(url, timeout=25) as response:
+                          assert response.status == 200
+                          return response.read()
+                  except Exception:
+                      if attempt == 2: raise
+                      time.sleep(2)
+          manifest = json.loads(get('deployment-manifest.json'))
+          assert manifest['commit'] == commit, '部署清单版本不符'
+          assert get('deployment-version.txt').decode().strip() == commit, '部署版本不符'
+          for path, expected in manifest['files'].items():
+              assert hashlib.sha256(get(path)).hexdigest() == expected, '文件哈希不符：' + path
+          html = get('index.html').decode()
+          assert '知行合一' in html and 'global-search' in html
+          for name in ['crypto', 'json', 'timestamp', 'encoder']:
+              assert 'data-tool="' + name + '"' in get('tools/' + name + '.html').decode()
+          bookmarks = json.loads(get('data/bookmarks.json'))
+          assert isinstance(bookmarks.get('bookmarks'), list)
+          print('公网逐文件哈希通过：', len(manifest['files']), '个文件；书签：', len(bookmarks['bookmarks']))
+          print('已部署版本：', commit)
           PY
+          curl --fail --silent --show-error --location --max-time 30 \
+            https://yangyang.fun/ -o /tmp/production-home-after.html
+          sha256sum /tmp/production-home-after.html | cut -d ' ' -f 1 > /tmp/production-after.sha
+          cmp /tmp/production-before.sha /tmp/production-after.sha
+          echo '生产首页哈希未改变。'
+
+      - name: 清理临时 SSH 文件
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+  inspect-root:
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && inputs.operation == 'inspect'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 配置现有部署连接
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$HOST_KEY"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: 只读检查正式根目录与备份空间
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+            "$DEPLOY_USER@$DEPLOY_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          webroot=/www/wwwroot/yangyang.fun
+          test -d "$webroot"
+          test "$(readlink -f "$webroot")" = "$webroot"
+          test -w "$webroot"
+          echo '正式根目录一级清单：'
+          find "$webroot" -mindepth 1 -maxdepth 1 -printf '%y %f %s bytes\n'
+          echo '正式站点体积（不含隔离测试目录）：'
+          du -sk --exclude=__deploy-test "$webroot"
+          echo '旧站目录占用前 15 项：'
+          du -k --max-depth=2 --exclude=__deploy-test "$webroot" | sort -n | tail -15
+          echo '目录内符号链接：'
+          find "$webroot" -maxdepth 2 -type l -printf '%p -> %l\n'
+          echo '部署账户私有目录可写：'
+          test -d "$HOME" && test -w "$HOME" && echo yes
+          echo '备份目标不在网站目录内：'
+          case "$(readlink -f "$HOME")/yangyang-fun-backups" in "$webroot"|"$webroot"/*) exit 1;; *) echo yes;; esac
+          echo '可用空间：'
+          df -Pk "$webroot" "$HOME"
+          echo '隔离测试提交：'
+          cat "$webroot/__deploy-test/deployment-version.txt"
+          REMOTE
+      - name: 清理临时 SSH 文件
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+  promote-root:
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && inputs.operation == 'promote'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      APPROVED_SHA: ${{ inputs.expected_source_sha }}
+      RELEASE_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: 核对用户已验收的固定源码版本
+        run: |
+          set -euo pipefail
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]]
+      - name: 检出发布脚本
+        uses: actions/checkout@v4
+      - name: 检出已验收源码用于独立比对
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_source_sha }}
+          path: approved
+      - name: 从已验收源码重建哈希清单
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/approved-homepage
+          rsync -a --include='/assets/vendor/许可证.md' --exclude='*.md' \
+            --exclude='.gitignore' --exclude='.DS_Store' --exclude='/tests/' \
+            --exclude='/docs/' --exclude='/assets/images/source/' \
+            approved/site/ /tmp/approved-homepage/
+          printf '%s\n' "$APPROVED_SHA" > /tmp/approved-homepage/deployment-version.txt
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('/tmp/approved-homepage')
+          files = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in sorted(root.rglob('*')) if p.is_file()}
+          (root / 'deployment-manifest.json').write_text(json.dumps({'commit': os.environ['APPROVED_SHA'], 'files': files}, ensure_ascii=False, indent=2))
+          PY
+          echo "APPROVED_MANIFEST=$(sha256sum /tmp/approved-homepage/deployment-manifest.json | cut -d ' ' -f 1)" >> "$GITHUB_ENV"
+      - name: 配置现有部署连接
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$HOST_KEY"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: 私有备份并替换正式根目录
+        id: promote
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+            "$DEPLOY_USER@$DEPLOY_HOST" bash -s -- promote "$RELEASE_ID" "$APPROVED_SHA" "$APPROVED_MANIFEST" \
+            < .github/scripts/homepage-root-release.sh
+      - name: 从正式域名逐文件验收
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, time
+          from urllib.request import urlopen
+          from urllib.parse import quote
+          base = 'https://yangyang.fun/'
+          def get(path):
+              for attempt in range(3):
+                  try:
+                      with urlopen(base + quote(path) + '?release=' + os.environ['RELEASE_ID'], timeout=25) as response:
+                          assert response.status == 200
+                          return response.read()
+                  except Exception:
+                      if attempt == 2: raise
+                      time.sleep(2)
+          content = get('deployment-manifest.json')
+          assert hashlib.sha256(content).hexdigest() == os.environ['APPROVED_MANIFEST']
+          manifest = json.loads(content)
+          assert manifest['commit'] == os.environ['APPROVED_SHA']
+          for path, expected in manifest['files'].items():
+              assert hashlib.sha256(get(path)).hexdigest() == expected, path
+          assert '知行合一' in get('index.html').decode()
+          assert get('__deploy-test/deployment-version.txt').decode().strip() == os.environ['APPROVED_SHA']
+          print('正式域名逐文件验收通过：', len(manifest['files']))
+          print('正式源码版本：', os.environ['APPROVED_SHA'])
+          PY
+      - name: 公网验收失败时恢复旧站
+        if: failure() && steps.promote.outcome == 'success'
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+            "$DEPLOY_USER@$DEPLOY_HOST" bash -s -- rollback "$RELEASE_ID" "$APPROVED_SHA" "$APPROVED_MANIFEST" \
+            < .github/scripts/homepage-root-release.sh
+      - name: 清理临时 SSH 文件
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts

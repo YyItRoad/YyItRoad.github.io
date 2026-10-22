@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#10214e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 原样复用 assets/js/icons.js 的 mountain 路径，与首页品牌山形一致。 -->
+  <style>@media (prefers-color-scheme: dark) { svg { stroke: #e6eeff; } }</style>
+  <path d="m2 18 7-12 5 8 3-5 5 9"/>
+  <path d="m6 12 3 1 2-3"/>
+  <path d="M3 22c4-3 6 2 10 0s5-1 8-1"/>
+</svg>
