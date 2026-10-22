@@ -1,0 +1,61 @@
+name: Homepage Staging Deployment Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/homepage-staging-test.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout prepared staging website
+        uses: actions/checkout@v4
+        with:
+          ref: feature/homepage-pipeline-test
+      - name: Check staging files
+        run: |
+          set -euo pipefail
+          test -s site/index.html
+          test -s site/data/bookmarks.json
+          python3 -m json.tool site/data/bookmarks.json >/dev/null
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Create isolated staging folder and sync
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          SSH_OPTS="-i $HOME/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10"
+          ssh $SSH_OPTS "$USER@$HOST" 'mkdir -p /www/wwwroot/yangyang.fun/__deploy-test/data'
+          rsync -az --checksum -e "ssh $SSH_OPTS" site/ "$USER@$HOST:/www/wwwroot/yangyang.fun/__deploy-test/"
+          ssh $SSH_OPTS "$USER@$HOST" 'test -s /www/wwwroot/yangyang.fun/__deploy-test/index.html && test -s /www/wwwroot/yangyang.fun/__deploy-test/data/bookmarks.json'
+      - name: Verify public HTTP and JSON
+        run: |
+          set -euo pipefail
+          curl --fail --show-error --silent --location --retry 3 --retry-delay 2 https://yangyang.fun/__deploy-test/ -o /tmp/homepage-staging.html
+          grep -q '部署链路联调' /tmp/homepage-staging.html
+          curl --fail --show-error --silent --location --retry 3 --retry-delay 2 https://yangyang.fun/__deploy-test/data/bookmarks.json -o /tmp/homepage-bookmarks.json
+          python3 - <<'PY'
+          import json
+          with open("/tmp/homepage-bookmarks.json", encoding="utf-8") as f:
+              data=json.load(f)
+          assert isinstance(data.get("bookmarks"), list)
+          print("Staging HTTP verification succeeded; bookmarks:", len(data["bookmarks"]))
+          PY
