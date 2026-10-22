@@ -20,7 +20,10 @@ export function favicon(item) {
   image.alt = '';
   image.loading = 'lazy';
   image.referrerPolicy = 'no-referrer';
-  image.src = new URL('/favicon.ico', item.url).href;
+  const host = new URL(item.url).hostname.replace(/^www\./, '');
+  const known = { 'github.com':'github.ico', 'chatgpt.com':'chatgpt-brand.svg', 'tradingview.com':'tradingview.ico', 'vuejs.org':'vue.svg' };
+  image.dataset.brand = host;
+  image.src = known[host] ? new URL(`../images/brands/${known[host]}`, import.meta.url).href : new URL('/favicon.ico', item.url).href;
   image.addEventListener('error', () => image.replaceWith(fallback), { once: true });
   wrapper.append(image);
   return wrapper;

@@ -52,7 +52,7 @@ function legacyDecrypt(ciphertext, password) {
     assert(await page.locator('a[target="_blank"]').evaluateAll(nodes => nodes.every(node => node.rel.includes('noopener') && node.rel.includes('noreferrer'))));
   });
   await test('同区分类收缩、别名、未分类与专属搜索、空态', async () => {
-    await page.locator('[data-category="开发技术"]').click();
+    if (await page.locator('[data-category="开发技术"]').getAttribute('aria-pressed') !== 'true') await page.locator('[data-category="开发技术"]').click();
     assert(await page.locator('#category-grid').evaluate(node => node.classList.contains('compact')));
     assert.equal(await page.locator('#bookmark-grid a').count(), 2);
     assert.equal(await page.locator('#navigation-panel h2, #navigation-panel h3').count(), 0);
@@ -108,6 +108,7 @@ function legacyDecrypt(ciphertext, password) {
     assert(await page.locator('#global-results').isHidden());
   });
   await test('项目横向按钮与方向键、独立关于区、深色偏好', async () => {
+    await page.setViewportSize({ width:1024, height:1000 });
     await page.locator('#projects-next').click();
     assert(await page.locator('#project-track').evaluate(node => node.scrollLeft > 0));
     await page.locator('#project-track').focus();
@@ -115,6 +116,7 @@ function legacyDecrypt(ciphertext, password) {
     assert.equal(await page.locator('#project-track').evaluate(node => node.scrollLeft), 0);
     const project = await page.locator('#projects').boundingBox(), about = await page.locator('#about').boundingBox();
     assert(about.y >= project.y + project.height);
+    await page.setViewportSize({ width:1440, height:1000 });
     await page.locator('[data-theme-toggle]').click();
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
     await home(); assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
@@ -262,7 +264,7 @@ function legacyDecrypt(ciphertext, password) {
     }
     await page.setViewportSize({ width: 375, height: 812 }); await home();
     await page.screenshot({ path: path.join(shots, 'mobile.png'), fullPage: true });
-    await page.locator('[data-category="开发技术"]').click();
+    if (await page.locator('[data-category="开发技术"]').getAttribute('aria-pressed') !== 'true') await page.locator('[data-category="开发技术"]').click();
     await page.locator('#category-search').fill('Vue');
     assert.equal(await page.locator('#bookmark-grid a').count(), 1);
     await page.locator('#search-open').click(); await page.locator('#global-search').fill('JSON');

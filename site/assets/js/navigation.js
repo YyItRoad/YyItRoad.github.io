@@ -2,7 +2,7 @@ import { categories, matches } from './data.js';
 import { $, el, externalLink, favicon } from './dom.js';
 import { iconSVG } from './icons.js';
 export function createNavigation() {
-  let items = [], selected = null;
+  let items = [], selected = null, initialized = false;
   const grid = $('#category-grid'), panel = $('#navigation-panel'), filter = $('#category-search');
   function renderList() {
     const list = $('#bookmark-grid');
@@ -15,7 +15,8 @@ export function createNavigation() {
       const tags = el('div', 'tags');
       for (const tag of item.tags) tags.append(el('span', 'tag', tag));
       content.append(tags);
-      card.append(favicon(item), content);
+      const arrow = el('span', 'bookmark-open', '↗'); arrow.setAttribute('aria-hidden', 'true');
+      card.append(favicon(item), content, arrow);
       list.append(card);
     }
     if (!visible.length) list.append(el('div', 'empty', filter.value ? '没有匹配的网站，换个关键词试试。' : '这个分类还在慢慢收集中。'));
@@ -39,7 +40,7 @@ export function createNavigation() {
       icon.style.background = category.color;
       icon.setAttribute('aria-hidden', 'true');
       const label = el('span');
-      label.append(el('strong', '', category.title), el('small', '', `${category.description} · ${count}`));
+      label.append(el('strong', '', category.title), el('small', '', selected ? `${count} 个网站` : `${category.description} · ${count}`));
       button.append(icon, label);
       button.addEventListener('click', () => {
         const closing = selected === category.title;
@@ -67,7 +68,12 @@ export function createNavigation() {
     [...grid.querySelectorAll('button')].find(node => node.dataset.category === previous)?.focus();
   });
   renderCategories();
-  return { setItems(value) { items = value; update(); } };
+  return { setItems(value) {
+    items = value;
+    if (!initialized) { selected = items.find(item => item.category === '开发技术')?.category || items[0]?.category || null; initialized = true; }
+    if (selected && !items.some(item => item.category === selected)) selected = items[0]?.category || null;
+    update();
+  } };
 }
 export function createFavorites() {
   let items = [], preferences = { order: [], hidden: [] };

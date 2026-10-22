@@ -1,12 +1,14 @@
 body {
+  position:relative;
+  isolation:isolate;
   background:radial-gradient(ellipse at 0 500px,#e2efff88,transparent 800px),radial-gradient(ellipse at 100% 1000px,#eeeaff80,transparent 900px),var(--bg)
 }
 .site-header {
-  height:72px;
+  height:64px;
   position:sticky;
   top:0;
   z-index:60;
-  background:color-mix(in srgb,var(--bg) 80%,transparent);
+  background:color-mix(in srgb,var(--bg) 62%,transparent);
   backdrop-filter:blur(20px);
   border-bottom:1px solid #ffffff60
 }
@@ -83,36 +85,36 @@ body {
 }
 .hero {
   position:relative;
-  z-index:30;
-  isolation:isolate;
-  min-height:420px;
-  background:#bdd1ef;
+  min-height:300px;
   overflow:visible
 }
 .hero-art {
   position:absolute;
-  inset:0;
+  inset:0 0 -170px;
   z-index:-2;
-  background:url('../images/hero-sunset-v1.webp') center 52%/cover no-repeat
+  background:url('../images/hero-sunset-v1.webp') center -55px/cover no-repeat;
+  pointer-events:none
 }
 .hero:after {
   content:"";
   position:absolute;
-  inset:0;
+  inset:0 0 -180px;
   z-index:-1;
-  background:linear-gradient(0deg,var(--bg),transparent 22%),linear-gradient(90deg,#e6efff9c 0%,#e6efff6b 30%,transparent 57%)
+  background:linear-gradient(0deg,var(--bg),transparent 50%),linear-gradient(90deg,#e6efff55,transparent 48%);
+  pointer-events:none
 }
 .hero-inner {
-  padding-top:58px;
-  padding-bottom:50px
+  padding-top:42px;
+  padding-bottom:24px;
+  width:min(var(--width),calc(100% - 96px))
 }
 .hero h1 {
-  font-size:clamp(46px,5.5vw,70px);
-  font-weight:850;
-  line-height:1.3;
+  font-size:clamp(52px,6.5vw,72px);
+  font-weight:900;
+  line-height:1.1;
   letter-spacing:-3px;
   color:#0d1e4a;
-  margin:0 0 15px;
+  margin:0 0 14px;
   text-shadow:0 2px 15px #ecf3ff40;
   width:max-content;
   position:relative
@@ -132,8 +134,8 @@ body {
   color:#10214e;
   font-size:17px;
   font-weight:500;
-  line-height:1.8;
-  margin-bottom:48px;
+  line-height:1.55;
+  margin-bottom:30px;
   max-width:440px
 }
 .hero-search {
@@ -145,13 +147,13 @@ body {
 }
 .search-field {
   display:flex;
-  gap:16px;
+  gap:14px;
   align-items:center;
   background:color-mix(in srgb,var(--surface) 96%,transparent);
   border:1px solid #ffffffc0;
   border-radius:40px;
   box-shadow:0 8px 28px #4f75b52b;
-  padding:4px 22px;
+  padding:2px 20px;
   color:var(--accent)
 }
 .search-field>span {
@@ -161,7 +163,7 @@ body {
   width:100%;
   border:0;
   background:transparent;
-  padding:12px 0;
+  padding:9px 0;
   outline-offset:-2px
 }
 .search-field kbd {
@@ -224,12 +226,13 @@ mark {
 }
 .section,.favorites-section,.about-section {
   width:min(var(--width),calc(100% - 48px));
-  margin:0 auto 22px;
-  background:var(--surface);
-  border:1px solid #ffffffa0;
-  box-shadow:var(--shadow);
-  border-radius:24px;
-  padding:25px 26px;
+  margin:0 auto 18px;
+  background:linear-gradient(125deg,color-mix(in srgb,var(--surface) 96%,transparent),color-mix(in srgb,var(--surface) 89%,transparent));
+  border:1px solid #ffffffc0;
+  box-shadow:0 8px 28px #7296d408;
+  backdrop-filter:blur(18px);
+  border-radius:20px;
+  padding:17px 20px;
   position:relative
 }
 .section>.wrap {
@@ -240,12 +243,12 @@ mark {
   justify-content:space-between;
   align-items:center;
   gap:16px;
-  margin-bottom:21px
+  margin-bottom:13px
 }
 .section-head h2 {
-  font-size:22px;
-  line-height:1.4;
-  margin:0 0 2px;
+  font-size:21px;
+  line-height:1.3;
+  margin:0 0 3px;
   letter-spacing:0
 }
 .section-head p {
@@ -258,11 +261,11 @@ mark {
   align-items:center
 }
 .section-icon {
-  width:44px;
-  height:44px;
+  width:40px;
+  height:40px;
   background:var(--accent-soft);
   color:var(--accent);
-  border-radius:12px;
+  border-radius:11px;
   display:grid;
   place-items:center;
   flex-shrink:0
@@ -305,20 +308,20 @@ mark {
 }
 .favorite-list {
   display:flex;
-  gap:26px;
+  gap:28px;
   flex-wrap:wrap;
-  padding:0 13px 4px
+  padding:0 14px 2px
 }
 .favorite-link {
   display:flex;
   flex-direction:column;
-  gap:9px;
+  gap:6px;
   align-items:center;
   justify-content:center;
   min-width:64px;
-  padding:8px 5px;
+  padding:3px 5px;
   border-radius:13px;
-  font-size:12px;
+  font-size:13px;
   transition:transform .2s,background .2s
 }
 .favorite-link:hover {
@@ -328,10 +331,10 @@ mark {
 .favorite-link>span:first-child {
   display:grid;
   place-items:center;
-  width:48px;
-  height:48px;
+  width:44px;
+  height:44px;
   border-radius:12px;
-  box-shadow:0 4px 16px #42599d0d;
+  box-shadow:0 4px 14px #42599d0d;
   background:var(--surface);
   border:1px solid var(--line)
 }
@@ -385,14 +388,14 @@ mark {
   gap:14px
 }
 .tool-card {
-  padding:16px 13px;
-  background:linear-gradient(110deg,var(--blue),var(--surface));
+  padding:12px 13px;
+  background:linear-gradient(110deg,var(--blue),color-mix(in srgb,var(--surface) 70%,transparent));
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:12px;
   position:relative;
   transition:transform .2s;
   display:grid;
-  grid-template-columns:44px 1fr;
+  grid-template-columns:44px minmax(0,1fr);
   column-gap:13px;
   align-items:center;
   min-width:0
@@ -496,32 +499,43 @@ mark {
   color:var(--accent)
 }
 .category-grid.compact {
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap:10px
+  display:flex;
+  gap:12px;
+  overflow:auto;
+  padding:2px 2px 8px;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+  scrollbar-color:var(--line) transparent
 }
 .compact .category {
-  min-height:72px;
-  padding:10px;
-  gap:8px;
-  border-radius:12px
+  flex:0 0 calc((100% - 60px) / 6);
+  min-width:145px;
+  min-height:65px;
+  padding:10px 12px;
+  gap:11px;
+  border-radius:12px;
+  scroll-snap-align:start
 }
 .compact .category .icon {
-  width:32px;
-  height:32px
+  width:36px;
+  height:36px
 }
 .compact .category .icon svg {
-  width:23px;
-  height:23px
+  width:26px;
+  height:26px
 }
 .compact .category strong {
-  font-size:12px;
+  font-size:14px;
   white-space:nowrap
 }
 .compact .category small {
-  display:none
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:1px
 }
 .navigation-panel {
-  margin-top:20px;
+  margin-top:12px;
   border-radius:16px
 }
 .navigation-toolbar {
@@ -529,7 +543,7 @@ mark {
   justify-content:space-between;
   gap:12px;
   align-items:center;
-  margin-bottom:16px
+  margin-bottom:12px
 }
 .navigation-toolbar input {
   width:min(480px,100%);
@@ -551,33 +565,41 @@ mark {
 .bookmark {
   display:flex;
   align-items:start;
-  gap:13px;
-  padding:16px;
-  border-radius:14px;
+  gap:14px;
+  padding:14px;
+  border-radius:12px;
   border:1px solid var(--line);
   min-width:0;
-  background:linear-gradient(130deg,var(--surface),var(--bg))
+  background:color-mix(in srgb,var(--surface) 75%,transparent);
+  position:relative
 }
 .bookmark:hover {
   background:var(--accent-soft);
   border-color:var(--accent)
 }
 .bookmark>span:first-child {
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  flex-shrink:0;
   background:var(--surface);
-  border-radius:9px;
+  border-radius:11px;
   padding:6px;
-  border:1px solid var(--line)
+  border:1px solid var(--line);
+  box-shadow:0 5px 14px #25427108
 }
 .bookmark-content {
   min-width:0
 }
 .bookmark strong {
-  font-size:13px;
-  overflow-wrap:anywhere
+  font-size:14px;
+  overflow-wrap:anywhere;
+  padding-right:14px
 }
 .bookmark p {
-  font-size:11px;
-  margin:4px 0 7px;
+  font-size:12px;
+  margin:3px 0 7px;
   overflow-wrap:anywhere
 }
 .tags {
@@ -586,15 +608,15 @@ mark {
   gap:5px
 }
 .tag {
-  font-size:10px;
+  font-size:11px;
   background:var(--soft);
   color:var(--muted);
-  padding:1px 7px;
-  border-radius:6px
+  padding:1px 8px;
+  border-radius:8px
 }
 .navigation-status {
-  font-size:12px;
-  margin-top:14px;
+  font-size:11px;
+  margin-top:8px;
   color:var(--muted)
 }
 .projects-section {
@@ -625,16 +647,17 @@ mark {
   scrollbar-color:var(--line) transparent
 }
 .project-card {
-  flex:0 0 275px;
+  flex:0 0 calc((100% - 42px) / 4);
+  min-width:260px;
   scroll-snap-align:start;
-  border-radius:14px;
-  background:linear-gradient(120deg,var(--surface),var(--bg));
+  border-radius:12px;
+  background:color-mix(in srgb,var(--surface) 70%,transparent);
   border:1px solid var(--line);
   display:flex;
   align-items:start;
   gap:13px;
-  padding:16px;
-  min-width:0
+  padding:13px;
+  position:relative
 }
 .project-visual {
   width:44px;
@@ -672,10 +695,12 @@ mark {
   margin:0 0 5px
 }
 .project-body p {
-  font-size:11px;
-  line-height:1.7;
-  margin-bottom:10px;
-  min-height:38px
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:8px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
 }
 .project-body a {
   font-size:11px;
@@ -686,19 +711,19 @@ mark {
   color:var(--muted)
 }
 .about-section {
-  padding:27px 30px;
-  background:linear-gradient(110deg,var(--blue),var(--surface));
-  margin-bottom:25px
+  padding:20px 28px;
+  background:linear-gradient(110deg,color-mix(in srgb,var(--blue) 75%,transparent),color-mix(in srgb,var(--surface) 75%,transparent));
+  margin-bottom:22px
 }
 .about-content {
   display:grid;
-  grid-template-columns:132px 1fr 220px;
-  gap:30px;
+  grid-template-columns:112px 1fr 260px;
+  gap:28px;
   align-items:center
 }
 .about-art {
-  width:132px;
-  height:132px;
+  width:112px;
+  height:112px;
   border-radius:50%;
   overflow:hidden;
   grid-column:1;
@@ -779,13 +804,13 @@ mark {
 }
 @media(min-width:1450px) {
   .hero {
-    min-height:460px
+    min-height:300px
   }
   .hero-inner {
-    padding-top:75px
+    padding-top:42px
   }
   .hero-intro {
-    margin-bottom:60px
+    margin-bottom:30px
   }
 }
 @media(max-width:1100px) {
@@ -795,9 +820,7 @@ mark {
   .site-header nav {
     gap:24px
   }
-  .tool-grid {
-    grid-template-columns:repeat(2,1fr)
-  }
+
   .category-grid.compact {
     grid-template-columns:repeat(4,minmax(0,1fr))
   }
@@ -1129,3 +1152,65 @@ mark {
 @media(max-width:640px) { .hero-search { scroll-margin-top:120px; } .search-option { gap:9px; } .search-result-icon { width:30px; height:30px; } }
 
 :root[data-theme=dark] body { background:radial-gradient(ellipse at 0 500px,#1c355b55,transparent 800px),radial-gradient(ellipse at 100% 1000px,#2e295255,transparent 900px),var(--bg); }
+
+/* 插画背景延续到首个玻璃面板，搜索浮层独立于板块层级。 */
+.bookmark-open { position:absolute; right:12px; top:12px; color:var(--muted); font-size:13px; }
+.project-visual svg { width:29px; height:29px; }
+.project-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.project-tags .tag { font-size:10px; padding:1px 6px; }
+.project-link { position:absolute; inset:0; border-radius:12px; }
+.project-link:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.favorites-section .section-icon svg { fill:#ffbd27; stroke:#ffb21d; }
+.tools-section .section-icon { background:#eaf3ff; }
+#navigation .section-icon { background:#fff4e4; color:#ff9b27; }
+.projects-section .section-icon { background:#e8f2ff; }
+.icon svg { filter:drop-shadow(0 2px 3px #477bce12); }
+:root[data-theme=dark] .hero:after { background:linear-gradient(0deg,var(--bg),transparent 50%),linear-gradient(90deg,#101b3280,transparent 60%); }
+:root[data-theme=dark] .section-icon { background:var(--soft); }
+@media(max-width:1100px) {
+  .about-content { grid-template-columns:100px 1fr; }
+  .compact .category { min-width:140px; }
+}
+@media(max-width:640px) {
+  .hero-inner { width:calc(100% - 36px); }
+  .hero-art { bottom:0; background-position:82% center; }
+  .hero:after { bottom:0; }
+  .compact .category { flex-basis:145px; min-height:60px; }
+  .compact .category small { display:block; font-size:10px; }
+  .category-grid.compact { display:flex; gap:8px; }
+  .project-card { min-width:0; flex-basis:85%; }
+  .project-body p { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .about-content { grid-template-columns:76px 1fr; }
+  .about-art { width:76px; height:76px; }
+  :root[data-theme=dark] .hero:after { background:linear-gradient(0deg,var(--bg),transparent 28%),linear-gradient(180deg,#101b3299,transparent 58%); }
+}
+
+@media(max-width:780px) { .tool-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(min-width:901px) and (max-width:1100px) { .about-content { grid-template-columns:100px 1fr 220px; gap:22px; } .about-quote { display:block; font-size:15px; } }
+
+/* 与确认稿校准桌面板块高度和图文比例。 */
+.hero-art { background-position:65% -55px; }
+.section,.favorites-section { padding:14px 18px; }
+.section-head { margin-bottom:12px; }
+.section-head h2 { font-size:20px; line-height:1.25; margin-bottom:0; }
+.section-head p { font-size:12px; line-height:1.5; }
+.tool-card { padding:10px 12px; }
+.tool-card .icon { height:42px; }
+.project-track { padding-bottom:0; }
+.project-body h3 { line-height:1.4; margin-bottom:3px; }
+.project-body p { margin-bottom:6px; }
+.about-section { padding:16px 28px; }
+.about-content p { line-height:1.7; margin-bottom:5px; }
+.about-tags { display:none; }
+@media(max-width:640px) {
+  .hero-art { background-position:82% center; }
+  .section,.favorites-section { padding:18px 16px; }
+  .section-head h2 { font-size:19px; }
+  .section-head p { font-size:10px; }
+  .tool-card { padding:12px 9px; }
+  .tool-card .icon { height:38px; }
+  .about-section { padding:20px 16px; }
+}
+
+.navigation-status:empty { display:none; }
+:root[data-theme=dark] .favicon[data-brand="github.com"] { filter:invert(1); }

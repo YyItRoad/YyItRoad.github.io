@@ -18,10 +18,10 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory site
 - 书签从 `data/bookmarks.json` 读取，12 秒超时，支持失败重试。原有 7 条数据和生成时间保持原样，前端不写回公共数据。
 - 读取 `id/title/url/description/category/favorite/sort_order/tags`，按 `sort_order` 排序。`AI 资源` 和 `AI资源` 统一显示，未知分类自动加入入口。无效网址、带凭据网址、非 HTTP(S) 网址被忽略；空字段使用默认值。
 - 常用入口来自 `favorite: true`。顺序与隐藏记录在当前浏览器的 `yy-favorites`；`yy-theme` 保存主题。隐私模式禁用存储时仍可使用，偏好只在当前页面生效。
-- 分类点击后在同一板块展开，入口收缩，不重复分类大标题。当前分类支持标题、描述和标签搜索。
+- 默认展开开发技术（缺少该分类时展开首个真实分类）；点击分类在同一板块切换，入口收缩为可横向浏览的一行，不重复分类大标题。收起后恢复分类卡片。当前分类支持标题、描述和标签搜索。
 - 全局搜索支持标题、描述与标签，分为常用入口、网站导航、工具、项目。按 Ctrl / ⌘ K 或头部搜索按钮定位输入框，↑ / ↓ 选择，Enter 打开，Esc 关闭，移开焦点或点击外部关闭。没有公开链接的项目定位到当前页面卡片。
 - 项目配置与工具索引位于 `assets/js/data.js`。项目可触屏滑动、鼠标滚动条／按钮浏览，或聚焦列表后使用左右方向键。未确认公开链接的方向只展示说明。
-- 动态书签用 `textContent` 和文本节点渲染；外链使用 `noopener noreferrer`。favicon 向对应网站的 `/favicon.ico` 请求，使用 `no-referrer`，失败显示首字母；不依赖第三方 favicon 聚合服务。
+- 动态书签用 `textContent` 和文本节点渲染；外链使用 `noopener noreferrer`。GitHub、ChatGPT、TradingView 和 Vue 使用从官网保存的本地图标，见 `assets/images/brands/来源.md`；其余 favicon 向对应网站的 `/favicon.ico` 请求，使用 `no-referrer`，失败显示首字母。不依赖第三方 favicon 聚合服务。
 
 ## 四款工具
 
@@ -68,7 +68,7 @@ BROWSER_EXECUTABLE='/你的Chrome可执行文件路径' \
 node site/tests/browser.cjs
 ```
 
-`BASE_URL` 可覆盖默认的 `http://127.0.0.1:4173`。测试独立创建浏览器上下文，使用上海时区，不读取用户登录态；favicon 在自动化中被阻断以消除外部不稳定因素，真实加载与失败占位另做视觉检查。
+`BASE_URL` 可覆盖默认的 `http://127.0.0.1:4173`。测试独立创建浏览器上下文，使用上海时区，不读取用户登录态；远程 favicon 在自动化中被阻断以消除外部不稳定因素，本地已归档的官网图标正常加载；远程真实加载与失败占位另做视觉检查。
 
 测试覆盖数据接入、分类、收藏、搜索键盘操作、动态新增与 XSS 输入、数据加载／失败／重试、四款工具正常与异常输入、剪贴板成功与拒绝、禁用存储、子目录托管与夏令时跳变，以及 320 / 375 / 768 / 1440 四个视口的首页和四个工具页面。AES 使用 Node.js 独立实现的 EVP 派生与 AES-CBC 向量双向验证。
 

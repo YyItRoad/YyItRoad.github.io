@@ -14,14 +14,19 @@ const track = $('#project-track');
 for (const project of projects) {
   const card = el('article', 'project-card'); card.id = `project-${project.id}`; card.tabIndex = -1;
   const visual = el('div', `project-visual ${project.style}`); visual.setAttribute('aria-hidden', 'true');
-  visual.append(el('span', 'project-symbol', project.icon), el('span', 'project-mini', project.caption));
+  visual.append(iconSVG(project.id));
   const body = el('div', 'project-body');
-  body.append(el('h3', '', project.title), el('p', '', project.description));
-  if (project.url) { const link = externalLink(project.url); link.textContent = project.linkText; body.append(link); }
-  else body.append(el('span', 'project-status', '探索记录 · 暂无公开链接'));
+  const description = el('p', '', project.description); description.title = project.description;
+  body.append(el('h3', '', project.title), description);
+  const tags = el('div', 'project-tags');
+  for (const tag of project.tags.slice(0, 3)) tags.append(el('span', 'tag', tag));
+  body.append(tags);
+  if (project.url) {
+    const link = externalLink(project.url, 'project-link'); link.setAttribute('aria-label', `${project.title}：${project.linkText}`); link.title = project.linkText; card.append(link);
+  } else card.setAttribute('aria-label', `${project.title}，探索方向，暂无公开链接`);
   card.append(visual, body); track.append(card);
 }
-const move = direction => track.scrollBy({ left: direction * (track.firstElementChild.getBoundingClientRect().width + 22), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+const move = direction => track.scrollBy({ left: direction * (track.firstElementChild.getBoundingClientRect().width + 14), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
 $('#projects-prev').addEventListener('click', () => move(-1));
 $('#projects-next').addEventListener('click', () => move(1));
 track.addEventListener('keydown', event => {
@@ -35,7 +40,7 @@ async function refresh() {
     const bookmarks = await loadBookmarks();
     navigation.setItems(bookmarks); favorites.setItems(bookmarks); search.setItems(bookmarks);
     $('#bookmark-count').textContent = `${bookmarks.length} 个值得收藏的网站`;
-    $('#navigation-status').textContent = bookmarks.length ? '选一个分类，开启新的发现。' : '还没有书签，等待公共数据更新。';
+    $('#navigation-status').textContent = bookmarks.length ? '' : '还没有书签，等待公共数据更新。';
   } catch {
     $('#navigation-status').textContent = '导航数据读取失败。请检查网络，或稍后重新加载。';
     $('#favorite-list').replaceChildren(el('p', 'muted', '常用入口暂时不可用，请在网站导航中重新加载。'));
@@ -45,13 +50,23 @@ async function refresh() {
 $('#retry-data').addEventListener('click', refresh);
 refresh();
 
-// 主导航状态随当前可见板块更新。
-const sectionObserver = new IntersectionObserver(entries => {
-  const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-  if (!visible) return;
+// 按页面实际位置更新导航，避免布局变化后仅比较 observer 增量条目。
+const sections = [...document.querySelectorAll('main > section[id]')].filter(section => section.id !== 'favorites');
+function updateCurrentSection() {
+  const marker = scrollY + document.querySelector('.site-header').offsetHeight + 80;
+  let current = sections[0];
+  for (const section of sections) if (section.offsetTop <= marker) current = section;
+  if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) current = sections.at(-1);
   for (const link of document.querySelectorAll('.site-header nav a')) {
-    if (link.hash === `#${visible.target.id}`) link.setAttribute('aria-current', 'location');
+    if (link.hash === `#${current.id}`) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   }
-}, { rootMargin: '-110px 0px -45% 0px', threshold: [0, 0.25, 0.5] });
-for (const section of document.querySelectorAll('main > section[id]')) if (section.id !== 'favorites') sectionObserver.observe(section);
+}
+let pendingNavigationFrame = false;
+window.addEventListener('scroll', () => {
+  if (pendingNavigationFrame) return;
+  pendingNavigationFrame = true;
+  requestAnimationFrame(() => { updateCurrentSection(); pendingNavigationFrame = false; });
+}, { passive: true });
+new ResizeObserver(updateCurrentSection).observe(document.body);
+updateCurrentSection();

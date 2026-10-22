@@ -14,7 +14,7 @@
   --shadow:0 12px 40px #7296d410;
   --radius:24px;
   --font:ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-  --width:1160px
+  --width:1320px
 }
 :root[data-theme=dark] {
   color-scheme:dark;
