@@ -1,0 +1,135 @@
+name: Homepage Staging Deployment Test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: homepage-isolated-deployment-test
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    if: github.ref == 'refs/heads/feat/homepage-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出本次触发的明确版本
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: 组装仅含运行资源的部署包
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test -s site/index.html
+          test -s site/data/bookmarks.json
+          python3 -m json.tool site/data/bookmarks.json >/dev/null
+          mkdir -p /tmp/homepage-staging
+          rsync -a \
+            --include='/assets/vendor/许可证.md' \
+            --exclude='*.md' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='/tests/' \
+            --exclude='/docs/' \
+            --exclude='/assets/images/source/' \
+            site/ /tmp/homepage-staging/
+          printf '%s\n' "$COMMIT_SHA" > /tmp/homepage-staging/deployment-version.txt
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path('/tmp/homepage-staging')
+          files = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in sorted(root.rglob('*')) if p.is_file()}
+          manifest = {'commit': os.environ['COMMIT_SHA'], 'files': files}
+          (root / 'deployment-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+          print('部署包文件数：', len(files))
+          PY
+          curl --fail --silent --show-error --location --max-time 30 \
+            https://yangyang.fun/ -o /tmp/production-home-before.html
+          sha256sum /tmp/production-home-before.html | cut -d ' ' -f 1 > /tmp/production-before.sha
+
+      - name: 配置现有部署连接
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$HOST_KEY"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+
+      - name: 只同步到既有隔离测试目录
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_USER"
+          SSH_OPTS="-i $HOME/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10"
+          ssh $SSH_OPTS "$DEPLOY_USER@$DEPLOY_HOST" '
+            set -eu
+            test -d /www/wwwroot/yangyang.fun
+            test ! -L /www/wwwroot/yangyang.fun/__deploy-test
+            mkdir -p /www/wwwroot/yangyang.fun/__deploy-test
+            test "$(readlink -f /www/wwwroot/yangyang.fun/__deploy-test)" = /www/wwwroot/yangyang.fun/__deploy-test
+            test -w /www/wwwroot/yangyang.fun/__deploy-test
+          '
+          rsync -az --checksum --delete --delay-updates \
+            -e "ssh $SSH_OPTS" /tmp/homepage-staging/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:/www/wwwroot/yangyang.fun/__deploy-test/"
+
+      - name: 逐文件公网哈希验收并确认生产首页未变
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, time
+          from urllib.request import urlopen
+          from urllib.parse import quote
+          base = 'https://yangyang.fun/__deploy-test/'
+          commit = os.environ['EXPECTED_SHA']
+          def get(path):
+              url = base + quote(path) + '?version=' + commit
+              for attempt in range(3):
+                  try:
+                      with urlopen(url, timeout=25) as response:
+                          assert response.status == 200
+                          return response.read()
+                  except Exception:
+                      if attempt == 2: raise
+                      time.sleep(2)
+          manifest = json.loads(get('deployment-manifest.json'))
+          assert manifest['commit'] == commit, '部署清单版本不符'
+          assert get('deployment-version.txt').decode().strip() == commit, '部署版本不符'
+          for path, expected in manifest['files'].items():
+              assert hashlib.sha256(get(path)).hexdigest() == expected, '文件哈希不符：' + path
+          html = get('index.html').decode()
+          assert '知行合一' in html and 'global-search' in html
+          for name in ['crypto', 'json', 'timestamp', 'encoder']:
+              assert 'data-tool="' + name + '"' in get('tools/' + name + '.html').decode()
+          bookmarks = json.loads(get('data/bookmarks.json'))
+          assert isinstance(bookmarks.get('bookmarks'), list)
+          print('公网逐文件哈希通过：', len(manifest['files']), '个文件；书签：', len(bookmarks['bookmarks']))
+          print('已部署版本：', commit)
+          PY
+          curl --fail --silent --show-error --location --max-time 30 \
+            https://yangyang.fun/ -o /tmp/production-home-after.html
+          sha256sum /tmp/production-home-after.html | cut -d ' ' -f 1 > /tmp/production-after.sha
+          cmp /tmp/production-before.sha /tmp/production-after.sha
+          echo '生产首页哈希未改变。'
+
+      - name: 清理临时 SSH 文件
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts

@@ -25,3 +25,5 @@ Use case: illustration-story. Asset type: independent square portrait illustrati
 ## 使用与派生
 
 原始 PNG 按字节保留；WebP 只做格式转换和尺寸优化，未进行语义编辑。Banner 保留完整构图，手机通过 CSS object-position / background-position 响应式裁切；关于我原图缩小至 480 × 480。所有来源记录不包含登录信息或临时下载签名。
+
+原始 PNG 仅保留在本地归档，已按用户最新要求排除出当前 GitHub 交付，网页仍使用对应 WebP。

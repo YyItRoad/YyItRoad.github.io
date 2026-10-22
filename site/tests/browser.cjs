@@ -221,7 +221,7 @@ function legacyDecrypt(ciphertext, password) {
       assert.equal(await page.locator('#tool-status').getAttribute('data-error'), 'true');
     }
     const invalidDate = await page.evaluate(async () => {
-      const { parseDateInput } = await import('/assets/js/tool-core.js');
+      const { parseDateInput } = await import(new URL('../assets/js/tool-core.js', location.href).href);
       try { parseDateInput('2024-02-30T12:00', 'utc'); return false; } catch { return true; }
     });
     assert(invalidDate);

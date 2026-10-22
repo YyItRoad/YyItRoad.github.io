@@ -46,7 +46,7 @@ AES 兼容模式是 OpenSSL `Salted__` 格式、AES-256-CBC 与旧式 MD5 EVP �
 - `assets/images/source/about-explorer-v1.png`：1254 × 1254 原图；`about-explorer-v1.webp`：480 × 480 网页版本约 64 KiB。
 - 人物是生成的虚构插画角色，并非站点所有者照片。完整提示词见 [AI 素材生成记录](docs/AI素材生成记录.md)，来源和哈希见 [网页素材说明](assets/images/素材说明.md)。
 - 小图标与山形标识使用本地 SVG / DOM 线条，路径集中在 `assets/js/icons.js`，不需要生成栅格图标。
-- 早期 `hero-landscape.svg` 保留为实现过程中的旧占位，正式页面已不引用。
+- 原始 PNG、截图、旧 `hero-landscape.svg` 和未使用的原版 ChatGPT 图标只保留在本地归档，由 `site/.gitignore` 排除，不进入当前 GitHub 交付；运行只依赖 WebP 与实际引用的图标。
 
 替换 Banner 时保留原始文件，以新版本文件名放入 `source/`，再导出 WebP 并更新 `assets/css/main.css` 的 `.hero-art`。桌面居中裁切，手机靠右裁切保留人物；替换后需复查 320 / 375 / 768 / 1440 宽度、文案对比度与人物完整性。更换关于我图片时保留中央圆形安全区，更新首页图片引用及此记录。新图不能覆盖原始来源文件。
 
@@ -72,10 +72,16 @@ node site/tests/browser.cjs
 
 测试覆盖数据接入、分类、收藏、搜索键盘操作、动态新增与 XSS 输入、数据加载／失败／重试、四款工具正常与异常输入、剪贴板成功与拒绝、禁用存储、子目录托管与夏令时跳变，以及 320 / 375 / 768 / 1440 四个视口的首页和四个工具页面。AES 使用 Node.js 独立实现的 EVP 派生与 AES-CBC 向量双向验证。
 
-[自动化测试结果](docs/自动化测试结果.md) · [桌面截图](docs/screenshots/desktop.png) · [深色截图](docs/screenshots/desktop-dark.png) · [手机截图](docs/screenshots/mobile.png) · [手机工具截图](docs/screenshots/mobile-tool.png) · [搜索浮层截图](docs/screenshots/search.png)
+[自动化测试结果](docs/自动化测试结果.md)。截图由测试在本地 `site/docs/screenshots/` 生成，不再提交到 GitHub。
 
 自动化验证使用桌面 Chrome 的视口模拟，尚未验证真实 iOS Safari / Android 设备。最终视觉与文案仍需要维护者验收。
 
 ## 后续发布
 
 本次只提交 `site/` 供测试分支 PR 审查；没有修改线上服务、Nginx、n8n、Secrets 或部署配置，也没有执行部署。维护者验收后，按仓库 `DEPLOYMENT.md` 另行安排合并与发布。现有生产流程包含 `rsync --delete`，首次上线应由维护者核对旧文件替换范围，开发任务不会自行合并到 `main`。
+
+## 隔离部署测试
+
+开发分支的 `.github/workflows/homepage-staging-test.yml` 仅手动触发，检出触发该次运行的提交，将运行资源同步到既有 `/www/wwwroot/yangyang.fun/__deploy-test/`。它不更新 Nginx、Secrets、n8n 或生产首页，也不合并分支。
+
+部署包排除文档、测试、截图、原始大图、忽略文件与 `.DS_Store`，保留 CryptoJS 许可证。流程写入部署版本和文件哈希清单，逐个从公网读取并比对；部署前后比较生产首页哈希。只在隔离测试目录执行清理，先检查目录没有符号链接重定向。最终仍需浏览器对公网版本执行端到端验证。
