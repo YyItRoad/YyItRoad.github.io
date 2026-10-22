@@ -1,0 +1,214 @@
+.tool-header {
+  border-bottom:1px solid var(--line);
+  padding:20px 0
+}
+.tool-header .wrap {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px
+}
+.tool-brand {
+  font-weight:800;
+  font-size:20px
+}
+.tool-header-actions {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  font-size:13px
+}
+.tool-layout {
+  max-width:940px;
+  margin:0 auto;
+  padding:50px 28px 70px
+}
+.breadcrumb {
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:25px
+}
+.tool-heading {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:26px
+}
+.tool-heading h1 {
+  font-size:30px;
+  line-height:1.4;
+  margin:0 0 5px
+}
+.tool-heading p {
+  font-size:13px;
+  margin:0
+}
+.local-badge {
+  font-size:11px;
+  background:var(--accent-soft);
+  border-radius:30px;
+  padding:3px 12px;
+  display:inline-block;
+  margin-bottom:20px
+}
+.tool-workspace {
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  padding:30px
+}
+.field {
+  margin-bottom:20px
+}
+.field label,.output-label {
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:9px
+}
+.field textarea {
+  display:block;
+  width:100%;
+  min-height:170px;
+  resize:vertical;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:14px;
+  line-height:1.7
+}
+.field input {
+  width:100%
+}
+.field small {
+  color:var(--muted);
+  display:block;
+  font-size:12px;
+  margin-top:6px
+}
+.inline-field {
+  display:flex;
+  gap:10px
+}
+.inline-field input {
+  flex:1
+}
+.inline-field button {
+  white-space:nowrap
+}
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:22px
+}
+.result-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px
+}
+.result-head label {
+  margin:0
+}
+.result-head button {
+  padding:4px 12px;
+  font-size:12px
+}
+#result {
+  background:var(--bg);
+  min-height:160px
+}
+#tool-status {
+  font-size:13px;
+  min-height:24px;
+  overflow-wrap:anywhere
+}
+#tool-status[data-error=true] {
+  color:#b34935
+}
+.tool-note {
+  margin-top:28px;
+  padding:20px 24px;
+  background:var(--soft);
+  border-radius:18px;
+  font-size:12px
+}
+.tool-note p {
+  margin:8px 0 0
+}
+.tool-nav {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:30px
+}
+.tool-nav a {
+  font-size:12px;
+  padding:6px 12px;
+  border:1px solid var(--line);
+  border-radius:30px
+}
+.tool-nav a[aria-current=page] {
+  background:var(--accent-soft);
+  border-color:var(--accent)
+}
+.time-fields {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px
+}
+.time-fields select {
+  width:100%
+}
+.field select {
+  width:100%
+}
+.tool-footer {
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:30px
+}
+@media(max-width:640px) {
+  .tool-layout {
+    padding:30px 18px 45px
+  }
+  .tool-header {
+    padding:15px 0
+  }
+  .tool-brand {
+    font-size:16px
+  }
+  .tool-header-actions {
+    font-size:12px;
+    gap:10px
+  }
+  .tool-heading {
+    align-items:start;
+    gap:12px
+  }
+  .tool-heading h1 {
+    font-size:24px
+  }
+  .tool-workspace {
+    padding:20px 16px;
+    border-radius:18px
+  }
+  .time-fields {
+    grid-template-columns:1fr;
+    gap:0
+  }
+  .actions {
+    gap:8px
+  }
+  .actions button {
+    font-size:13px;
+    padding:8px 12px
+  }
+  .inline-field button {
+    padding:8px 10px
+  }
+  .field textarea,.field input,.field select {
+    font-size:16px
+  }
+}

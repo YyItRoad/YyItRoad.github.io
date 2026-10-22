@@ -2,13 +2,160 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>YangYang.fun · 部署联调页面</title>
-<style>
-:root{font-family:system-ui,-apple-system,"Microsoft Yahei",sans-serif;color:#243247;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:940px;margin:0 auto;padding:64px 24px}h1{font-size:clamp(32px,5vw,48px);margin-bottom:10px}p{color:#61718a}main{background:#fff;border:1px solid #e5eaf1;border-radius:18px;padding:28px;margin-top:32px;box-shadow:0 15px 40px #2432470a}#status{font-weight:600}ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));padding:0;gap:12px;list-style:none}li{border:1px solid #e8edf4;padding:16px;border-radius:12px}a{color:#345f9e;text-decoration:none;font-weight:600}small{color:#8d98aa}footer{padding-top:28px;color:#96a1b1;font-size:13px}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="YangYang 的个人工作台。收藏好用的网站，制作趁手的工具，记录技术与生活中的探索。">
+<meta name="theme-color" content="#edf4ff">
+<title>YangYang.fun · 知行合一
+</title>
+<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<script src="assets/js/theme.js">
+</script>
+<script type="module" src="assets/js/main.js">
+</script>
 </head>
-<body><div class="wrap"><header><h1>知行合一</h1><p>YangYang.fun · 网站部署链路联调</p></header><main><h2>导航数据读取测试</h2><p id="status">正在加载 /data/bookmarks.json …</p><ul id="bookmarks"></ul></main><footer>此页面仅用于 GitHub Actions → SSH → Nginx 联调，正式页面将交由 Codex 开发。</footer></div>
-<script>
-(async()=>{const status=document.querySelector('#status');const list=document.querySelector('#bookmarks');try{const response=await fetch('/data/bookmarks.json',{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);const payload=await response.json();if(!Array.isArray(payload.bookmarks))throw Error('缺少 bookmarks 数组');status.textContent='已成功读取 '+payload.bookmarks.length+' 条书签';for(const item of payload.bookmarks){const li=document.createElement('li');const a=document.createElement('a');a.href=item.url;a.textContent=item.title;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li)}}catch(err){status.textContent='导航数据读取失败：'+err.message;status.style.color='#a33'}})();
-</script></body></html>
+<body><a class="skip-link" href="#main">跳到主要内容</a>
+<header class="site-header">
+<div class="wrap header-inner"><a class="brand" href="#home" aria-label="YangYang.fun 首页"><span class="brand-mark" data-icon="mountain" aria-hidden="true"></span>YangYang<span>.fun</span></a>
+<nav aria-label="主导航"><a href="#home">首页</a><a href="#navigation">导航</a><a href="#tools">工具</a><a href="#projects">项目</a><a href="#about">关于</a>
+</nav>
+<div class="header-actions"><button class="icon-button" id="search-open" aria-label="打开全局搜索" title="搜索（Ctrl / ⌘ K）">⌕</button><button class="icon-button" data-theme-toggle aria-label="切换深色模式" title="切换主题">◐</button>
+</div>
+</div>
+</header>
+<main id="main">
+<section class="hero" id="home" aria-labelledby="hero-title">
+<div class="hero-art" role="img" aria-label="山峦、湖面与夕阳，背包青年坐在右侧岩石上">
+</div>
+<div class="wrap hero-inner">
+<h1 id="hero-title">知行合一
+</h1>
+<p class="hero-intro">在代码、交易、创作与生活中，<br>探索更大的可能。
+</p>
+<div class="hero-search" id="search-container">
+<div class="search-field"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="global-search">全局搜索</label><input id="global-search" type="search" placeholder="搜索网站、工具或内容…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="global-results"><kbd>⌘ / Ctrl K</kbd>
+</div>
+<div id="global-results" class="search-results" role="listbox" aria-label="全局搜索结果" hidden>
+</div>
+<span id="search-announcement" class="visually-hidden" role="status"></span>
+</div>
+</div>
+</section>
+<section class="wrap favorites-section" id="favorites" aria-labelledby="favorites-title">
+<div class="section-head">
+<div class="section-title"><span class="section-icon" data-icon="favorites" aria-hidden="true"></span>
+<div class="section-title-text">
+<h2 id="favorites-title">常用入口
+</h2>
+<p class="section-subtitle">日常高频使用，一触即达
+</p>
+</div>
+</div>
+<button id="edit-favorites" class="text-button" aria-expanded="false" aria-controls="favorites-editor">⚙ 自定义入口</button>
+</div>
+<div id="favorite-list" class="favorite-list" aria-live="polite">
+<p>正在加载常用入口…
+</p>
+</div>
+<div id="favorites-editor" class="favorites-editor" hidden>
+<p>只调整当前浏览器的显示与顺序，不会修改公共书签数据。
+</p>
+<div id="preference-list">
+</div>
+<button id="reset-favorites" class="text-button">恢复默认顺序与显示</button>
+<p id="preference-status" role="status">
+</p>
+</div>
+</section>
+<section class="tools-section section" id="tools" aria-labelledby="tools-title">
+<div class="wrap">
+<div class="section-head">
+<div class="section-title"><span class="section-icon" data-icon="tools" aria-hidden="true"></span>
+<div class="section-title-text">
+<h2 id="tools-title">我的工具
+</h2>
+<p class="section-subtitle">简单、实用的本地工具
+</p>
+</div>
+</div>
+</div>
+<div id="tool-grid" class="tool-grid">
+</div>
+</div>
+</section>
+<section class="section wrap" id="navigation" aria-labelledby="navigation-title">
+<div class="section-head">
+<div class="section-title"><span class="section-icon" data-icon="navigation" aria-hidden="true"></span>
+<div class="section-title-text">
+<h2 id="navigation-title">网站导航
+</h2>
+<p class="section-subtitle">按主题整理，点选分类即可展开
+</p>
+</div>
+</div>
+<span id="bookmark-count" class="section-count"></span>
+</div>
+<div id="category-grid" class="category-grid" aria-label="导航分类">
+</div>
+<div id="navigation-status" class="navigation-status" role="status">正在加载导航数据…
+</div>
+<button id="retry-data" hidden>重新加载数据</button>
+<div id="navigation-panel" class="navigation-panel" hidden>
+<div class="navigation-toolbar"><label class="visually-hidden" for="category-search">搜索当前分类</label><input id="category-search" type="search" placeholder="搜索当前分类的网站…"><button id="collapse-navigation">收起列表 ↑</button>
+</div>
+<div id="bookmark-grid" class="bookmark-grid">
+</div>
+<p id="category-status" class="visually-hidden" role="status">
+</p>
+</div>
+</section>
+<section class="projects-section section" id="projects" aria-labelledby="projects-title">
+<div class="wrap">
+<div class="section-head">
+<div class="section-title"><span class="section-icon" data-icon="projects" aria-hidden="true"></span>
+<div class="section-title-text">
+<h2 id="projects-title">我的项目
+</h2>
+<p class="section-subtitle">一些正在探索与构建的有趣方向
+</p>
+</div>
+</div>
+<div class="project-controls"><button class="icon-button" id="projects-prev" aria-label="向左浏览项目">←</button><button class="icon-button" id="projects-next" aria-label="向右浏览项目">→</button>
+</div>
+</div>
+<div id="project-track" class="project-track" tabindex="0" role="region" aria-label="项目横向列表，可用左右方向键滚动">
+</div>
+</div>
+</section>
+<section class="about-section wrap" id="about" aria-labelledby="about-title">
+<div class="about-content">
+<div class="about-copy">
+<h2 id="about-title">关于我
+</h2>
+<p>你好，我是 YangYang。喜欢把想法做成能用的东西，也喜欢在日常里发现值得记录的小事。
+</p>
+<p>技术上关注 Spring Boot + Vue 的 CMS 开发、数据治理，以及 Kettle / Flink 数据处理。工作之外，持续探索交易研究和 AI 自动化，也尝试用工具记录孩子的成长。
+</p>
+<div class="about-tags"><span>技术与创造</span><span>AI 与自动化</span><span>生活与记录</span>
+</div>
+</div>
+<div class="about-art"><img src="assets/images/about-explorer-v1.webp" width="480" height="480" loading="lazy" alt="背包青年面向湖山夕阳的角色插画">
+</div>
+<div class="about-quote" aria-hidden="true">生活不止眼前的代码<br>还有远方的山和海<svg viewBox="0 0 150 45" fill="none" stroke="currentColor"><path d="m5 43 36-38 34 38M23 23l18-18 14 25m12 13 25-28 35 28m-43-20 8-8 14 15m10 8 14-20 17 25"/></svg>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="wrap footer-inner"><span>YangYang.fun · 保持好奇，知行合一。</span><span>用好奇心构建 · <a href="#home">回到顶部 ↑</a></span>
+</div>
+</footer>
+<div id="toast" class="toast" role="status" hidden>
+</div>
+<noscript>
+<p class="wrap">请启用 JavaScript 以加载书签、搜索和使用本地工具。
+</p>
+</noscript>
+</body>
+</html>

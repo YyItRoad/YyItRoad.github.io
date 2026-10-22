@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="支持中文与 emoji。Base64 是编码，不是加密。">
+<title>Base64 / URL 编解码 · YangYang.fun
+</title>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/tools.css">
+<script src="../assets/js/theme.js">
+</script>
+<script type="module" src="../assets/js/tool-page.js">
+</script>
+</head>
+<body data-tool="encoder"><a class="skip-link" href="#workspace">跳到工具</a>
+<header class="tool-header">
+<div class="wrap"><a class="tool-brand" href="../index.html">✳ YangYang.fun</a>
+<div class="tool-header-actions"><a href="../index.html#tools">← 返回工具箱</a><button data-theme-toggle aria-label="切换深色模式">◐</button>
+</div>
+</div>
+</header>
+<main class="tool-layout">
+<div class="breadcrumb"><a href="../index.html">首页</a> / 工具 / Base64 / URL 编解码
+</div>
+<div class="tool-heading"><span class="icon" style="background:var(--accent-soft)" aria-hidden="true">↔</span>
+<div>
+<h1>Base64 / URL 编解码
+</h1>
+<p>支持中文与 emoji。Base64 是编码，不是加密。
+</p>
+</div>
+</div>
+<span class="local-badge">◌ 浏览器本地运行 · 无输入上传</span>
+<section id="workspace" class="tool-workspace" aria-label="Base64 / URL 编解码工作区">
+<div class="field"><label for="source">输入文本</label><textarea id="source" spellcheck="false" placeholder="输入文本、Base64 或 URL 参数"></textarea>
+</div>
+<div class="actions"><button data-action="base64-encode" class="primary">Base64 编码</button><button data-action="base64-decode" class="">Base64 解码</button><button data-action="url-encode" class="">URL 编码</button><button data-action="url-decode" class="">URL 解码</button><button id="clear">清空</button>
+</div>
+<p id="tool-status" role="status" aria-live="polite">准备好了，开始试试吧。
+</p>
+<div class="field">
+<div class="result-head"><label class="output-label" for="result">处理结果</label><button id="copy">复制结果</button>
+</div>
+<textarea id="result" readonly placeholder="结果会出现在这里" spellcheck="false"></textarea>
+</div>
+</section>
+<aside class="tool-note"><strong>编码说明</strong>
+<p>Base64 使用 UTF-8 文本和标准 Base64 字母表。URL 操作使用 encodeURIComponent / decodeURIComponent，适合编码单个参数，不是保留分隔符的完整网址编码。不会把 + 自动当成空格。无效 Base64、UTF-8 或百分号编码会提示错误。
+</p>
+</aside>
+<nav class="tool-nav" aria-label="其他工具"><a href="crypto.html">AES 加密 / 解密</a><a href="json.html">JSON 格式化与校验</a><a href="encoder.html" aria-current="page">Base64 / URL 编解码</a><a href="timestamp.html">日期与时间戳转换</a>
+</nav>
+<footer class="tool-footer">小工具，让日常轻一点。 · YangYang.fun
+</footer>
+</main>
+</body>
+</html>

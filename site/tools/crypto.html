@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="兼容旧版 CryptoJS 口令模式，数据只在本地处理。">
+<title>AES 加密 / 解密 · YangYang.fun
+</title>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/tools.css">
+<script src="../assets/js/theme.js">
+</script>
+<script defer src="../assets/vendor/crypto-js-4.2.0.js">
+</script>
+<script type="module" src="../assets/js/tool-page.js">
+</script>
+</head>
+<body data-tool="crypto"><a class="skip-link" href="#workspace">跳到工具</a>
+<header class="tool-header">
+<div class="wrap"><a class="tool-brand" href="../index.html">✳ YangYang.fun</a>
+<div class="tool-header-actions"><a href="../index.html#tools">← 返回工具箱</a><button data-theme-toggle aria-label="切换深色模式">◐</button>
+</div>
+</div>
+</header>
+<main class="tool-layout">
+<div class="breadcrumb"><a href="../index.html">首页</a> / 工具 / AES 加密 / 解密
+</div>
+<div class="tool-heading"><span class="icon" style="background:var(--accent-soft)" aria-hidden="true">⌘</span>
+<div>
+<h1>AES 加密 / 解密
+</h1>
+<p>兼容旧版 CryptoJS 口令模式，数据只在本地处理。
+</p>
+</div>
+</div>
+<span class="local-badge">◌ 浏览器本地运行 · 无输入上传</span>
+<section id="workspace" class="tool-workspace" aria-label="AES 加密 / 解密工作区">
+<div class="field"><label for="source">原文或密文</label><textarea id="source" spellcheck="false" placeholder="输入要加密的文本，或粘贴旧版密文"></textarea>
+</div>
+<div class="field"><label for="passphrase">口令</label>
+<div class="inline-field"><input id="passphrase" type="password" autocomplete="off" spellcheck="false" placeholder="输入加密或解密口令"><button id="toggle-passphrase" aria-pressed="false">显示口令</button>
+</div>
+<small>空格也是口令的一部分；不会保存或上传口令。</small>
+</div>
+<div class="actions"><button data-action="encrypt" class="primary">加密</button><button data-action="decrypt" class="">解密</button><button id="clear">清空</button>
+</div>
+<p id="tool-status" role="status" aria-live="polite">准备好了，开始试试吧。
+</p>
+<div class="field">
+<div class="result-head"><label class="output-label" for="result">处理结果</label><button id="copy">复制结果</button>
+</div>
+<textarea id="result" readonly placeholder="结果会出现在这里" spellcheck="false"></textarea>
+</div>
+</section>
+<aside class="tool-note"><strong>兼容性与安全限制</strong>
+<p>采用 CryptoJS 4.2.0 的 AES 口令模式（OpenSSL Salted__、AES-256-CBC、旧式口令派生），与旧 m.html 的 CryptoJS.AES.encrypt(raw, key) / decrypt 行为一致。此兼容模式使用旧式派生算法且没有认证标签，不适合高安全性场景；错误口令或被篡改的密文也无法始终可靠检测。请使用强口令，重要资料请采用有认证加密及现代口令派生的专用工具。不要把口令与密文存放在一起。
+</p>
+</aside>
+<nav class="tool-nav" aria-label="其他工具"><a href="crypto.html" aria-current="page">AES 加密 / 解密</a><a href="json.html">JSON 格式化与校验</a><a href="encoder.html">Base64 / URL 编解码</a><a href="timestamp.html">日期与时间戳转换</a>
+</nav>
+<footer class="tool-footer">小工具，让日常轻一点。 · YangYang.fun
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="在秒、毫秒与日常日期之间，轻松往返。">
+<title>日期与时间戳转换 · YangYang.fun
+</title>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/tools.css">
+<script src="../assets/js/theme.js">
+</script>
+<script type="module" src="../assets/js/tool-page.js">
+</script>
+</head>
+<body data-tool="timestamp"><a class="skip-link" href="#workspace">跳到工具</a>
+<header class="tool-header">
+<div class="wrap"><a class="tool-brand" href="../index.html">✳ YangYang.fun</a>
+<div class="tool-header-actions"><a href="../index.html#tools">← 返回工具箱</a><button data-theme-toggle aria-label="切换深色模式">◐</button>
+</div>
+</div>
+</header>
+<main class="tool-layout">
+<div class="breadcrumb"><a href="../index.html">首页</a> / 工具 / 日期与时间戳转换
+</div>
+<div class="tool-heading"><span class="icon" style="background:var(--accent-soft)" aria-hidden="true">◷</span>
+<div>
+<h1>日期与时间戳转换
+</h1>
+<p>在秒、毫秒与日常日期之间，轻松往返。
+</p>
+</div>
+</div>
+<span class="local-badge">◌ 浏览器本地运行 · 无输入上传</span>
+<section id="workspace" class="tool-workspace" aria-label="日期与时间戳转换工作区">
+<div class="time-fields">
+<div class="field"><label for="timestamp">时间戳</label><input id="timestamp" type="text" inputmode="numeric" placeholder="例如：1728000000" autocomplete="off">
+</div>
+<div class="field"><label for="unit">时间戳单位</label><select id="unit"><option value="seconds">秒（s）</option><option value="milliseconds">毫秒（ms）</option></select>
+</div>
+</div>
+<div class="time-fields">
+<div class="field"><label for="datetime">日期与时间</label><input id="datetime" type="datetime-local" step="0.001">
+</div>
+<div class="field"><label for="timezone">日期输入时区</label><select id="timezone"><option value="local">浏览器本地时区</option><option value="utc">UTC</option></select><small id="timezone-name"></small>
+</div>
+</div>
+<div class="actions"><button data-action="to-date" class="primary">时间戳 → 日期</button><button data-action="to-timestamp" class="">日期 → 时间戳</button><button data-action="now" class="">填入当前时间</button><button id="clear">清空</button>
+</div>
+<p id="tool-status" role="status" aria-live="polite">准备好了，开始试试吧。
+</p>
+<div class="field">
+<div class="result-head"><label class="output-label" for="result">处理结果</label><button id="copy">复制结果</button>
+</div>
+<textarea id="result" readonly placeholder="结果会出现在这里" spellcheck="false"></textarea>
+</div>
+</section>
+<aside class="tool-note"><strong>时间说明</strong>
+<p>时间戳从 Unix 纪元起算，支持负整数。请明确选择秒或毫秒。日期输入按所选 UTC 或浏览器本地时区解释，默认本地时区；不接受无效日期和夏令时跳变造成的不存在时间。输出同时显示 UTC 与本地时间。
+</p>
+</aside>
+<nav class="tool-nav" aria-label="其他工具"><a href="crypto.html">AES 加密 / 解密</a><a href="json.html">JSON 格式化与校验</a><a href="encoder.html">Base64 / URL 编解码</a><a href="timestamp.html" aria-current="page">日期与时间戳转换</a>
+</nav>
+<footer class="tool-footer">小工具，让日常轻一点。 · YangYang.fun
+</footer>
+</main>
+</body>
+</html>
