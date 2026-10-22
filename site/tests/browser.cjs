@@ -312,6 +312,36 @@ function legacyDecrypt(ciphertext, password) {
       assert.match(await dstPage.locator('#tool-status').innerText(), /夏令时/);
     } finally { await dst.close(); }
   });
+  await test('新增工具同步首页、搜索和详情导航，当前页与子路径链接正确', async () => {
+    const growth = await context.newPage();
+    const source = fs.readFileSync(path.join(__dirname, '../assets/js/data.js'), 'utf8');
+    const extra = [
+      { id:'sample5', title:'新增工具甲', description:'扩展测试', tags:['扩展'], url:'tools/sample5.html' },
+      { id:'sample6', title:'新增工具乙', description:'扩展测试', tags:['扩展'], url:'tools/sample6.html' }
+    ];
+    await growth.route('**/assets/js/data.js', route => route.fulfill({
+      contentType:'text/javascript', body:source.replace('\n];', ',\n' + extra.map(item => JSON.stringify(item)).join(',\n') + '\n];')
+    }));
+    try {
+      await growth.goto(base);
+      await growth.waitForFunction(() => document.querySelectorAll('#tool-grid .tool-card').length === 6);
+      await growth.locator('#global-search').fill('新增工具');
+      assert.equal(await growth.locator('#global-results [role=option]').count(), 2);
+      await growth.setViewportSize({ width:320, height:900 });
+      for (const tool of ['crypto','json','timestamp','encoder']) {
+        await growth.goto(`${base}/tools/${tool}.html`);
+        await growth.waitForFunction(() => document.querySelectorAll('.tool-nav a').length === 6);
+        const current = growth.locator('.tool-nav [aria-current=page]');
+        assert.equal(await current.count(), 1);
+        assert.equal(await current.getAttribute('href'), new URL(`tools/${tool}.html`, base.replace(/\/?$/, '/')).href);
+        const added = growth.locator('.tool-nav a').filter({ hasText:'新增工具甲' });
+        assert.equal(await added.getAttribute('href'), new URL('tools/sample5.html', base.replace(/\/?$/, '/')).href);
+        assert.equal(await added.locator('svg').count(), 1);
+        assert(await growth.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      }
+      await growth.locator('.tool-nav').screenshot({ path:path.join(shots, 'tool-nav-extra.png') });
+    } finally { await growth.close(); }
+  });
   await test('所有页面无未捕获 JavaScript 错误', async () => { assert.deepEqual(errors, []); });
   await browser.close();
   const success = results.filter(item => item.ok).length;
