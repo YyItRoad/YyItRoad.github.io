@@ -23,11 +23,11 @@ backup_dir="$backup_base/$release_id"
 protected=(--exclude='/__deploy-test/' --exclude='/.well-known/' --exclude='/.user.ini' --exclude='/.htaccess' --exclude='/404.html')
 
 restore() {
-  test -s "$backup_dir/previous-index.sha256"
-  test -s "$backup_dir/content/index.html"
-  rsync -a --checksum --delete --delay-updates "${protected[@]}" "$backup_dir/content/" "$webroot/"
-  actual=$(sha256sum "$webroot/index.html" | cut -d ' ' -f 1)
-  test "$actual" = "$(cat "$backup_dir/previous-index.sha256")"
+  test -s "$backup_dir/previous-index.sha256" || return 1
+  test -s "$backup_dir/content/index.html" || return 1
+  rsync -a --checksum --delete --delay-updates "${protected[@]}" "$backup_dir/content/" "$webroot/" || return 1
+  actual=$(sha256sum "$webroot/index.html" | cut -d ' ' -f 1) || return 1
+  test "$actual" = "$(cat "$backup_dir/previous-index.sha256")" || return 1
   echo '旧站已从本次私有备份恢复，首页哈希一致。'
 }
 if [ "$operation" = rollback ]; then

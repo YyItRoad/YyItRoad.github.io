@@ -76,12 +76,20 @@ node site/tests/browser.cjs
 
 自动化验证使用桌面 Chrome 的视口模拟，尚未验证真实 iOS Safari / Android 设备。最终视觉与文案仍需要维护者验收。
 
-## 后续发布
+## 当前正式发布状态
 
-本次只提交 `site/` 供测试分支 PR 审查；没有修改线上服务、Nginx、n8n、Secrets 或部署配置，也没有执行部署。维护者验收后，按仓库 `DEPLOYMENT.md` 另行安排合并与发布。现有生产流程包含 `rsync --delete`，首次上线应由维护者核对旧文件替换范围，开发任务不会自行合并到 `main`。
+用户验收后明确要求替换正式根目录，已于 2026-10-22 发布到 [yangyang.fun](https://yangyang.fun/)，运行版本为 `a7a900a5c03900ac6a7d0170c321b6d13a958967`。保留 n8n 并发同步的 19 条书签、4 个收藏；增加 HTML 中 CSS/JS 内容指纹，避免旧站 12 小时缓存造成错配。
 
-## 隔离部署测试
+正式域名 29 个文件逐一通过 SHA-256 验收，17/17 组浏览器端到端通过。旧站已保存到部署账户私有的 `$HOME/yangyang-fun-backups/39766572772-1/content/`。详见 [正式根目录发布记录](docs/正式根目录发布记录.md)。未合并到 `main`，未改 Nginx、n8n 或 Secrets。
 
-开发分支的 `.github/workflows/homepage-staging-test.yml` 仅手动触发，检出触发该次运行的提交，将运行资源同步到既有 `/www/wwwroot/yangyang.fun/__deploy-test/`。它不更新 Nginx、Secrets、n8n 或生产首页，也不合并分支。
+## 手动发布流程
 
-部署包排除文档、测试、截图、原始大图、忽略文件与 `.DS_Store`，保留 CryptoJS 许可证。流程写入部署版本和文件哈希清单，逐个从公网读取并比对；部署前后比较生产首页哈希。只在隔离测试目录执行清理，先检查目录没有符号链接重定向。本轮公网浏览器端到端 17/17 组已通过，版本、Actions 链接与范围见 [隔离部署测试结果](docs/隔离部署测试结果.md)。
+开发分支 `.github/workflows/homepage-staging-test.yml` 支持三种手动操作，均限定 `feat/homepage-v1` 分支，不自动触发正式部署：
+
+- `inspect`：只读检查正式目录、磁盘占用与备份空间。
+- `staging`：将明确 `expected_source_sha` 对应的运行资源同步到既有 `__deploy-test/`。未指定源码时采用触发任务的 SHA；版本与文件哈希由公网验收，生产首页哈希保持不变。
+- `promote`：必须给出明确 40 位 `expected_source_sha`，从该源码独立重建清单并比对隔离站，再备份并发布正式根目录。发布及公网验收失败会从本次备份恢复。
+
+部署包排除文档、测试、截图、原始大图、忽略文件与 `.DS_Store`，保留 CryptoJS 许可证。正式发布保留 `.well-known/`、`.user.ini`、`.htaccess`、`404.html` 和 `__deploy-test/`，发布前后核对这些保护项的内容与权限。只会修改固定站点目录，检查路径不被符号链接重定向。
+
+[最初隔离部署验收](docs/隔离部署测试结果.md) 保留为历史证据；当前线上状态以正式发布记录和公网 `deployment-version.txt` 为准。
