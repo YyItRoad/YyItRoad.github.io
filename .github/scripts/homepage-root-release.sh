@@ -58,6 +58,8 @@ for rel, expected in manifest['files'].items():
 print('已验收源文件验证通过：', len(manifest['files']))
 PY
 
+echo '旧站 assets 中最大的文件（字节）：'
+find "$webroot/assets" -type f -printf '%s %P\n' | sort -nr | sed -n '1,10p'
 required_kb=$(du -sk --exclude=__deploy-test "$webroot" | cut -f 1)
 available_kb=$(df -Pk "$HOME" | awk 'END {print $4}')
 test "$available_kb" -gt "$((required_kb * 2 + 10240))"

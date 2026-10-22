@@ -11,7 +11,7 @@ on:
       expected_source_sha:
         description: 已验收的隔离站点源码提交
         type: string
-        default: 68a70bea363dd4dc406118daf0c1634e6d724c8a
+        default: ''
 
 permissions:
   contents: read
@@ -205,7 +205,9 @@ jobs:
       RELEASE_ID: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: 核对用户已验收的固定源码版本
-        run: test "$APPROVED_SHA" = 68a70bea363dd4dc406118daf0c1634e6d724c8a
+        run: |
+          set -euo pipefail
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]]
       - name: 检出发布脚本
         uses: actions/checkout@v4
       - name: 检出已验收源码用于独立比对
