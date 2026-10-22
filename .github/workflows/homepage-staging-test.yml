@@ -2,6 +2,16 @@ name: Homepage Staging Deployment Test
 
 on:
   workflow_dispatch:
+    inputs:
+      operation:
+        description: 执行隔离测试、正式根目录检查或发布已验收版本
+        type: choice
+        options: [staging, inspect, promote]
+        default: staging
+      expected_source_sha:
+        description: 已验收的隔离站点源码提交
+        type: string
+        default: a425c8ab6a9b48b062b867c195dd17eec6deccd8
 
 permissions:
   contents: read
@@ -12,7 +22,7 @@ concurrency:
 
 jobs:
   deploy-staging:
-    if: github.ref == 'refs/heads/feat/homepage-v1'
+    if: github.ref == 'refs/heads/feat/homepage-v1' && (inputs.operation == 'staging' || inputs.operation == '')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -130,6 +140,56 @@ jobs:
           cmp /tmp/production-before.sha /tmp/production-after.sha
           echo '生产首页哈希未改变。'
 
+      - name: 清理临时 SSH 文件
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+  inspect-root:
+    if: github.ref == 'refs/heads/feat/homepage-v1' && inputs.operation == 'inspect'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 配置现有部署连接
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_KEY"
+          test -n "$HOST_KEY"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: 只读检查正式根目录与备份空间
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+            "$DEPLOY_USER@$DEPLOY_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          webroot=/www/wwwroot/yangyang.fun
+          test -d "$webroot"
+          test "$(readlink -f "$webroot")" = "$webroot"
+          test -w "$webroot"
+          echo '正式根目录一级清单：'
+          find "$webroot" -mindepth 1 -maxdepth 1 -printf '%y %f %s bytes\n'
+          echo '正式站点体积（不含隔离测试目录）：'
+          du -sk --exclude=__deploy-test "$webroot"
+          echo '目录内符号链接：'
+          find "$webroot" -maxdepth 2 -type l -printf '%p -> %l\n'
+          echo '部署账户私有目录可写：'
+          test -d "$HOME" && test -w "$HOME" && echo yes
+          echo '备份目标不在网站目录内：'
+          case "$(readlink -f "$HOME")/yangyang-fun-backups" in "$webroot"|"$webroot"/*) exit 1;; *) echo yes;; esac
+          echo '可用空间：'
+          df -Pk "$webroot" "$HOME"
+          echo '隔离测试提交：'
+          cat "$webroot/__deploy-test/deployment-version.txt"
+          REMOTE
       - name: 清理临时 SSH 文件
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
