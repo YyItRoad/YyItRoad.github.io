@@ -8,17 +8,19 @@ body {
   position:sticky;
   top:0;
   z-index:60;
-  background:color-mix(in srgb,var(--bg) 62%,transparent);
-  backdrop-filter:blur(20px);
+  background:color-mix(in srgb,var(--bg) 28%,transparent);
+  backdrop-filter:blur(10px);
   border-bottom:1px solid #ffffff60
 }
 .header-inner {
   height:100%;
-  display:flex;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
   align-items:center;
   gap:30px
 }
 .brand {
+  justify-self:start;
   font-weight:800;
   font-size:24px;
   letter-spacing:-.6px;
@@ -38,7 +40,7 @@ body {
 .site-header nav {
   display:flex;
   gap:35px;
-  margin:auto;
+  margin:0;
   font-size:14px;
   font-weight:600
 }
@@ -60,6 +62,7 @@ body {
   background:var(--accent)
 }
 .header-actions {
+  justify-self:end;
   display:flex;
   gap:14px
 }
@@ -90,7 +93,7 @@ body {
 }
 .hero-art {
   position:absolute;
-  inset:0 0 -170px;
+  inset:-64px 0 -170px;
   z-index:-2;
   background:url('../images/hero-sunset-v1.webp') center -55px/cover no-repeat;
   pointer-events:none
@@ -867,6 +870,7 @@ mark {
     height:106px
   }
   .header-inner {
+    display:flex;
     flex-wrap:wrap;
     align-content:center;
     justify-content:space-between;
@@ -1189,7 +1193,7 @@ mark {
 @media(min-width:901px) and (max-width:1100px) { .about-content { grid-template-columns:100px 1fr 220px; gap:22px; } .about-quote { display:block; font-size:15px; } }
 
 /* 与确认稿校准桌面板块高度和图文比例。 */
-.hero-art { background-position:65% -55px; }
+.hero-art { background-position:65% 9px; }
 .section,.favorites-section { padding:14px 18px; }
 .section-head { margin-bottom:12px; }
 .section-head h2 { font-size:20px; line-height:1.25; margin-bottom:0; }
@@ -1203,7 +1207,7 @@ mark {
 .about-content p { line-height:1.7; margin-bottom:5px; }
 .about-tags { display:none; }
 @media(max-width:640px) {
-  .hero-art { background-position:82% center; }
+  .hero-art { top:-106px; background-position:82% center; }
   .section,.favorites-section { padding:18px 16px; }
   .section-head h2 { font-size:19px; }
   .section-head p { font-size:10px; }

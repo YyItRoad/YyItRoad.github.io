@@ -49,6 +49,7 @@ function legacyDecrypt(ciphertext, password) {
     assert.equal(await page.locator('.tool-card').count(), 4);
     assert.equal(await page.locator('.category').count(), 7);
     assert.equal(await page.locator('.site-header img').count(), 0);
+    assert.deepEqual(await page.locator('.site-header nav a').allTextContents(), ['首页','工具','导航','项目','关于']);
     assert(await page.locator('a[target="_blank"]').evaluateAll(nodes => nodes.every(node => node.rel.includes('noopener') && node.rel.includes('noreferrer'))));
   });
   await test('同区分类收缩、别名、未分类与专属搜索、空态', async () => {
@@ -296,7 +297,10 @@ function legacyDecrypt(ciphertext, password) {
       await nested.locator('#source').fill('子路径');
       await nested.locator('[data-action=base64-encode]').click();
       assert.equal(await nested.locator('#result').inputValue(), Buffer.from('子路径').toString('base64'));
-    } finally { await nested.close(); await new Promise(resolve => server.close(resolve)); }
+    } finally {
+      await nested.close();
+      await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
+    }
   });
   await test('夏令时跳变拒绝不存在的本地日期', async () => {
     const dst = await browser.newContext({ timezoneId:'America/New_York' });
