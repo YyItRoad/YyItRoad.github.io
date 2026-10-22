@@ -1,6 +1,6 @@
 import { matches, tools, projects } from './data.js';
 import { $, el, externalLink, favicon } from './dom.js';
-import { setAssetIcon } from './asset-icons.js';
+import { setAssetIcon } from './asset-icons.js?v=section-icons-v2';
 function highlighted(text, query) {
   const fragment = document.createDocumentFragment();
   let start = 0, index;

@@ -1230,3 +1230,8 @@ mark {
   .tool-card .icon.has-image-icon { width:44px; height:44px; }
   .project-visual.has-image-icon { width:52px; height:52px; }
 }
+
+/* 栏目标题复用透明图标；保留原占位尺寸，避免标题跳动。 */
+.section-icon.has-image-icon,
+:root[data-theme=dark] .section-icon.has-image-icon,
+#navigation .section-icon.has-image-icon { background:none; border-radius:0; box-shadow:none; }

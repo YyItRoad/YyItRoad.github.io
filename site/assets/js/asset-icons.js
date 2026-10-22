@@ -3,7 +3,9 @@ import { iconSVG } from './icons.js';
 // 仅允许固定的本地图标，不接受动态 URL 或 HTML。
 const files = {
   crypto: 'crypto', json: 'json', timestamp: 'timestamp', encoder: 'encoder',
-  quantdinger: 'quant', daily: 'diary', n8n: 'automation', video: 'video'
+  quantdinger: 'quant', daily: 'diary', n8n: 'automation', video: 'video',
+  favorites: 'section-favorites', tools: 'section-tools',
+  navigation: 'section-navigation', projects: 'section-projects'
 };
 export function setAssetIcon(container, name) {
   const file = files[name];

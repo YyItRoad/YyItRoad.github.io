@@ -1,4 +1,4 @@
-import { setAssetIcon } from './asset-icons.js';
+import { setAssetIcon } from './asset-icons.js?v=section-icons-v2';
 import { encodeBase64, decodeBase64, timestampToDate, parseDateInput, describeDate, toDateInput } from './tool-core.js';
 const $ = selector => document.querySelector(selector);
 for (const node of document.querySelectorAll('[data-asset-icon]')) setAssetIcon(node, node.dataset.assetIcon);

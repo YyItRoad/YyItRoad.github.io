@@ -1,10 +1,13 @@
 import { loadBookmarks, tools, projects } from './data.js';
 import { $, el, externalLink } from './dom.js';
 import { createNavigation, createFavorites } from './navigation.js';
-import { createSearch } from './search.js?v=icons-v2';
+import { createSearch } from './search.js?v=section-icons-v2';
 import { iconSVG } from './icons.js';
-import { setAssetIcon } from './asset-icons.js';
-for (const node of document.querySelectorAll('[data-icon]')) node.replaceChildren(iconSVG(node.dataset.icon));
+import { setAssetIcon } from './asset-icons.js?v=section-icons-v2';
+for (const node of document.querySelectorAll('[data-icon]')) {
+  if (node.classList.contains('section-icon')) setAssetIcon(node, node.dataset.icon);
+  else node.replaceChildren(iconSVG(node.dataset.icon));
+}
 for (const tool of tools) {
   const card = el('a', 'tool-card'); card.href = tool.url;
   const icon = el('span', 'icon'); setAssetIcon(icon, tool.id); icon.setAttribute('aria-hidden', 'true');
