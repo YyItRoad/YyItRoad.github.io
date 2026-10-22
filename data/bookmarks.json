@@ -1,45 +1,36 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T00:00:00.000Z",
+  "generatedAt": "2026-10-22T06:31:28.003Z",
   "bookmarks": [
+    {
+      "id": "3",
+      "title": "AI提示词精选课集（系列合集）",
+      "url": "https://pan.baidu.com/s/1CzR-owqqDqQasXLeGLuOow?pwd=sikd",
+      "description": "通过网盘分享的文件： 链接: https://pan.baidu.com/s/1CzR-owqqDqQasXLeGLuOow?pwd=sikd 访问口令已省略 复制这段内容后打开百度网盘手机App，操作更方便哦",
+      "category": "未分类",
+      "favorite": false,
+      "sort_order": 0,
+      "tags": []
+    },
     {
       "id": "1",
       "title": "AI超元域的博客",
       "url": "https://www.aivi.fyi/",
       "description": "openclaw高级知识",
-      "category": "AI 资源",
+      "category": "未分类",
       "favorite": false,
-      "sort_order": 10,
-      "tags": [
-        "OpenClaw",
-        "AI"
-      ]
+      "sort_order": 0,
+      "tags": []
     },
     {
       "id": "2",
       "title": "精选提示词",
       "url": "https://www.prompterhub.cn/",
       "description": "汇聚完美提示，成就精彩对话",
-      "category": "AI 资源",
+      "category": "未分类",
       "favorite": false,
-      "sort_order": 20,
-      "tags": [
-        "提示词",
-        "AI"
-      ]
-    },
-    {
-      "id": "3",
-      "title": "AI提示词精选课集（系列合集）",
-      "url": "https://pan.baidu.com/s/1CzR-owqqDqQasXLeGLuOow",
-      "description": "百度网盘分享链接；访问提取码未公开写入导航 JSON。",
-      "category": "AI 资源",
-      "favorite": false,
-      "sort_order": 30,
-      "tags": [
-        "提示词",
-        "学习"
-      ]
+      "sort_order": 0,
+      "tags": []
     },
     {
       "id": "4",
@@ -74,7 +65,7 @@
       "description": "AI 助手",
       "category": "AI 资源",
       "favorite": true,
-      "sort_order": 40,
+      "sort_order": 30,
       "tags": [
         "AI",
         "助手"
@@ -87,7 +78,7 @@
       "description": "行情图表与技术分析",
       "category": "交易研究",
       "favorite": true,
-      "sort_order": 10,
+      "sort_order": 40,
       "tags": [
         "图表",
         "行情"
@@ -97,8 +88,9 @@
   "summary": {
     "count": 7,
     "categories": [
-      "AI 资源",
+      "未分类",
       "开发技术",
+      "AI 资源",
       "交易研究"
     ]
   }
