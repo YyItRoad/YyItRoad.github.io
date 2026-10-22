@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T11:45:56.457Z",
+  "generatedAt": "2026-10-22T11:46:21.933Z",
   "projects": [
     {
       "id": "1",
@@ -22,7 +22,7 @@
       "id": "2",
       "title": "孩子的日记",
       "description": "把真实日常整理成故事，探索用动画留下成长中的小小瞬间。",
-      "icon": "unknown",
+      "icon": "daily",
       "tags": [
         "生活",
         "动画",
