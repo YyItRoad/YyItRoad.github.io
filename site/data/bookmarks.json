@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T06:44:56.194Z",
+  "generatedAt": "2026-10-22T08:54:07.495Z",
   "bookmarks": [
     {
       "id": "3",
@@ -83,15 +83,177 @@
         "图表",
         "行情"
       ]
+    },
+    {
+      "id": "8",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/zh-CN/",
+      "description": "Web 开发权威参考文档",
+      "category": "开发技术",
+      "favorite": false,
+      "sort_order": 50,
+      "tags": [
+        "Web",
+        "JavaScript",
+        "文档"
+      ]
+    },
+    {
+      "id": "9",
+      "title": "Spring Boot",
+      "url": "https://spring.io/projects/spring-boot",
+      "description": "Spring Boot 官方文档与项目资料",
+      "category": "开发技术",
+      "favorite": false,
+      "sort_order": 60,
+      "tags": [
+        "Java",
+        "后端",
+        "框架"
+      ]
+    },
+    {
+      "id": "10",
+      "title": "Stack Overflow",
+      "url": "https://stackoverflow.com/",
+      "description": "程序开发问题与社区问答",
+      "category": "开发技术",
+      "favorite": false,
+      "sort_order": 70,
+      "tags": [
+        "问答",
+        "编程"
+      ]
+    },
+    {
+      "id": "11",
+      "title": "n8n",
+      "url": "https://n8n.io/",
+      "description": "工作流自动化平台",
+      "category": "效率办公",
+      "favorite": true,
+      "sort_order": 80,
+      "tags": [
+        "自动化",
+        "工作流"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "description": "AI 模型与开源社区",
+      "category": "AI 资源",
+      "favorite": false,
+      "sort_order": 90,
+      "tags": [
+        "模型",
+        "开源"
+      ]
+    },
+    {
+      "id": "13",
+      "title": "OpenAI API Docs",
+      "url": "https://platform.openai.com/docs",
+      "description": "OpenAI API 开发文档",
+      "category": "AI 资源",
+      "favorite": false,
+      "sort_order": 100,
+      "tags": [
+        "API",
+        "开发"
+      ]
+    },
+    {
+      "id": "14",
+      "title": "CoinGlass",
+      "url": "https://www.coinglass.com/",
+      "description": "数字资产市场数据与衍生品分析",
+      "category": "交易研究",
+      "favorite": false,
+      "sort_order": 110,
+      "tags": [
+        "市场",
+        "数据"
+      ]
+    },
+    {
+      "id": "15",
+      "title": "Binance Academy",
+      "url": "https://academy.binance.com/zh",
+      "description": "区块链与交易知识资料",
+      "category": "交易研究",
+      "favorite": false,
+      "sort_order": 120,
+      "tags": [
+        "区块链",
+        "学习"
+      ]
+    },
+    {
+      "id": "16",
+      "title": "Excalidraw",
+      "url": "https://excalidraw.com/",
+      "description": "在线白板与草图绘制",
+      "category": "效率办公",
+      "favorite": false,
+      "sort_order": 130,
+      "tags": [
+        "白板",
+        "绘图"
+      ]
+    },
+    {
+      "id": "17",
+      "title": "Figma",
+      "url": "https://www.figma.com/",
+      "description": "界面设计与协作工具",
+      "category": "内容创作",
+      "favorite": false,
+      "sort_order": 140,
+      "tags": [
+        "设计",
+        "界面"
+      ]
+    },
+    {
+      "id": "18",
+      "title": "FFmpeg",
+      "url": "https://ffmpeg.org/documentation.html",
+      "description": "音视频处理工具官方文档",
+      "category": "内容创作",
+      "favorite": false,
+      "sort_order": 150,
+      "tags": [
+        "视频",
+        "音频",
+        "工具"
+      ]
+    },
+    {
+      "id": "19",
+      "title": "哔哩哔哩",
+      "url": "https://www.bilibili.com/",
+      "description": "视频学习与内容平台",
+      "category": "生活兴趣",
+      "favorite": false,
+      "sort_order": 160,
+      "tags": [
+        "视频",
+        "学习"
+      ]
     }
   ],
   "summary": {
-    "count": 7,
+    "count": 19,
     "categories": [
       "未分类",
       "开发技术",
       "AI 资源",
-      "交易研究"
+      "交易研究",
+      "效率办公",
+      "内容创作",
+      "生活兴趣"
     ]
   }
 }
