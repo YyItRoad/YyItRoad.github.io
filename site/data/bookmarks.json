@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-22T08:54:07.495Z",
+  "generatedAt": "2026-10-23T01:54:02.956Z",
   "bookmarks": [
     {
       "id": "3",
@@ -46,6 +46,19 @@
       ]
     },
     {
+      "id": "6",
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com",
+      "description": "AI 助手",
+      "category": "AI 资源",
+      "favorite": true,
+      "sort_order": 20,
+      "tags": [
+        "AI",
+        "助手"
+      ]
+    },
+    {
       "id": "5",
       "title": "Vue.js",
       "url": "https://vuejs.org",
@@ -59,16 +72,30 @@
       ]
     },
     {
-      "id": "6",
-      "title": "ChatGPT",
-      "url": "https://chatgpt.com",
-      "description": "AI 助手",
-      "category": "AI 资源",
+      "id": "20",
+      "title": "Linux.do",
+      "url": "https://linux.do",
+      "description": "技术交流社区",
+      "category": "开发技术",
       "favorite": true,
       "sort_order": 30,
       "tags": [
-        "AI",
-        "助手"
+        "社区",
+        "技术"
+      ]
+    },
+    {
+      "id": "21",
+      "title": "QuantDinger",
+      "url": "https://trade.yangyang.fun",
+      "description": "个人交易研究与行情工作台",
+      "category": "交易研究",
+      "favorite": true,
+      "sort_order": 40,
+      "tags": [
+        "交易",
+        "行情",
+        "个人项目"
       ]
     },
     {
@@ -77,7 +104,7 @@
       "url": "https://www.tradingview.com",
       "description": "行情图表与技术分析",
       "category": "交易研究",
-      "favorite": true,
+      "favorite": false,
       "sort_order": 40,
       "tags": [
         "图表",
@@ -96,6 +123,19 @@
         "Web",
         "JavaScript",
         "文档"
+      ]
+    },
+    {
+      "id": "22",
+      "title": "n8n 工作台",
+      "url": "https://n8n.yangyang.fun",
+      "description": "个人工作流自动化平台",
+      "category": "效率办公",
+      "favorite": true,
+      "sort_order": 50,
+      "tags": [
+        "n8n",
+        "自动化"
       ]
     },
     {
@@ -131,7 +171,7 @@
       "url": "https://n8n.io/",
       "description": "工作流自动化平台",
       "category": "效率办公",
-      "favorite": true,
+      "favorite": false,
       "sort_order": 80,
       "tags": [
         "自动化",
@@ -245,7 +285,7 @@
     }
   ],
   "summary": {
-    "count": 19,
+    "count": 22,
     "categories": [
       "未分类",
       "开发技术",
