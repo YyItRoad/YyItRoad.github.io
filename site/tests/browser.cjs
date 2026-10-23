@@ -186,8 +186,13 @@ function legacyDecrypt(ciphertext, password) {
     await home();
     assert.deepEqual(await page.locator('.project-body h3').allTextContents(), visibleProjects.map(item => item.title));
     await page.waitForFunction(() => [...document.querySelectorAll('.project-visual')].every(node => node.querySelector('svg') || node.querySelector('img')?.naturalWidth));
+    await page.waitForFunction(() => [...document.querySelectorAll('.project-visual img')].every(img => img.complete && img.naturalWidth > 0));
     const quant = page.locator('.project-card').filter({ hasText: 'QuantDinger' });
     assert.equal(await quant.locator('.project-link').getAttribute('href'), visibleProjects.find(item => item.title === 'QuantDinger').github_url);
+    assert((await quant.locator('.project-visual img').getAttribute('src')).endsWith('/icons-v2/quant-v2.webp'));
+    await page.locator('#global-search').fill('量化');
+    const projectResult = page.getByRole('group', { name:'项目', exact:true });
+    assert((await projectResult.locator('.search-result-icon img').first().getAttribute('src')).endsWith('/icons-v2/quant-v2.webp'));
   });
   await test('项目文件名安全校验及所有约定后缀', async () => {
     const result = await page.evaluate(async () => {
@@ -225,7 +230,8 @@ function legacyDecrypt(ciphertext, password) {
       assert.equal(await page.locator('.project-body h3').first().innerText(), '后台新增项目');
       await page.waitForFunction(() => document.querySelectorAll('.project-icon').length === 2);
       assert(await page.locator('.project-icon').evaluateAll(nodes => nodes.every(node => node.naturalWidth > 0)));
-      assert.equal(await page.locator('.project-visual svg').count(), items.filter(item => item && item.visible !== false).length - 2);
+      assert.equal(await page.locator('.project-visual .asset-icon:not(.project-icon)').count(), items.filter(item => item && item.visible !== false).length - 2);
+      await page.waitForFunction(() => [...document.querySelectorAll('.project-visual img')].every(img => img.complete && img.naturalWidth > 0));
       assert(iconRequests.every(url => /\/(?:test\.svg|test\.webp|missing\.svg)$/.test(url)), iconRequests.join(', '));
       const card = page.locator('.project-card').first();
       assert.match(await card.innerText(), /新增说明|独立标签/);
@@ -427,10 +433,40 @@ function legacyDecrypt(ciphertext, password) {
       assert.match(await dstPage.locator('#tool-status').innerText(), /夏令时/);
     } finally { await dst.close(); }
   });
+  await test('新增工具同步首页、搜索和详情导航，当前页与子路径链接正确', async () => {
+    const growth = await context.newPage();
+    const source = fs.readFileSync(path.join(__dirname, '../assets/js/data.js'), 'utf8');
+    const extra = [
+      { id:'sample5', title:'新增工具甲', description:'扩展测试', tags:['扩展'], url:'tools/sample5.html' },
+      { id:'sample6', title:'新增工具乙', description:'扩展测试', tags:['扩展'], url:'tools/sample6.html' }
+    ];
+    await growth.route(/\/assets\/js\/data\.js(?:\?.*)?$/,  route => route.fulfill({
+      contentType:'text/javascript', body:source.replace('\n];', ',\n' + extra.map(item => JSON.stringify(item)).join(',\n') + '\n];')
+    }));
+    try {
+      await growth.goto(base);
+      await growth.waitForFunction(() => document.querySelectorAll('#tool-grid .tool-card').length === 6);
+      await growth.locator('#global-search').fill('新增工具');
+      assert.equal(await growth.locator('#global-results [role=option]').count(), 2);
+      await growth.setViewportSize({ width:320, height:900 });
+      for (const tool of ['crypto','json','timestamp','encoder']) {
+        await growth.goto(`${base}/tools/${tool}.html`);
+        await growth.waitForFunction(() => document.querySelectorAll('.tool-nav a').length === 6);
+        const current = growth.locator('.tool-nav [aria-current=page]');
+        assert.equal(await current.count(), 1);
+        assert.equal(await current.getAttribute('href'), new URL(`tools/${tool}.html`, base.replace(/\/?$/, '/')).href);
+        const added = growth.locator('.tool-nav a').filter({ hasText:'新增工具甲' });
+        assert.equal(await added.getAttribute('href'), new URL('tools/sample5.html', base.replace(/\/?$/, '/')).href);
+        assert.equal(await added.locator('svg').count(), 1);
+        assert(await growth.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      }
+      await growth.locator('.tool-nav').screenshot({ path:path.join(shots, 'tool-nav-extra.png') });
+    } finally { await growth.close(); }
+  });
   await test('所有页面无未捕获 JavaScript 错误', async () => { assert.deepEqual(errors, []); });
   await browser.close();
   const success = results.filter(item => item.ok).length;
   console.log(`\n${success}/${results.length} 组测试通过`);
-  fs.writeFileSync(path.join(__dirname, '../docs/自动化测试结果.md'), `# 自动化测试结果\n\n运行日期：${new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' })}\n\n环境：Playwright + ${browser.browserType().name()} ${browser.version()}，Asia/Shanghai 时区，静态 HTTP 服务。\n\n基线：${payload.bookmarks.length} 条书签、${projectPayload.projects.length} 个项目；视口 320 / 375 / 768 / 1440。\n\n启动：\`python3 -m http.server 4175 --bind 127.0.0.1 --directory site\`；测试：\`BASE_URL=http://127.0.0.1:4175 node site/tests/browser.cjs\`。外部 Playwright 和已有 Chrome 路径可分别通过 NODE_PATH、BROWSER_EXECUTABLE 设置，见 README。\n\n测试图像只通过请求拦截提供，项目图标目录没有新增图片；真实 iOS / Android 尚未实机验证。\n\n结果：${success}/${results.length} 组通过。\n\n` + results.map(item => `- [${item.ok ? 'x' : ' '}] ${item.name}${item.error ? `：${item.error}` : ''}`).join('\n') + '\n');
+  fs.writeFileSync(path.join(__dirname, '../docs/自动化测试结果.md'), `# 自动化测试结果\n\n运行日期：${new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Shanghai' })}\n\n环境：Playwright + ${browser.browserType().name()} ${browser.version()}，Asia/Shanghai 时区，静态 HTTP 服务。\n\n基线：${payload.bookmarks.length} 条书签、${projectPayload.projects.length} 个项目；视口 320 / 375 / 768 / 1440。\n\n启动：\`python3 -m http.server 4173 --bind 127.0.0.1 --directory site\`；测试：\`BASE_URL=http://127.0.0.1:4173 node site/tests/browser.cjs\`。外部 Playwright 和已有 Chrome 路径可分别通过 NODE_PATH、BROWSER_EXECUTABLE 设置，见 README。\n\n测试图像只通过请求拦截提供，项目图标目录没有新增图片；真实 iOS / Android 尚未实机验证。\n\n结果：${success}/${results.length} 组通过。\n\n` + results.map(item => `- [${item.ok ? 'x' : ' '}] ${item.name}${item.error ? `：${item.error}` : ''}`).join('\n') + '\n');
   if (success !== results.length) process.exitCode = 1;
 })().catch(error => { console.error(error); process.exitCode = 1; });

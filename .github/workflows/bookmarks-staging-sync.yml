@@ -1,0 +1,64 @@
+name: Homepage Bookmark Data Staging Test
+# Refresh user-selected 10 favorites including YouTube 2026-10-23
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/bookmarks-staging-sync.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sync-bookmarks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout current homepage branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/homepage-v1
+      - name: Validate bookmark JSON
+        run: |
+          python3 - <<'PY'
+          import json
+          with open('site/data/bookmarks.json',encoding='utf-8') as f:
+              data=json.load(f)
+          assert data.get('version') == 1
+          assert len(data.get('bookmarks', [])) >= 19, 'Expected at least 19 bookmarks'
+          assert 'pwd=sikd' not in json.dumps(data,ensure_ascii=False)
+          print("Bookmark count:", len(data['bookmarks']))
+          PY
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Sync only bookmark JSON to staging
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          rsync -az --checksum -e "ssh -i $HOME/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            site/data/bookmarks.json "$USER@$HOST:/www/wwwroot/yangyang.fun/__deploy-test/data/bookmarks.json"
+      - name: Verify public JSON unchanged UI
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 3 --retry-delay 1 \
+            'https://yangyang.fun/__deploy-test/data/bookmarks.json' -o /tmp/bookmarks.json
+          curl --fail --silent --show-error --retry 3 --retry-delay 1 \
+            'https://yangyang.fun/__deploy-test/' -o /tmp/homepage.html
+          python3 - <<'PY'
+          import json
+          with open('/tmp/bookmarks.json',encoding='utf-8') as f: data=json.load(f)
+          assert len(data['bookmarks']) >= 19
+          with open('/tmp/homepage.html',encoding='utf-8') as f: page=f.read()
+          assert 'project-track' in page and 'category' in page.lower(), 'Staging homepage expected, did not overwrite UI'
+          print("Public staging homepage preserved; bookmark count:", len(data['bookmarks']))
+          PY

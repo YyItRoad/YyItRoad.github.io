@@ -1,0 +1,75 @@
+name: Homepage Production Bookmarks Sync
+on:
+  push:
+    branches: [main]
+    paths:
+      - site/data/bookmarks.json
+      - .github/workflows/bookmarks-production-sync.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: homepage-production-bookmarks
+  cancel-in-progress: false
+jobs:
+  publish-bookmarks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout production branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Validate public navigation
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from urllib.parse import urlparse
+          with open('site/data/bookmarks.json',encoding='utf-8') as f: data=json.load(f)
+          links=data['bookmarks']
+          favorites=sorted((x for x in links if x.get('favorite')),key=lambda x:x.get('sort_order',0))
+          expected=['GitHub','ChatGPT','Linux.do','QuantDinger','n8n 工作台','哔哩哔哩','语雀','Discord','YouTube','X']
+          assert [x['title'] for x in favorites]==expected, 'Unexpected favorites order'
+          assert len(links)>=27
+          assert all(urlparse(x['url']).scheme in ('http','https') for x in links)
+          assert 'pwd=sikd' not in json.dumps(data,ensure_ascii=False)
+          print('Validated',len(links),'bookmarks and',len(favorites),'favorites')
+          PY
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST_KEY: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_ed25519 >/dev/null
+      - name: Backup and upload only production bookmarks
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          SSH_OPTS="-i $HOME/.ssh/id_ed25519 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10"
+          REMOTE="$USER@$HOST"
+          ssh $SSH_OPTS "$REMOTE" 'set -eu; test -s /www/wwwroot/yangyang.fun/index.html; mkdir -p /www/wwwroot/yangyang.fun/data; if test -f /www/wwwroot/yangyang.fun/data/bookmarks.json; then cp /www/wwwroot/yangyang.fun/data/bookmarks.json /www/wwwroot/yangyang.fun/data/bookmarks.json.bak; fi'
+          rsync -az --checksum -e "ssh $SSH_OPTS" site/data/bookmarks.json "$REMOTE:/www/wwwroot/yangyang.fun/data/bookmarks.json.tmp"
+          ssh $SSH_OPTS "$REMOTE" 'mv /www/wwwroot/yangyang.fun/data/bookmarks.json.tmp /www/wwwroot/yangyang.fun/data/bookmarks.json'
+      - name: Verify live production JSON and homepage
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 3 --retry-delay 2 'https://yangyang.fun/' -o /tmp/prod.html
+          curl --fail --silent --show-error --retry 3 --retry-delay 2 'https://yangyang.fun/data/bookmarks.json' -o /tmp/prod-bookmarks.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/prod.html',encoding='utf-8') as f: html=f.read()
+          with open('/tmp/prod-bookmarks.json',encoding='utf-8') as f: d=json.load(f)
+          favorites=sorted((x for x in d['bookmarks'] if x.get('favorite')),key=lambda x:x.get('sort_order',0))
+          expected=['GitHub','ChatGPT','Linux.do','QuantDinger','n8n 工作台','哔哩哔哩','语雀','Discord','YouTube','X']
+          assert '知行合一' in html, 'Homepage text missing'
+          assert [x['title'] for x in favorites]==expected
+          print('Production verified:',len(d['bookmarks']),'links',len(favorites),'favorites')
+          PY

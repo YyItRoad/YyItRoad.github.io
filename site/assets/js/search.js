@@ -1,6 +1,6 @@
-import { matches, tools } from './data.js?v=11b9de359bc1';
+import { matches, tools } from './data.js?v=ad9f144f503e';
 import { $, el, externalLink, favicon } from './dom.js?v=f21f1696d2cb';
-import { iconSVG } from './icons.js?v=2b16b074aa2b';
+import { setAssetIcon, setProjectIcon } from './asset-icons.js?v=833dc666d804';
 function highlighted(text, query) {
   const fragment = document.createDocumentFragment();
   let start = 0, index;
@@ -58,7 +58,9 @@ export function createSearch(favorites) {
         const details = el('small'); details.append(highlighted([item.description, ...(item.tags || [])].join(' · '), query));
         const graphic = el('span', 'search-result-icon');
         graphic.setAttribute('aria-hidden', 'true');
-        graphic.append(label === '项目' ? iconSVG('projects') : item.external ? favicon(item) : iconSVG(item.id));
+        if (label === '项目') setProjectIcon(graphic, item);
+        else if (label === '工具') setAssetIcon(graphic, item.id);
+        else graphic.append(favicon(item));
         const text = el('span', 'search-result-text');
         text.append(name, details);
         option.append(graphic, text);

@@ -1,6 +1,28 @@
-import { encodeBase64, decodeBase64, timestampToDate, parseDateInput, describeDate, toDateInput } from './tool-core.js';
+import { tools } from './data.js?v=ad9f144f503e';
+import { iconSVG } from './icons.js?v=2b16b074aa2b';
+import { setAssetIcon } from './asset-icons.js?v=833dc666d804';
+import { encodeBase64, decodeBase64, timestampToDate, parseDateInput, describeDate, toDateInput } from './tool-core.js?v=7072faa82dbb';
 const $ = selector => document.querySelector(selector);
+for (const node of document.querySelectorAll('[data-icon]')) node.replaceChildren(iconSVG(node.dataset.icon));
+for (const node of document.querySelectorAll('[data-asset-icon]')) setAssetIcon(node, node.dataset.assetIcon);
 const kind = document.body.dataset.tool, result = $('#result'), status = $('#tool-status');
+const toolNav = $('.tool-nav');
+if (toolNav) {
+  const siteRoot = new URL('../../', import.meta.url);
+  toolNav.replaceChildren(...tools.map(tool => {
+    const link = document.createElement('a');
+    link.href = new URL(tool.url, siteRoot).href;
+    if (tool.id === kind) link.setAttribute('aria-current', 'page');
+    const icon = document.createElement('span');
+    icon.className = 'tool-nav-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    setAssetIcon(icon, tool.id);
+    const label = document.createElement('span');
+    label.textContent = tool.title;
+    link.append(icon, label);
+    return link;
+  }));
+}
 function message(text, error = false) { status.textContent = text; status.dataset.error = String(error); }
 const nonempty = text => { if (!text.trim()) throw new Error('请先输入需要处理的内容。'); return text; };
 if ($('#timezone-name')) $('#timezone-name').textContent = `本地：${Intl.DateTimeFormat().resolvedOptions().timeZone}`;

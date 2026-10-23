@@ -1,54 +1,29 @@
 # YangYang.fun 部署说明
 
-## 目标架构
+更新日期：2026-10-23。生产源码为 `site/`，服务器目录 `/www/wwwroot/yangyang.fun/`，由宝塔 Nginx 托管。根目录旧站模板和旧 Node 导航构建器不参与生产部署，已清理。
 
-- 源码与版本管理：GitHub 仓库 `YyItRoad/YyItRoad.github.io`
-- 待部署的网站文件：仓库中的 `site/`
-- 部署目标：`/www/wwwroot/yangyang.fun/`
-- Web 服务：现有 Nginx
-- 部署方式：GitHub Actions + 专用 SSH 账号
+## 现有工作流
 
-## 当前状态
+| 文件 | 触发与范围 |
+| --- | --- |
+| `homepage-staging-test.yml` | 仅手动运行。支持 main/feat/homepage-v1；staging、inspect、promote 三种操作 |
+| `bookmarks-production-sync.yml` | main 的书签 JSON 或该工作流变更时，以及手动触发；只更新正式书签 JSON，不发布页面 |
+| `bookmarks-staging-sync.yml` | 指定工作流变更及手动触发；从 feat/homepage-v1 同步隔离目录书签 |
+| `ssh-smoke.yml` | 手动 SSH 连接检查 |
 
-本文件和部署工作流先提交到 `feature/homepage-pipeline-test` 测试分支。
-不会触发生产部署。工作流只会在 `main` 分支的 `site/**` 文件变更时自动部署；手动运行时还必须明确勾选确认项。
-在正式合并前，先完成网站文件、服务器账号和 GitHub Secrets 的配置。
+不存在页面变更自动全站发布流程。旧 build.yml 的 update-navigation/定时旧导航构建已移除，未修改当前 n8n 数据发布或其他工作流。
 
-## GitHub Actions 所需 Secrets
+## 全站发布
 
-在 GitHub 仓库的 Settings → Secrets and variables → Actions 中配置：
+1. 提交完整源码并确定 40 位提交 SHA。
+2. 在允许的分支运行 homepage-staging-test.yml，operation=staging，expected_source_sha=该 SHA。
+3. 验收 __deploy-test/ 下的版本标记、文件哈希、页面与工具。
+4. 仅经用户明确授权，operation=promote 使用同一个 SHA；流程独立重建清单核对，再备份、替换正式目录并验收，失败恢复。
 
-- `DEPLOY_HOST`：服务器 SSH 地址，当前为 `47.109.74.220`
-- `DEPLOY_USER`：专门用于网站部署的非 root 账号
-- `DEPLOY_SSH_KEY`：对应部署账号的 SSH 私钥，完整多行内容
-- `DEPLOY_KNOWN_HOSTS`：已核验过的 SSH 主机公钥行，不要留空，也不要关闭主机密钥校验
+部署排除 Markdown、测试、截图、原始大图与系统缓存，仅保留必要运行文件及 CryptoJS 许可证。保护 .well-known、.user.ini、.htaccess、404.html 和 __deploy-test/。不要手动 rsync 整个仓库，也不要使用已撤下的旧 deploy.yml。
 
-不要将私钥、Token 或其他凭据提交到仓库。
+## 凭据与服务器
 
-## 服务器账号要求
+工作流使用已有 DEPLOY_HOST、DEPLOY_USER、DEPLOY_SSH_KEY、DEPLOY_KNOWN_HOSTS；私钥/令牌不得写入代码或文档。部署账号应为仅可写站点目录的专用账号，严格验证主机密钥。
 
-部署账号应当是专用的非 root 账号，只能写入网站目录，不应拥有其他站点、应用或系统目录的写权限。该账号需要：
-
-1. 能通过 SSH 公钥认证登录；
-2. 能写入和删除 `/www/wwwroot/yangyang.fun/` 内的文件；
-3. 能运行 rsync（服务端通常随 rsync 包提供）；
-4. 不需要 sudo 或 root 权限。
-
-创建账号和设置目录权限前，应先确认服务器现有账号与目录权限，避免直接将整个服务器目录树改为部署账号所有。
-
-## 发布规则
-
-- 自动部署触发条件：`main` 分支中的 `site/**` 文件发生变更。
-- 手动部署触发条件：在 `main` 分支运行工作流，并将 `confirm_deploy` 设为 true。
-- 部署源仅为 `site/`，不把仓库 README、Git 元数据或工作流文件复制到网站。
-- 同步会删除网站根目录中不属于 `site/` 的旧站点文件；会保留服务器的 `.well-known/` 和 `.user.ini`。
-- 因此，只有在确认新版完整站点文件都已放入 `site/` 后，才允许合并到 `main` 并首次执行生产部署。
-
-## 推荐验证顺序
-
-1. 完成 `site/index.html` 和全部静态资源。
-2. 在服务器配置专用部署账号及目录权限。
-3. 添加并核验 GitHub Actions Secrets。
-4. 先在测试分支审查工作流内容。
-5. 将完整站点与部署工作流合并到 `main`。
-6. 首次生产部署后验证首页、工具页面和 `/data/bookmarks.json`。
+www 绑定、含两个域名的证书及 www→主域名 301 由维护者在宝塔配置，收尾不修改这些配置。当前运行版本以公网 deployment-version.txt 和实际文件清单为准；书签 JSON 可由独立工作流更新，版本标记不代表数据从未变化。

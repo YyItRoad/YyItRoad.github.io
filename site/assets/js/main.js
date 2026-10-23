@@ -1,12 +1,16 @@
-import { loadBookmarks, loadProjects, normalizeProjects, fallbackProjects, tools } from './data.js?v=11b9de359bc1';
+import { loadBookmarks, loadProjects, normalizeProjects, fallbackProjects, tools } from './data.js?v=ad9f144f503e';
 import { $, el, externalLink } from './dom.js?v=f21f1696d2cb';
-import { createNavigation, createFavorites } from './navigation.js?v=abf785ed002a';
-import { createSearch } from './search.js?v=bff4100b3fdf';
+import { createNavigation, createFavorites } from './navigation.js?v=f226d9142c31';
+import { createSearch } from './search.js?v=b8042b8b6816';
 import { iconSVG } from './icons.js?v=2b16b074aa2b';
-for (const node of document.querySelectorAll('[data-icon]')) node.replaceChildren(iconSVG(node.dataset.icon));
+import { setAssetIcon, setProjectIcon } from './asset-icons.js?v=833dc666d804';
+for (const node of document.querySelectorAll('[data-icon]')) {
+  if (node.classList.contains('section-icon')) setAssetIcon(node, node.dataset.icon);
+  else node.replaceChildren(iconSVG(node.dataset.icon));
+}
 for (const tool of tools) {
   const card = el('a', 'tool-card'); card.href = tool.url;
-  const icon = el('span', 'icon'); icon.append(iconSVG(tool.id)); icon.style.background = tool.color; icon.setAttribute('aria-hidden', 'true');
+  const icon = el('span', 'icon'); setAssetIcon(icon, tool.id); icon.setAttribute('aria-hidden', 'true');
   card.append(icon, el('span', 'card-arrow', '↗'), el('h3', '', tool.title), el('p', '', tool.description));
   $('#tool-grid').append(card);
 }
@@ -17,13 +21,7 @@ function renderProjects(projects) {
   for (const [index, project] of projects.entries()) {
     const card = el('article', 'project-card'); card.id = `project-${project.id}`; card.tabIndex = -1;
     const visual = el('div', `project-visual ${styles[index % styles.length]}`); visual.setAttribute('aria-hidden', 'true');
-    visual.append(iconSVG('unknown'));
-    if (project.icon) {
-      const image = el('img', 'project-icon'); image.alt = ''; image.referrerPolicy = 'no-referrer';
-      image.addEventListener('load', () => visual.replaceChildren(image), { once: true });
-      image.addEventListener('error', () => image.remove(), { once: true });
-      image.src = project.icon;
-    }
+    setProjectIcon(visual, project);
     const body = el('div', 'project-body');
     const description = el('p', '', project.description); description.title = project.description;
     body.append(el('h3', '', project.title), description);

@@ -1,4 +1,4 @@
-import { categories, matches } from './data.js?v=11b9de359bc1';
+import { categories, matches } from './data.js?v=ad9f144f503e';
 import { $, el, externalLink, favicon } from './dom.js?v=f21f1696d2cb';
 import { iconSVG } from './icons.js?v=2b16b074aa2b';
 export function createNavigation() {

@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   deploy-staging:
-    if: github.ref == 'refs/heads/feat/homepage-v1' && (inputs.operation == 'staging' || inputs.operation == '')
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && (inputs.operation == 'staging' || inputs.operation == '')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -145,7 +145,7 @@ jobs:
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
 
   inspect-root:
-    if: github.ref == 'refs/heads/feat/homepage-v1' && inputs.operation == 'inspect'
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && inputs.operation == 'inspect'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -197,7 +197,7 @@ jobs:
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/known_hosts
 
   promote-root:
-    if: github.ref == 'refs/heads/feat/homepage-v1' && inputs.operation == 'promote'
+    if: (github.ref == 'refs/heads/feat/homepage-v1' || github.ref == 'refs/heads/main') && inputs.operation == 'promote'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:

@@ -1,6 +1,11 @@
 .tool-header {
   border-bottom:1px solid var(--line);
-  padding:20px 0
+  padding:12px 0;
+  position:sticky;
+  top:0;
+  z-index:60;
+  background:color-mix(in srgb,var(--bg) 28%,transparent);
+  backdrop-filter:blur(10px)
 }
 .tool-header .wrap {
   display:flex;
@@ -10,7 +15,12 @@
 }
 .tool-brand {
   font-weight:800;
-  font-size:20px
+  font-size:24px;
+  letter-spacing:-.6px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  white-space:nowrap
 }
 .tool-header-actions {
   display:flex;
@@ -137,16 +147,21 @@
   margin:8px 0 0
 }
 .tool-nav {
-  display:flex;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:10px;
-  flex-wrap:wrap;
   margin-top:30px
 }
 .tool-nav a {
   font-size:12px;
   padding:6px 12px;
   border:1px solid var(--line);
-  border-radius:30px
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  transition:background .2s,border-color .2s
 }
 .tool-nav a[aria-current=page] {
   background:var(--accent-soft);
@@ -154,7 +169,7 @@
 }
 .time-fields {
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:20px
 }
 .time-fields select {
@@ -174,10 +189,11 @@
     padding:30px 18px 45px
   }
   .tool-header {
-    padding:15px 0
+    padding:12px 0
   }
   .tool-brand {
-    font-size:16px
+    font-size:16px;
+    gap:8px
   }
   .tool-header-actions {
     font-size:12px;
@@ -195,7 +211,7 @@
     border-radius:18px
   }
   .time-fields {
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
     gap:0
   }
   .actions {
@@ -211,4 +227,27 @@
   .field textarea,.field input,.field select {
     font-size:16px
   }
+}
+
+.tool-heading > div { min-width:0; }
+.tool-heading .icon.has-image-icon { width:64px; height:64px; background:none; box-shadow:none; border-radius:0; }
+.asset-icon { display:block; width:100%; height:100%; object-fit:contain; }
+@media(max-width:640px) { .tool-heading .icon.has-image-icon { width:52px; height:52px; } }
+
+/* 与首页复用品牌路径、柔和底色和图标体系。 */
+body { background:radial-gradient(ellipse at 0 500px,#e2efff88,transparent 800px),radial-gradient(ellipse at 100% 1000px,#eeeaff80,transparent 900px),var(--bg); }
+:root[data-theme=dark] body { background:radial-gradient(ellipse at 0 500px,#1c355b55,transparent 800px),radial-gradient(ellipse at 100% 1000px,#2e295255,transparent 900px),var(--bg); }
+.tool-brand-mark { width:40px; height:40px; display:inline-flex; flex-shrink:0; }
+.tool-brand-mark svg { width:100%; height:100%; }
+.tool-header-actions { flex-shrink:0; }
+.tool-header-actions [data-theme-toggle] { width:40px; height:40px; padding:0; display:grid; place-items:center; border-radius:50%; }
+.tool-nav-icon { width:26px; height:26px; flex-shrink:0; display:grid; place-items:center; }
+.tool-nav-icon svg { width:24px; height:24px; }
+.tool-nav a:hover { background:var(--accent-soft); border-color:var(--accent); }
+@media(max-width:780px) { .tool-nav { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:640px) {
+  .tool-header .wrap { gap:10px; }
+  .tool-brand-mark { width:30px; height:30px; }
+  .tool-header-actions [data-theme-toggle] { width:36px; height:36px; }
+  .tool-nav a { padding:8px; font-size:11px; gap:6px; }
 }

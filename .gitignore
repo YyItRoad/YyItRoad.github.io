@@ -1,0 +1,7 @@
+# 操作系统与本地运行产物
+.DS_Store
+node_modules/
+*.log
+# 截图可重新生成，原始设计与提示词另行保留。
+/site/docs/screenshots/
+/docs/design/**/页面预览/

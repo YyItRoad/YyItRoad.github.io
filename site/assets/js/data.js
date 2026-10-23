@@ -5,10 +5,10 @@ export const tools = [
   { id: 'encoder', title: 'Base64 / URL', description: '支持中文的文本编码，让信息轻松转换。', tags: ['编码', '解码', '中文'], url: 'tools/encoder.html', icon: '↔', color: 'var(--lavender)' }
 ];
 export const fallbackProjects = [
-  { id: 'quantdinger', title: 'QuantDinger', description: '围绕行情分析、策略与交易研究，探索更有条理的市场工作台。', tags: ['量化', '交易', '研究'], icon: '', style: 'quant', caption: 'MARKET & INSIGHT', url: 'https://github.com/YyItRoad/QuantDinger', linkText: '查看 GitHub →' },
-  { id: 'daily', title: '孩子的日记', description: '把真实日常整理成故事，探索用动画留下成长中的小小瞬间。', tags: ['生活', '动画', '日记'], icon: '', style: 'diary', caption: 'LITTLE MOMENTS, BIG MEMORIES' },
-  { id: 'n8n', title: '让流程自己运转', description: '用 n8n 连接信息与工具，探索把重复步骤串成顺手的工作流。', tags: ['n8n', '自动化', '效率'], icon: '', style: 'automation', caption: 'CONNECT THE LITTLE THINGS' },
-  { id: 'video', title: '从灵感到画面', description: '尝试把选题、素材与视频制作串起来，为内容创作留出更多空间。', tags: ['视频', '内容创作', 'AI'], icon: '', style: 'video', caption: 'MAKE ROOM FOR CREATIVITY' }
+  { id: 'quantdinger', title: 'QuantDinger', description: '围绕行情分析、策略与交易研究，探索更有条理的市场工作台。', tags: ['量化', '交易', '研究'], icon: 'quant', style: 'quant', caption: 'MARKET & INSIGHT', url: 'https://github.com/YyItRoad/QuantDinger', linkText: '查看 GitHub →' },
+  { id: 'daily', title: '孩子的日记', description: '把真实日常整理成故事，探索用动画留下成长中的小小瞬间。', tags: ['生活', '动画', '日记'], icon: 'diary', style: 'diary', caption: 'LITTLE MOMENTS, BIG MEMORIES' },
+  { id: 'n8n', title: '让流程自己运转', description: '用 n8n 连接信息与工具，探索把重复步骤串成顺手的工作流。', tags: ['n8n', '自动化', '效率'], icon: 'automation', style: 'automation', caption: 'CONNECT THE LITTLE THINGS' },
+  { id: 'video', title: '从灵感到画面', description: '尝试把选题、素材与视频制作串起来，为内容创作留出更多空间。', tags: ['视频', '内容创作', 'AI'], icon: 'video', style: 'video', caption: 'MAKE ROOM FOR CREATIVITY' }
 ];
 export const categories = [
   { title: '开发技术', description: '代码、框架与技术灵感', icon: '⌨', color: 'var(--blue)' },
