@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-23T01:54:02.956Z",
+  "generatedAt": "2026-10-23T03:07:23.092Z",
   "bookmarks": [
     {
       "id": "3",
@@ -99,33 +99,6 @@
       ]
     },
     {
-      "id": "7",
-      "title": "TradingView",
-      "url": "https://www.tradingview.com",
-      "description": "行情图表与技术分析",
-      "category": "交易研究",
-      "favorite": false,
-      "sort_order": 40,
-      "tags": [
-        "图表",
-        "行情"
-      ]
-    },
-    {
-      "id": "8",
-      "title": "MDN Web Docs",
-      "url": "https://developer.mozilla.org/zh-CN/",
-      "description": "Web 开发权威参考文档",
-      "category": "开发技术",
-      "favorite": false,
-      "sort_order": 50,
-      "tags": [
-        "Web",
-        "JavaScript",
-        "文档"
-      ]
-    },
-    {
       "id": "22",
       "title": "n8n 工作台",
       "url": "https://n8n.yangyang.fun",
@@ -153,6 +126,32 @@
       ]
     },
     {
+      "id": "7",
+      "title": "TradingView",
+      "url": "https://www.tradingview.com",
+      "description": "行情图表与技术分析",
+      "category": "交易研究",
+      "favorite": true,
+      "sort_order": 60,
+      "tags": [
+        "图表",
+        "行情"
+      ]
+    },
+    {
+      "id": "14",
+      "title": "CoinGlass",
+      "url": "https://www.coinglass.com/",
+      "description": "数字资产市场数据与衍生品分析",
+      "category": "交易研究",
+      "favorite": true,
+      "sort_order": 70,
+      "tags": [
+        "市场",
+        "数据"
+      ]
+    },
+    {
       "id": "10",
       "title": "Stack Overflow",
       "url": "https://stackoverflow.com/",
@@ -163,6 +162,19 @@
       "tags": [
         "问答",
         "编程"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "description": "AI 模型与开源社区",
+      "category": "AI 资源",
+      "favorite": true,
+      "sort_order": 80,
+      "tags": [
+        "模型",
+        "开源"
       ]
     },
     {
@@ -179,16 +191,17 @@
       ]
     },
     {
-      "id": "12",
-      "title": "Hugging Face",
-      "url": "https://huggingface.co/",
-      "description": "AI 模型与开源社区",
-      "category": "AI 资源",
-      "favorite": false,
+      "id": "8",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/zh-CN/",
+      "description": "Web 开发权威参考文档",
+      "category": "开发技术",
+      "favorite": true,
       "sort_order": 90,
       "tags": [
-        "模型",
-        "开源"
+        "Web",
+        "JavaScript",
+        "文档"
       ]
     },
     {
@@ -205,16 +218,16 @@
       ]
     },
     {
-      "id": "14",
-      "title": "CoinGlass",
-      "url": "https://www.coinglass.com/",
-      "description": "数字资产市场数据与衍生品分析",
-      "category": "交易研究",
-      "favorite": false,
-      "sort_order": 110,
+      "id": "19",
+      "title": "哔哩哔哩",
+      "url": "https://www.bilibili.com/",
+      "description": "视频学习与内容平台",
+      "category": "生活兴趣",
+      "favorite": true,
+      "sort_order": 100,
       "tags": [
-        "市场",
-        "数据"
+        "视频",
+        "学习"
       ]
     },
     {
@@ -269,19 +282,6 @@
         "音频",
         "工具"
       ]
-    },
-    {
-      "id": "19",
-      "title": "哔哩哔哩",
-      "url": "https://www.bilibili.com/",
-      "description": "视频学习与内容平台",
-      "category": "生活兴趣",
-      "favorite": false,
-      "sort_order": 160,
-      "tags": [
-        "视频",
-        "学习"
-      ]
     }
   ],
   "summary": {
@@ -292,8 +292,8 @@
       "AI 资源",
       "交易研究",
       "效率办公",
-      "内容创作",
-      "生活兴趣"
+      "生活兴趣",
+      "内容创作"
     ]
   }
 }
