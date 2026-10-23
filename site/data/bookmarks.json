@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-23T03:07:23.092Z",
+  "generatedAt": "2026-10-23T03:12:40.696Z",
   "bookmarks": [
     {
       "id": "3",
@@ -126,29 +126,16 @@
       ]
     },
     {
-      "id": "7",
-      "title": "TradingView",
-      "url": "https://www.tradingview.com",
-      "description": "行情图表与技术分析",
-      "category": "交易研究",
+      "id": "19",
+      "title": "哔哩哔哩",
+      "url": "https://www.bilibili.com/",
+      "description": "视频学习与内容平台",
+      "category": "生活兴趣",
       "favorite": true,
       "sort_order": 60,
       "tags": [
-        "图表",
-        "行情"
-      ]
-    },
-    {
-      "id": "14",
-      "title": "CoinGlass",
-      "url": "https://www.coinglass.com/",
-      "description": "数字资产市场数据与衍生品分析",
-      "category": "交易研究",
-      "favorite": true,
-      "sort_order": 70,
-      "tags": [
-        "市场",
-        "数据"
+        "视频",
+        "学习"
       ]
     },
     {
@@ -165,16 +152,29 @@
       ]
     },
     {
-      "id": "12",
-      "title": "Hugging Face",
-      "url": "https://huggingface.co/",
-      "description": "AI 模型与开源社区",
-      "category": "AI 资源",
+      "id": "23",
+      "title": "语雀",
+      "url": "https://www.yuque.com/",
+      "description": "知识文档与团队协作",
+      "category": "效率办公",
+      "favorite": true,
+      "sort_order": 70,
+      "tags": [
+        "笔记",
+        "文档"
+      ]
+    },
+    {
+      "id": "24",
+      "title": "Discord",
+      "url": "https://discord.com/",
+      "description": "社区与实时交流平台",
+      "category": "效率办公",
       "favorite": true,
       "sort_order": 80,
       "tags": [
-        "模型",
-        "开源"
+        "社区",
+        "交流"
       ]
     },
     {
@@ -191,17 +191,17 @@
       ]
     },
     {
-      "id": "8",
-      "title": "MDN Web Docs",
-      "url": "https://developer.mozilla.org/zh-CN/",
-      "description": "Web 开发权威参考文档",
-      "category": "开发技术",
+      "id": "28",
+      "title": "YouTube",
+      "url": "https://www.youtube.com/",
+      "description": "视频与创作内容平台",
+      "category": "内容创作",
       "favorite": true,
       "sort_order": 90,
       "tags": [
-        "Web",
-        "JavaScript",
-        "文档"
+        "视频",
+        "学习",
+        "创作"
       ]
     },
     {
@@ -218,16 +218,29 @@
       ]
     },
     {
-      "id": "19",
-      "title": "哔哩哔哩",
-      "url": "https://www.bilibili.com/",
-      "description": "视频学习与内容平台",
+      "id": "26",
+      "title": "X",
+      "url": "https://x.com/",
+      "description": "社交平台与实时信息",
       "category": "生活兴趣",
       "favorite": true,
       "sort_order": 100,
       "tags": [
-        "视频",
-        "学习"
+        "社交",
+        "资讯"
+      ]
+    },
+    {
+      "id": "7",
+      "title": "TradingView",
+      "url": "https://www.tradingview.com",
+      "description": "行情图表与技术分析",
+      "category": "交易研究",
+      "favorite": false,
+      "sort_order": 110,
+      "tags": [
+        "图表",
+        "行情"
       ]
     },
     {
@@ -244,6 +257,19 @@
       ]
     },
     {
+      "id": "14",
+      "title": "CoinGlass",
+      "url": "https://www.coinglass.com/",
+      "description": "数字资产市场数据与衍生品分析",
+      "category": "交易研究",
+      "favorite": false,
+      "sort_order": 120,
+      "tags": [
+        "市场",
+        "数据"
+      ]
+    },
+    {
       "id": "16",
       "title": "Excalidraw",
       "url": "https://excalidraw.com/",
@@ -254,6 +280,19 @@
       "tags": [
         "白板",
         "绘图"
+      ]
+    },
+    {
+      "id": "12",
+      "title": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "description": "AI 模型与开源社区",
+      "category": "AI 资源",
+      "favorite": false,
+      "sort_order": 130,
+      "tags": [
+        "模型",
+        "开源"
       ]
     },
     {
@@ -270,6 +309,20 @@
       ]
     },
     {
+      "id": "8",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/zh-CN/",
+      "description": "Web 开发权威参考文档",
+      "category": "开发技术",
+      "favorite": false,
+      "sort_order": 140,
+      "tags": [
+        "Web",
+        "JavaScript",
+        "文档"
+      ]
+    },
+    {
       "id": "18",
       "title": "FFmpeg",
       "url": "https://ffmpeg.org/documentation.html",
@@ -282,10 +335,23 @@
         "音频",
         "工具"
       ]
+    },
+    {
+      "id": "27",
+      "title": "MiniMax",
+      "url": "https://www.minimax.cn/",
+      "description": "AI 模型与生成式内容平台",
+      "category": "AI 资源",
+      "favorite": false,
+      "sort_order": 170,
+      "tags": [
+        "AI",
+        "模型"
+      ]
     }
   ],
   "summary": {
-    "count": 22,
+    "count": 27,
     "categories": [
       "未分类",
       "开发技术",
