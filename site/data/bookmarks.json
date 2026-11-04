@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-23T03:12:40.696Z",
+  "generatedAt": "2026-11-04T03:24:08.977Z",
   "bookmarks": [
     {
       "id": "3",
@@ -126,16 +126,16 @@
       ]
     },
     {
-      "id": "19",
-      "title": "哔哩哔哩",
-      "url": "https://www.bilibili.com/",
-      "description": "视频学习与内容平台",
-      "category": "生活兴趣",
+      "id": "31",
+      "title": "飞牛 NAS",
+      "url": "https://yangyang628.fnos.net/",
+      "description": "个人 NAS 远程访问入口",
+      "category": "效率办公",
       "favorite": true,
       "sort_order": 60,
       "tags": [
-        "视频",
-        "学习"
+        "NAS",
+        "个人服务"
       ]
     },
     {
@@ -152,29 +152,16 @@
       ]
     },
     {
-      "id": "23",
-      "title": "语雀",
-      "url": "https://www.yuque.com/",
-      "description": "知识文档与团队协作",
-      "category": "效率办公",
+      "id": "19",
+      "title": "哔哩哔哩",
+      "url": "https://www.bilibili.com/",
+      "description": "视频学习与内容平台",
+      "category": "生活兴趣",
       "favorite": true,
       "sort_order": 70,
       "tags": [
-        "笔记",
-        "文档"
-      ]
-    },
-    {
-      "id": "24",
-      "title": "Discord",
-      "url": "https://discord.com/",
-      "description": "社区与实时交流平台",
-      "category": "效率办公",
-      "favorite": true,
-      "sort_order": 80,
-      "tags": [
-        "社区",
-        "交流"
+        "视频",
+        "学习"
       ]
     },
     {
@@ -191,17 +178,29 @@
       ]
     },
     {
-      "id": "28",
-      "title": "YouTube",
-      "url": "https://www.youtube.com/",
-      "description": "视频与创作内容平台",
-      "category": "内容创作",
+      "id": "23",
+      "title": "语雀",
+      "url": "https://www.yuque.com/",
+      "description": "知识文档与团队协作",
+      "category": "效率办公",
+      "favorite": true,
+      "sort_order": 80,
+      "tags": [
+        "笔记",
+        "文档"
+      ]
+    },
+    {
+      "id": "24",
+      "title": "Discord",
+      "url": "https://discord.com/app",
+      "description": "社区与实时交流平台",
+      "category": "效率办公",
       "favorite": true,
       "sort_order": 90,
       "tags": [
-        "视频",
-        "学习",
-        "创作"
+        "社区",
+        "交流"
       ]
     },
     {
@@ -218,16 +217,17 @@
       ]
     },
     {
-      "id": "26",
-      "title": "X",
-      "url": "https://x.com/",
-      "description": "社交平台与实时信息",
-      "category": "生活兴趣",
+      "id": "28",
+      "title": "YouTube",
+      "url": "https://www.youtube.com/",
+      "description": "视频与创作内容平台",
+      "category": "内容创作",
       "favorite": true,
       "sort_order": 100,
       "tags": [
-        "社交",
-        "资讯"
+        "视频",
+        "学习",
+        "创作"
       ]
     },
     {
@@ -241,6 +241,19 @@
       "tags": [
         "图表",
         "行情"
+      ]
+    },
+    {
+      "id": "26",
+      "title": "X",
+      "url": "https://x.com/",
+      "description": "社交平台与实时信息",
+      "category": "生活兴趣",
+      "favorite": true,
+      "sort_order": 110,
+      "tags": [
+        "社交",
+        "资讯"
       ]
     },
     {
@@ -338,20 +351,48 @@
     },
     {
       "id": "27",
-      "title": "MiniMax",
-      "url": "https://www.minimax.cn/",
+      "title": "MiniMax用量",
+      "url": "https://platform.minimax.cn/console/usage",
       "description": "AI 模型与生成式内容平台",
       "category": "AI 资源",
-      "favorite": false,
+      "favorite": true,
       "sort_order": 170,
       "tags": [
         "AI",
         "模型"
       ]
+    },
+    {
+      "id": "29",
+      "title": "MiniMax H3 AI 视频创作工作站",
+      "url": "https://www.compshare.cn/video-studio",
+      "description": "优云智算的 AI 视频创作工作站",
+      "category": "内容创作",
+      "favorite": false,
+      "sort_order": 180,
+      "tags": [
+        "AI视频",
+        "MiniMax",
+        "视频生成"
+      ]
+    },
+    {
+      "id": "30",
+      "title": "GETTR Token",
+      "url": "https://gettrtoken.com/",
+      "description": "GETTR 社区代币 GTR 的项目网站，提供代币经济模型、白皮书及透明度信息",
+      "category": "交易研究",
+      "favorite": false,
+      "sort_order": 190,
+      "tags": [
+        "Web3",
+        "Solana",
+        "代币项目"
+      ]
     }
   ],
   "summary": {
-    "count": 27,
+    "count": 30,
     "categories": [
       "未分类",
       "开发技术",
