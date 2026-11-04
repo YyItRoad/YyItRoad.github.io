@@ -29,10 +29,12 @@ jobs:
           with open('site/data/bookmarks.json',encoding='utf-8') as f: data=json.load(f)
           links=data['bookmarks']
           favorites=sorted((x for x in links if x.get('favorite')),key=lambda x:x.get('sort_order',0))
-          expected=['GitHub','ChatGPT','Linux.do','QuantDinger','n8n 工作台','哔哩哔哩','语雀','Discord','YouTube','X']
-          assert [x['title'] for x in favorites]==expected, 'Unexpected favorites order'
-          assert len(links)>=27
-          assert all(urlparse(x['url']).scheme in ('http','https') for x in links)
+          assert len(links)>0, 'Bookmark list must not be empty'
+          assert len(favorites)>0, 'Favorites list must not be empty'
+          assert all(urlparse(x['url']).scheme in ('http','https') for x in links), 'Invalid bookmark URL'
+          assert all(isinstance(x.get('sort_order'),int) for x in favorites), 'Invalid favorite order'
+          assert len({x['url'] for x in links})==len(links), 'Duplicate bookmark URL'
+          assert len({x['sort_order'] for x in favorites})==len(favorites), 'Duplicate favorite sort order'
           assert 'pwd=sikd' not in json.dumps(data,ensure_ascii=False)
           print('Validated',len(links),'bookmarks and',len(favorites),'favorites')
           PY
@@ -68,8 +70,8 @@ jobs:
           with open('/tmp/prod.html',encoding='utf-8') as f: html=f.read()
           with open('/tmp/prod-bookmarks.json',encoding='utf-8') as f: d=json.load(f)
           favorites=sorted((x for x in d['bookmarks'] if x.get('favorite')),key=lambda x:x.get('sort_order',0))
-          expected=['GitHub','ChatGPT','Linux.do','QuantDinger','n8n 工作台','哔哩哔哩','语雀','Discord','YouTube','X']
+          with open('site/data/bookmarks.json',encoding='utf-8') as f: expected=json.load(f)
           assert '知行合一' in html, 'Homepage text missing'
-          assert [x['title'] for x in favorites]==expected
+          assert d==expected, 'Production bookmark JSON differs from deployed source'
           print('Production verified:',len(d['bookmarks']),'links',len(favorites),'favorites')
           PY
